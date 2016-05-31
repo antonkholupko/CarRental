@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration status="WARN">
+    <appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{ABSOLUTE} [%-5p] - %m%n" />
+        </Console>
+    </appenders>
+    <loggers>
+        <logger name="by.epam.carrental.controller" />
+        <logger name="by.epam.carrental.command" />
+        <logger name="by.epam.carrental.service" />
+        <logger name="by.epam.carrental.dao" />
+        <logger name="by.epam.carrental.filter" />
+        <root level="debug">
+            <appender-ref ref="STDOUT" />
+        </root>
+    </loggers>
+</configuration>

@@ -171,7 +171,53 @@
             <input type="date" value="${sessionScope.supposedDateTo}" name="supposedDateTo" required/>
             <input type="time" value="${sessionScope.supposedTimeTo}" name="supposedTimeTo" required/>
             <input type="hidden" name="command" value="view-all-unused-cars">
-            <input type="submit" value="${freeCars} ${sessionScope.carType}" class="button2"/>
+
+            <br/>
+
+            <c:forEach var="type" items="${allTypes}">
+                <div class="divMenu">
+                    <form action="Controller" method="get">
+                        <input type="hidden" name="command" value="view-type"/>
+                        <input type="hidden" name="carType" value="${type.type}"/>
+                        <c:if test="${type.type.equals('Cabriolet')}">
+                            <input type="submit" value="${cabriolet}"/>
+                        </c:if>
+                        <c:if test="${type.type.equals('Cargo')}">
+                            <input type="submit" value="${cargo}"/>
+                        </c:if>
+                        <c:if test="${type.type.equals('Coupe')}">
+                            <input type="submit" value="${coupe}"/>
+                        </c:if>
+                        <c:if test="${type.type.equals('Jeep')}">
+                            <input type="submit" value="${jeep}"/>
+                        </c:if>
+                        <c:if test="${type.type.equals('Small')}">
+                            <input type="submit" value="${small}"/>
+                        </c:if>
+                        <c:if test="${type.type.equals('Middle')}">
+                            <input type="submit" value="${middle}"/>
+                        </c:if>
+                        <c:if test="${type.type.equals('Minibus')}">
+                            <input type="submit" value="${minibus}"/>
+                        </c:if>
+                        <c:if test="${type.type.equals('Premium')}">
+                            <input type="submit" value="${premium}"/>
+                        </c:if>
+                        <c:if test="${type.type.equals('Vintage')}">
+                            <input type="submit" value="${vintage}"/>
+                        </c:if>
+                    </form>
+                </div>
+            </c:forEach>
+
+            <div class="divMenu">
+                <form action="Controller" method="get">
+                    <input type="hidden" name="command" value="view-type"/>
+                    <input type="hidden" name="carType" value="All"/>
+                    <input type="submit" value="${all}"/>
+                </form>
+            </div>
+
         </form>
     </div>
 
@@ -212,7 +258,7 @@
     </c:forEach>
     <div class="divMenu">
         <form action="Controller" method="get">
-            <input type="hidden" name="command" value="view-type"/>
+            <input type="hidden" name="command" value="view-all-cars"/>
             <input type="hidden" name="carType" value="All"/>
             <input type="submit" value="${all}"/>
         </form>
@@ -233,16 +279,31 @@
         </div>
     </article>
 
-    <div class="divMenu">
 
+    <c:if test="${requestScope.command == null}">
+        <div class="divMenu">
+                <c:forEach var="i" begin="1" end="${amountPages}">
+                    <form action="Controller" method="get">
+                        <input type="hidden" name="command" value="view-all-cars">
+                        <input type="hidden" name="pageNumber" value="${i}"/>
+                        <input type="submit" value="${i}"/>
+                    </form>
+                </c:forEach>
+        </div>
+    </c:if>
+
+    <c:if test="${requestScope.command != null}">
+        <div class="divMenu">
             <c:forEach var="i" begin="1" end="${amountPages}">
                 <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="view-all-cars">
+                    <input type="hidden" name="carType" value="${requestScope.carType}">
+                    <input type="hidden" name="command" value="${requestScope.command}">
                     <input type="hidden" name="pageNumber" value="${i}"/>
                     <input type="submit" value="${i}"/>
                 </form>
             </c:forEach>
-    </div>
+        </div>
+    </c:if>
 
 
 </section>

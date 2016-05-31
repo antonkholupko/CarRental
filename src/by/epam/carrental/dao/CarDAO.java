@@ -34,7 +34,7 @@ public interface CarDAO {
      * @return список автоммобилей определеннго типа
      * @throws DAOException ошибка при получении списка автомобилей
      */
-    public List<Car> takeCarsByType(String type) throws DAOException;
+    public List<Car> takeCarsByType(String type, int startPage, int toStartPage) throws DAOException;
 
     /**
      * Получение списка свободных автоммобилей, на некотором свободном интервале времени
@@ -95,5 +95,7 @@ public interface CarDAO {
     public void deleteCarById(int carId) throws DAOException;
 
     public int countAllCars() throws DAOException;
+
+    public int countAllTypeCars(String type) throws DAOException;
 
 }

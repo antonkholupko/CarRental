@@ -43,7 +43,8 @@ public interface CarDAO {
      * @return список свободных автомобилей
      * @throws DAOException ошибка при получении списка неиспользуемых автомобилей
      */
-    public List<Car> takeUnusedCars(String supposedDateFrom, String supposedDateTo) throws DAOException;
+    public List<Car> takeUnusedCars(String supposedDateFrom, String supposedDateTo,
+                                    int startPage, int carsOnPage) throws DAOException;
 
     /**
      * Получение списка всех автомомбилей
@@ -62,7 +63,8 @@ public interface CarDAO {
      * @return список свободных автомобилей определенного типа
      * @throws DAOException
      */
-    public List<Car> takeUnusedCarsByType(String type, String supposedDateFrom, String supposedDateTo) throws DAOException;
+    public List<Car> takeUnusedCarsByType(String type, String supposedDateFrom, String supposedDateTo,
+                                          int startPage, int carsOnPage) throws DAOException;
 
     /**
      * Получсение всех типов автомоболей
@@ -97,5 +99,7 @@ public interface CarDAO {
     public int countAllCars() throws DAOException;
 
     public int countAllTypeCars(String type) throws DAOException;
+
+    public int countUnusedTypeCars(String type, String dateFrom, String dateTo) throws DAOException;
 
 }

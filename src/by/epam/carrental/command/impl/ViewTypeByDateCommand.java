@@ -42,9 +42,11 @@ public class ViewTypeByDateCommand implements Command {
                 request.setAttribute("invalidDate", true);
                 return PageName.ALL_CARS;
             } else {
-                cars = service.takeCarsByTypeAndDate(type, supposedDateFrom, supposedDateTo);
+                //cars = service.takeCarsByTypeAndDate(type, supposedDateFrom, supposedDateTo);
+
                 request.getSession().setAttribute("allCars", cars);
-                return PageName.ALL_CARS;
+                throw new ServiceException("");
+
             }
         } catch (ServiceException ex) {
             throw new CommandException(ex);

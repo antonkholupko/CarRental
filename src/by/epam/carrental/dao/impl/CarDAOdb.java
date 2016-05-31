@@ -42,7 +42,7 @@ public class CarDAOdb implements CarDAO {
             "((? BETWEEN orders.supposedFromDate AND orders.supposedToDate) " +
             "AND (? BETWEEN orders.supposedFromDate AND orders.supposedToDate)) OR " +
             "((orders.supposedFromDate BETWEEN ? AND ?)AND(orders.supposedToDate " +
-            "BETWEEN ? AND ?)))) GROUP BY carID DESC;";
+            "BETWEEN ? AND ?)))) GROUP BY carID DESC LIMIT ?,?;";
 
     private static final String TAKE_CARS_UNUSED_BY_TYPE_QUERY = "SELECT cars.carID, models.mark, cars.model, cars.year, " +
             "cars.transmission, cars.type, cars.fuel, cars.info, cars.image, cartypes.price " +
@@ -56,7 +56,7 @@ public class CarDAOdb implements CarDAO {
             "((? BETWEEN orders.supposedFromDate AND orders.supposedToDate) " +
             "AND (? BETWEEN orders.supposedFromDate AND orders.supposedToDate)) OR " +
             "((orders.supposedFromDate BETWEEN ? AND ?)AND(orders.supposedToDate " +
-            "BETWEEN ? AND ?)))) AND cars.type=? GROUP BY carID DESC;";
+            "BETWEEN ? AND ?)))) AND cars.type=? GROUP BY carID DESC LIMIT ?,?;";
     private static final String TAKE_ALL_CARS_QUERY = "SELECT cars.carID, models.mark, cars.model, cars.year, cars.transmission, " +
             "cars.type, cars.fuel, cars.info, cars.image, cartypes.price " +
             "FROM carrental.cars " +
@@ -69,6 +69,17 @@ public class CarDAOdb implements CarDAO {
     private static final String DELETE_CAR_BY_ID = "DELETE FROM cars WHERE carID=?;";
     private static final String COUNT_ALL_CARS = "SELECT COUNT(carID) FROM cars;";
     private static final String COUNT_ALL_TYPE_CARS = "SELECT COUNT(carID) FROM cars WHERE type=?;";
+    private static final String COUNT_UNUSED_TYPE_CARS = "SELECT COUNT(carID) FROM cars " +
+            "WHERE carID NOT IN " +
+            "(SELECT carID FROM orders WHERE " +
+            "(NOT (orders.status='отменен' OR orders.status='отклонен' OR orders.status='закрыт' OR orders.status='возвращен')) AND " +
+            "((? BETWEEN orders.supposedFromDate AND orders.supposedToDate) OR " +
+            "(? BETWEEN orders.supposedFromDate AND orders.supposedToDate) OR " +
+            "(? BETWEEN orders.supposedFromDate AND orders.supposedToDate) OR" +
+            "((? BETWEEN orders.supposedFromDate AND orders.supposedToDate) " +
+            "AND (? BETWEEN orders.supposedFromDate AND orders.supposedToDate)) OR " +
+            "((orders.supposedFromDate BETWEEN ? AND ?)AND(orders.supposedToDate " +
+            "BETWEEN ? AND ?)))) AND cars.type=?;";
 
     @Override
     public List<String> takeMarks() throws DAOException {
@@ -202,7 +213,8 @@ public class CarDAOdb implements CarDAO {
     }
 
     @Override
-    public List<Car> takeUnusedCars(String supposedDateFrom, String supposedDateTo) throws DAOException {
+    public List<Car> takeUnusedCars(String supposedDateFrom, String supposedDateTo,
+                                    int startPage, int carsOnPage) throws DAOException {
         LOG.debug("CarDAOdb : takeUnusedCars");
         List<Car> cars = new ArrayList<>();
         Connection connection = null;
@@ -222,6 +234,8 @@ public class CarDAOdb implements CarDAO {
             ps.setString(7, supposedDateTo);
             ps.setString(8, supposedDateFrom);
             ps.setString(9, supposedDateTo);
+            ps.setInt(10, startPage);
+            ps.setInt(11, carsOnPage);
             rs = ps.executeQuery();
             while (rs.next()) {
                 Car car = new Car();
@@ -250,7 +264,8 @@ public class CarDAOdb implements CarDAO {
     }
 
     @Override
-    public List<Car> takeUnusedCarsByType(String type, String supposedDateFrom, String supposedDateTo) throws DAOException {
+    public List<Car> takeUnusedCarsByType(String type, String supposedDateFrom, String supposedDateTo,
+                                          int startPage, int carsOnPage) throws DAOException {
         LOG.debug("CarDAOdb : takeUnusedCars");
         List<Car> cars = new ArrayList<>();
         Connection connection = null;
@@ -271,6 +286,8 @@ public class CarDAOdb implements CarDAO {
             ps.setString(8, supposedDateFrom);
             ps.setString(9, supposedDateTo);
             ps.setString(10, type);
+            ps.setInt(11, startPage);
+            ps.setInt(12, carsOnPage);
             rs = ps.executeQuery();
             while (rs.next()) {
                 Car car = new Car();
@@ -475,6 +492,44 @@ public class CarDAOdb implements CarDAO {
         } finally {
             try {
                 connectionPooldb.closeConnection(connection, ps, rs);
+            } catch (ConnectionPoolException ex) {
+                throw new DAOException(ex);
+            }
+        }
+    }
+
+    public int countUnusedTypeCars(String type, String dateFrom, String dateTo) throws DAOException {
+        LOG.debug("CarDAOdb : countUnusedTypeCars : starts");
+        int carsAmount = 0;
+        Connection connection = null;
+        ConnectionPooldb connectionPooldb = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            connectionPooldb = ConnectionPooldb.getInstance();
+            connection = connectionPooldb.takeConnection();
+            ps = connection.prepareStatement(COUNT_UNUSED_TYPE_CARS);
+            ps.setString(1, dateFrom);
+            ps.setString(2, dateTo);
+            ps.setString(3, dateTo);
+            ps.setString(4, dateFrom);
+            ps.setString(5, dateTo);
+            ps.setString(6, dateFrom);
+            ps.setString(7, dateTo);
+            ps.setString(8, dateFrom);
+            ps.setString(9, dateTo);
+            ps.setString(10, type);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                carsAmount = rs.getInt(1);
+            }
+            return carsAmount;
+        } catch (SQLException | ConnectionPoolException ex) {
+            throw new DAOException(ex);
+        } finally {
+            try {
+                connectionPooldb.closeConnection(connection, ps, rs);
+                LOG.debug("CarDAOdb : countUnusedTypeCars : ends");
             } catch (ConnectionPoolException ex) {
                 throw new DAOException(ex);
             }

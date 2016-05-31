@@ -212,6 +212,9 @@ public class Validator {
      *          false - наоборот
      */
     public boolean validateDate(String firstDate, String secondDate) {
+        if (firstDate.equals("null null") || (secondDate.equals("null null"))) {
+            return false;
+        }
         if (firstDate.isEmpty() || secondDate.isEmpty()) {
             return false;
         }

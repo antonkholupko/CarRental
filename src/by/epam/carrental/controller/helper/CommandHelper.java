@@ -50,6 +50,7 @@ public class CommandHelper {
         commands.put(CommandName.ADD_CAR, new AddCarCommand());
         commands.put(CommandName.DELETE_CAR, new DeleteCarCommand());
         commands.put(CommandName.VIEW_TYPE, new ViewTypeCommand());
+        commands.put(CommandName.VIEW_TYPE_UNUSED, new ViewUnusedTypeCars());
     }
 
     public Command getCommand(String commandName) {

@@ -24,7 +24,7 @@ public class ViewAllUnusedCarsCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug("ViewAllUnusedCarsCommand : execute");
-        int pageAmount = 0;
+        int amountPages = 0;
         int pageNumber = 1;
 
         String carType = (String) request.getSession().getAttribute("carType");
@@ -42,14 +42,10 @@ public class ViewAllUnusedCarsCommand implements Command {
             return PageName.ALL_CARS;
         }
         try {
-            if (carType == null) {
-                carType = "All";
-            }
-            cars = service.takeUnusedCars(carType, supposedDateFrom, supposedDateTo, pageNumber, AMOUNT_CARS_ON_PAGE);
-            /*pageAmount = service.countPageAmountAllCars(AMOUNT_CARS_ON_PAGE);*/
-            //request.getSession().setAttribute("carType", carType);
-            request.getSession().setAttribute("pageAmount", pageAmount);
-            request.getSession().setAttribute("allCars", cars);
+            cars = service.takeUnusedCars(supposedDateFrom, supposedDateTo, pageNumber, AMOUNT_CARS_ON_PAGE);
+            amountPages = service.countPageAmountAllCars(AMOUNT_CARS_ON_PAGE);
+            request.setAttribute("amountPages", amountPages);
+            request.setAttribute("allCars", cars);
             return PageName.ALL_CARS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

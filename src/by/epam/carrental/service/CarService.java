@@ -112,24 +112,16 @@ public class CarService {
      * промежутке
      * @throws ServiceException ошибка при получении списка свободных автомобилей
      */
-    public List<Car> takeCarsByTypeAndDate(String type, String dateFrom, String dateTo) throws ServiceException {
-        LOG.debug("CarService : takeCarsByType");
+    public List<Car> takeCarsByTypeAndDate(String type, String dateFrom, String dateTo,
+                                           int pageNumber, int carsOnPage) throws ServiceException {
+        LOG.debug("CarService : takeCarsByTypeAndDate : starts");
+        DAOFactory factory = DAOFactory.getInstance();
+        int startPage = carToStartPage(pageNumber, carsOnPage);
+        CarDAO dao = factory.getCarDAO();
         try {
-            DAOFactory factory = DAOFactory.getInstance();
-            CarDAO dao = factory.getCarDAO();
-            if (type.equals("All") && dateFrom != null && dateTo != null) {
-                List<Car> cars = dao.takeUnusedCars(dateFrom, dateTo);
-                return cars;
-            } /*else if (type.equals("All") && dateFrom == null && dateTo == null) {
-                List<Car> cars = dao.takeAllCars();
-                return cars;
-            } *//* else if (dateFrom == null || dateTo == null) {
-                List<Car> cars = dao.takeCarsByType(type);
-                return cars;
-            }*/ else {
-                List<Car> cars = dao.takeUnusedCarsByType(type, dateFrom, dateTo);
-                return cars;
-            }
+            List<Car> cars = dao.takeUnusedCarsByType(type, dateFrom, dateTo, startPage, carsOnPage);
+            LOG.debug("CarService : takeCarsByTypeAndDate : ends");
+            return cars;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
         }
@@ -138,28 +130,20 @@ public class CarService {
     /**
      * Получение всех свободных автомобилей в определенном временном промежутке с DAO
      *
-     * @param carType          тип автомобиля
      * @param supposedDateFrom дата получения автомобиля пользователем
      * @param supposedDateTo   дата возврата автомобиля пользователем
-     * @param pageNumber
-     * @param carsOnPage
      * @return список свободных автомобилей в определенном временном промежутке
      * @throws ServiceException ошибка при получении списка автомобилей
      */
-    public List<Car> takeUnusedCars(String carType, String supposedDateFrom, String supposedDateTo,
+    public List<Car> takeUnusedCars(String supposedDateFrom, String supposedDateTo,
                                     int pageNumber, int carsOnPage) throws ServiceException {
         LOG.debug("CarService : takeUnusedCars");
-        /*int carToStart = carToStartPage(pageNumber, carsOnPage);*/
+        DAOFactory factory = DAOFactory.getInstance();
+        int startPage = carToStartPage(pageNumber, carsOnPage);
+        CarDAO dao = factory.getCarDAO();
         try {
-            DAOFactory factory = DAOFactory.getInstance();
-            CarDAO dao = factory.getCarDAO();
-            if (carType.equals("All")) {
-                List<Car> cars = dao.takeUnusedCars(supposedDateFrom, supposedDateTo);
-                return cars;
-            } else {
-                List<Car> cars = dao.takeUnusedCarsByType(carType, supposedDateFrom, supposedDateTo);
-                return cars;
-            }
+            List<Car> cars = dao.takeUnusedCars(supposedDateFrom, supposedDateTo, startPage, carsOnPage);
+            return cars;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
         }
@@ -228,15 +212,15 @@ public class CarService {
         CarDAO dao = factory.getCarDAO();
         try {
             carsAmount = dao.countAllCars();
+            if (carsAmount%amountCarsOnPage != 0) {
+                pageAmount = (carsAmount / amountCarsOnPage) + 1;
+            } else {
+                pageAmount = (carsAmount / amountCarsOnPage);
+            }
+            return pageAmount;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
         }
-        if (carsAmount%amountCarsOnPage != 0) {
-            pageAmount = (carsAmount / amountCarsOnPage) + 1;
-        } else {
-            pageAmount = (carsAmount / amountCarsOnPage);
-        }
-        return pageAmount;
     }
 
     public int countPageAmountTypeCars(String type, int amountCarsOnPage) throws ServiceException {
@@ -247,15 +231,35 @@ public class CarService {
         CarDAO dao = factory.getCarDAO();
         try {
             carsAmount = dao.countAllTypeCars(type);
+            if (carsAmount%amountCarsOnPage != 0) {
+                pageAmount = (carsAmount / amountCarsOnPage) + 1;
+            } else {
+                pageAmount = (carsAmount / amountCarsOnPage);
+            }
+            return pageAmount;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
         }
-        if (carsAmount%amountCarsOnPage != 0) {
-            pageAmount = (carsAmount / amountCarsOnPage) + 1;
-        } else {
-            pageAmount = (carsAmount / amountCarsOnPage);
+    }
+
+    public int countPageAmountUnusedTypeCars(String type, int amountCarsOnPage, String dateFrom, String dateTo) throws ServiceException {
+        LOG.debug("CarService : countPageAmountUnusedTypeCars : starts");
+        int pageAmount = 0;
+        int carsAmount = 0;
+        DAOFactory factory = DAOFactory.getInstance();
+        CarDAO dao = factory.getCarDAO();
+        try {
+            carsAmount = dao.countUnusedTypeCars(type, dateFrom, dateTo);
+            if (carsAmount%amountCarsOnPage != 0) {
+                pageAmount = (carsAmount / amountCarsOnPage) + 1;
+            } else {
+                pageAmount = (carsAmount / amountCarsOnPage);
+            }
+            LOG.debug("CarService : countPageAmountUnusedTypeCars : ends");
+            return pageAmount;
+        } catch (DAOException ex) {
+            throw new ServiceException(ex);
         }
-        return pageAmount;
     }
 
     private int carToStartPage(int pageNumber, int carsOnPage) {

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Команда для изменения статуса заказа
@@ -27,15 +28,15 @@ public class UpdateStatusCommand implements Command {
         String orderInfo = request.getParameter("order-info");
         OrderService service = OrderService.getInstance();
         Order order = null;
+        List<Order> orders = null;
         Validator validator = Validator.getInstance();
         try {
-            if (validator.validateOrderInfo(orderInfo) == true) {
+            if (validator.validateOrderInfo(orderInfo)) {
                 service.updateStatusById(status, orderId, orderInfo);
-                order = service.takeAdminOrderByOrderId(orderId);
-                request.getSession().setAttribute("selectedOrder", order);
+                orders = service.takeAllOrders();
+                request.getSession().setAttribute("orders", orders);
                 request.setAttribute("invalidInfo", false);
-                request.setAttribute("successfulUpdate", true);
-                return PageName.ADMIN_ORDER;
+                return PageName.ADMIN_ORDERS;
             } else {
                 request.setAttribute("invalidInfo", true);
                 return PageName.ADMIN_ORDER;

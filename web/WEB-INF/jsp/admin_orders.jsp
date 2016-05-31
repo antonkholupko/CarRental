@@ -2,7 +2,6 @@
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib prefix="paginator" uri="/WEB-INF/tlds/Paginator" %>
 
 <html>
 <head>
@@ -123,11 +122,6 @@
 
         </c:forEach>
     </article>
-
-
-    <c:url var="searchUri" value="/searchResults.html?s=${searchval}&page=##" />
-    <paginator:display maxLinks="10" currPage="${page}" totalPages="${totalPages}" uri="${searchUri}" />
-
 
 </section>
 <footer>

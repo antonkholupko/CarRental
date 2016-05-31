@@ -64,6 +64,8 @@ public class Controller extends HttpServlet {
         } catch (CommandException ex) {
             LOG.error("Controller : ERROR : ", ex);
             page = PageName.ERROR_PAGE;
+            RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+            dispatcher.forward(request, response);
         }
     }
 

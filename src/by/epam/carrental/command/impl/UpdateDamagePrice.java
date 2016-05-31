@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Команда для установления/изменения стоимости ущерба, нанесенног опользователем
@@ -27,14 +28,16 @@ public class UpdateDamagePrice implements Command {
         Validator validator = Validator.getInstance();
         OrderService service = OrderService.getInstance();
         Order order = new Order();
+        List<Order> orders = null;
         try {
             if (validator.validateDamagePrice(damagePrice)) {
                 service.updateDamagePriceByOrderId(orderId, damagePrice);
                 service.updateStatusById("ожидаетКомп", orderId);
-                order = service.takeAdminOrderByOrderId(orderId);
-                request.getSession().setAttribute("selectedOrder", order);
+                orders = service.takeAllOrders();
+                request.getSession().setAttribute("orders", orders);
                 request.setAttribute("invalidDamagePrice", false);
-                return PageName.ADMIN_ORDER;
+
+                return PageName.ADMIN_ORDERS;
             } else {
                 order = service.takeAdminOrderByOrderId(orderId);
                 request.setAttribute("selectedOrder", order);

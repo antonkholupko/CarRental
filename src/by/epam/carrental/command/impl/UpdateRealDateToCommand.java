@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Команда для вставки времени и даты, когда поьзователь вернул автомобиль
@@ -29,12 +30,13 @@ public class UpdateRealDateToCommand implements Command{
         OrderService service = OrderService.getInstance();
         Validator validator = Validator.getInstance();
         order = null;
+        List<Order> orders = null;
         try {
             if (validator.validateDate(realDateFrom, realDateTo)) {
                 service.updateRealTimeTo(orderId,realDateTo);
-                order = service.takeAdminOrderByOrderId(orderId);
-                request.getSession().setAttribute("selectedOrder", order);
-                return PageName.ADMIN_ORDER;
+                orders = service.takeAllOrders();
+                request.getSession().setAttribute("orders", orders);
+                return PageName.ADMIN_ORDERS;
             } else {
                 request.setAttribute("invalidDateTo", true);
                 return PageName.ADMIN_ORDER;

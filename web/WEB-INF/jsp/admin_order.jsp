@@ -82,9 +82,6 @@
     <article>
         <div class="divOrders">
             <h2>Order</h2>
-            <c:if test="${sessionScope.successfulUpdate == true}">
-                <h3>Successfully updated!!!</h3>
-            </c:if>
             <c:if test="${sessionScope.selectedOrder.status.equals('доставлен') &&
                                     sessionScope.selectedOrder.realDateFrom == null}">
                 <c:out value="Select real from date."/>

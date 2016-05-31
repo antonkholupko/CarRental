@@ -2,6 +2,7 @@
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@taglib prefix="cr" uri="WEB-INF/custom.tld"%>
 
 <html>
 <head>
@@ -199,7 +200,7 @@
 </section>
 
 <footer>
-    <p>&copy; 2016 Car rental. All rights reserved.</p>
+    <p><cr:CopyRight/></p>
 </footer>
 
 </body>

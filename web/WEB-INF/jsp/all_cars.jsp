@@ -167,9 +167,9 @@
                 </div>
             </c:forEach>
 
-            <c:if test="${requestScope.invalidType == true}" >
+            <c:if test="${requestScope.invalidType == true}">
                 <p>
-                    <c:out value="select type" />
+                    <c:out value="select type"/>
                 </p>
             </c:if>
 
@@ -254,28 +254,30 @@
 
 
     <c:if test="${requestScope.command == null}">
-        <div class="divMenu">
-            <c:forEach var="i" begin="1" end="${amountPages}">
+
+        <c:forEach var="i" begin="1" end="${amountPages}">
+            <div class="divMenu">
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="view-all-cars">
                     <input type="hidden" name="pageNumber" value="${i}"/>
                     <input type="submit" value="${i}"/>
                 </form>
-            </c:forEach>
-        </div>
+            </div>
+        </c:forEach>
+
     </c:if>
 
     <c:if test="${requestScope.command != null}">
-        <div class="divMenu">
-            <c:forEach var="i" begin="1" end="${amountPages}">
+        <c:forEach var="i" begin="1" end="${amountPages}">
+            <div class="divMenu">
                 <form action="Controller" method="get">
                     <input type="hidden" name="carType" value="${requestScope.carType}">
                     <input type="hidden" name="command" value="${requestScope.command}">
                     <input type="hidden" name="pageNumber" value="${i}"/>
                     <input type="submit" value="${i}"/>
                 </form>
-            </c:forEach>
-        </div>
+            </div>
+        </c:forEach>
     </c:if>
 
 

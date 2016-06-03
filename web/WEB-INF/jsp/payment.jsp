@@ -16,6 +16,17 @@
     <fmt:message bundle="${locale}" key="local.privateOfficeUser" var="privateOffice"/>
     <fmt:message bundle="${locale}" key="local.welcomeToOffice" var="welcomeToOffice"/>
     <fmt:message bundle="${locale}" key="local.logOut" var="logOut"/>
+    <fmt:message bundle="${locale}" key="local.home" var="home"/>
+    <fmt:message bundle="${locale}" key="local.cars" var="cars"/>
+    <fmt:message bundle="${locale}" key="local.info" var="info"/>
+    <fmt:message bundle="${locale}" key="local.privateOffice" var="privateOffice"/>
+    <fmt:message bundle="${locale}" key="local.orders" var="myOrders"/>
+    <fmt:message bundle="${locale}" key="local.mOrderPrice" var="mOrderPrice" />
+    <fmt:message bundle="${locale}" key="local.mDamagePrice" var="mDmgPrice" />
+    <fmt:message bundle="${locale}" key="local.mPayForOrder" var="mPayForOrder" />
+    <fmt:message bundle="${locale}" key="local.mPayForDmg" var="mPayForDmg" />
+    <fmt:message bundle="${locale}" key="local.mPaymentPage" var="mPaymentPage" />
+    <fmt:message bundle="${locale}" key="local.mToOrder" var="mToOrder" />
 </head>
 <body>
 <header>
@@ -53,54 +64,69 @@
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="to-home-page">
-                <input type="submit" value="Home" class="buttonMenu"/>
+                <input type="submit" value="${home}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="view-all-cars">
-                <input type="submit" value="Cars" class="buttonMenu"/>
+                <input type="submit" value="${cars}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="to-priv-office-user">
-                <input type="submit" value="Private office" class="buttonMenu"/>
+                <input type="submit" value="${privateOffice}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="view-orders-user">
-                <input type="submit" value="My Orders" class="buttonMenu"/>
+                <input type="submit" value="${myOrders}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
-                <input type="hidden" name="command" value="">
-                <input type="submit" value="Info" class="buttonMenu"/>
+                <input type="hidden" name="command" value="to-about">
+                <input type="submit" value="${info}" class="buttonMenu"/>
             </form>
         </div>
     </div>
 </header>
 <section>
+
+    <h2>${mPaymentPage}</h2>
+
+    <hr/>
+
+    <div class="divMenu">
+        <form action="Controller" method="get">
+            <input type="hidden" name="selectedOrderId" value="${sessionScope.selectedOrder.id}">
+            <input type="hidden" name="command" value="view-order-user">
+            <input type="submit" value="${mToOrder}"/>
+        </form>
+    </div>
+
+    <hr/>
+
     <c:if test="${sessionScope.paymentType.equals('order')}">
-        <h2>To order payment:</h2>
+        <h2>${mOrderPrice}: </h2>
 
         <h2><c:out value="${sessionScope.selectedOrder.orderPrice}"/>$</h2>
 
         <form action="Controller" method="post">
             <input type="hidden" name="command" value="pay">
-            <input type="submit" value="Pay" class="button2"/>
+            <input type="submit" value="${mPayForOrder}" class="button2"/>
         </form>
     </c:if>
     <c:if test="${sessionScope.paymentType.equals('damage')}">
-        <h2>To damage payment:</h2>
+        <h2>${mDmgPrice}: </h2>
 
         <h2><c:out value="${sessionScope.selectedOrder.damagePrice}"/></h2>
 
         <form action="Controller" method="post">
             <input type="hidden" name="command" value="pay-for-damage">
-            <input type="submit" value="Pay for damage" class="button2"/>
+            <input type="submit" value="${mPayForDmg}" class="button2"/>
         </form>
     </c:if>
 </section>

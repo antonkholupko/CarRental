@@ -96,7 +96,7 @@
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
-                <input type="hidden" name="command" value="">
+                <input type="hidden" name="command" value="to-about">
                 <input type="submit" value="${info}" class="buttonMenu"/>
             </form>
         </div>

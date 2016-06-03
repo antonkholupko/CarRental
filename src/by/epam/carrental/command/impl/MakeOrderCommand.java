@@ -22,6 +22,8 @@ public class MakeOrderCommand implements Command {
 
     private static final Logger LOG = LogManager.getLogger(MakeOrderCommand.class.getName());
 
+
+
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug("MakeOrderCommand : execute");

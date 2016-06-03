@@ -17,6 +17,42 @@
     <fmt:message bundle="${locale}" key="local.privateOfficeUser" var="privateOffice"/>
     <fmt:message bundle="${locale}" key="local.welcomeToOffice" var="welcomeToOffice"/>
     <fmt:message bundle="${locale}" key="local.logOut" var="logOut"/>
+    <fmt:message bundle="${locale}" key="local.toPrivOffice" var="mToPrivOffice" />
+    <fmt:message bundle="${locale}" key="local.home" var="home"/>
+    <fmt:message bundle="${locale}" key="local.cars" var="cars"/>
+    <fmt:message bundle="${locale}" key="local.info" var="info"/>
+    <fmt:message bundle="${locale}" key="local.privateOffice" var="privateOffice"/>
+    <fmt:message bundle="${locale}" key="local.addCar" var="mAddCar" />
+    <fmt:message bundle="${locale}" key="local.chooseMark" var="mChooseMark" />
+    <fmt:message bundle="${locale}" key="local.chooseModel" var="mChooseModel" />
+    <fmt:message bundle="${locale}" key="local.invalidYear" var="mInvalidYear" />
+    <fmt:message bundle="${locale}" key="local.invalidVinCode" var="mInvalidVinCode" />
+    <fmt:message bundle="${locale}" key="local.invalidNumber" var="mInvalidNumber" />
+    <fmt:message bundle="${locale}" key="local.notUniqueVinNumber" var="mNotUniqueVinNumber" />
+    <fmt:message bundle="${locale}" key="local.mark" var="mMark" />
+    <fmt:message bundle="${locale}" key="local.model" var="mModel" />
+    <fmt:message bundle="${locale}" key="local.year" var="mYear" />
+    <fmt:message bundle="${locale}" key="local.transmission" var="mTransmission" />
+    <fmt:message bundle="${locale}" key="local.fuel" var="mFuel" />
+    <fmt:message bundle="${locale}" key="local.type" var="mType" />
+    <fmt:message bundle="${locale}" key="local.mGovNumber" var="mGovNumber" />
+    <fmt:message bundle="${locale}" key="local.vinCode" var="mVinCode" />
+    <fmt:message bundle="${locale}" key="local.carInformation" var="mInformation" />
+    <fmt:message bundle="${locale}" key="local.mImage" var="mImage" />
+    <fmt:message bundle="${locale}" key="local.automaticTransmission" var="mAutomatic" />
+    <fmt:message bundle="${locale}" key="local.mechanicTransmission" var="mMechanic" />
+    <fmt:message bundle="${locale}" key="local.petrol" var="mPetrol" />
+    <fmt:message bundle="${locale}" key="local.diesel" var="mDiesel" />
+    <fmt:message bundle="${locale}" key="local.electricity" var="mElectricity" />
+    <fmt:message bundle="${locale}" key="local.cabriolet" var="cabriolet"/>
+    <fmt:message bundle="${locale}" key="local.cargo" var="cargo"/>
+    <fmt:message bundle="${locale}" key="local.coupe" var="coupe"/>
+    <fmt:message bundle="${locale}" key="local.jeep" var="jeep"/>
+    <fmt:message bundle="${locale}" key="local.smallClass" var="small"/>
+    <fmt:message bundle="${locale}" key="local.middleClass" var="middle"/>
+    <fmt:message bundle="${locale}" key="local.minibus" var="minibus"/>
+    <fmt:message bundle="${locale}" key="local.premium" var="premium"/>
+    <fmt:message bundle="${locale}" key="local.vintage" var="vintage"/>
 </head>
 <body>
 <header>
@@ -54,56 +90,66 @@
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="to-home-page">
-                <input type="submit" value="Home" class="buttonMenu"/>
+                <input type="submit" value="${home}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="view-all-cars">
-                <input type="submit" value="Cars" class="buttonMenu"/>
+                <input type="submit" value="${cars}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="to-priv-office-admin">
-                <input type="submit" value="Private office" class="buttonMenu"/>
+                <input type="submit" value="${privateOffice}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
-                <input type="hidden" name="command" value="">
-                <input type="submit" value="Info" class="buttonMenu"/>
+                <input type="hidden" name="command" value="to-about">
+                <input type="submit" value="${info}" class="buttonMenu"/>
             </form>
         </div>
     </div>
 </header>
 <section>
 
-    <h2>Add car</h2>
+    <h2>${mAddCar}</h2>
+
+    <hr/>
+
+    <div class="divMenu">
+        <form action="Controller" method="get">
+            <input type="hidden" name="command" value="to-priv-office-admin">
+            <input type="submit" value="${mToPrivOffice}">
+        </form>
+    </div>
+
     <hr/>
 
     <p>
         <c:if test="${requestScope.invalidMark == true}">
-            Choose mark.
+            ${mChooseMark}
         </c:if>
         <c:if test="${requestScope.invalidModel == true}">
-            Choose model.
+            ${mChooseModel}
         </c:if>
         <c:if test="${requestScope.invalidYear == true}">
-            Invalid year.
+            ${mInvalidNumber}
         </c:if>
         <c:if test="${requestScope.invalidGovNumber == true}">
-            Invalid number.
+            ${mInvalidNumber}
         </c:if>
         <c:if test="${requestScope.invalidVinCode == true}">
-            Invalid vin code.
+            ${mInvalidVinCode}
         </c:if>
         <c:if test="${requestScope.invalidNumberVin == true}">
-            Not unique number or vin code.
+            ${mNotUniqueVinNumber}
         </c:if>
     </p>
 
-    <p>Mark: </p>
+    <p>${mMark}: </p>
 
     <form action="Controller" method="post">
         <input type="hidden" name="command" value="take-models">
@@ -118,7 +164,7 @@
 
     <form action="Controller" method="post" enctype="multipart/form-data">
         <c:if test="${carMark != null}">
-            <p>Model: </p>
+            <p>${mModel}: </p>
             <select name="carModel">
                 <c:forEach var="model" items="${models}">
                     <option value="${model}">${model}</option>
@@ -127,39 +173,67 @@
         </c:if>
 
 
-        <p>Year: </p>
+        <p>${mYear}: </p>
         <input type="text" name="carYear" required maxlength="4" pattern="[1-3][0-9]{3}"/>
 
-        <p>Transmission: </p>
+        <p>${mTransmission}: </p>
         <select name="transmission">
-            <option value="АКПП">Automatic</option>
-            <option value="МКПП">Mechanic</option>
+            <option value="АКПП">${mAutomatic}</option>
+            <option value="МКПП">${mMechanic}</option>
         </select>
 
-        <p>Fuel: </p>
+        <p>${mFuel}: </p>
         <select name="carFuel">
-            <option value="бензин">Petrol</option>
-            <option value="дизель">Diesel</option>
-            <option value="электричество">Electricity</option>
+            <option value="бензин">${mPetrol}</option>
+            <option value="дизель">${mDiesel}</option>
+            <option value="электричество">${mElectricity}</option>
         </select>
 
-        <p>Type: </p>
+        <p>${mType}: </p>
         <select name="carType">
             <c:forEach var="type" items="${allCarTypes}">
-                <option value="${type.type}">${type.type}</option>
+                <option value="${type.type}">
+                    <c:if test="${type.type.equals('Cabriolet')}">
+                        ${cabriolet}
+                    </c:if>
+                    <c:if test="${type.type.equals('Cargo')}">
+                        ${cargo}
+                    </c:if>
+                    <c:if test="${type.type.equals('Coupe')}">
+                        ${coupe}
+                    </c:if>
+                    <c:if test="${type.type.equals('Jeep')}">
+                        ${jeep}
+                    </c:if>
+                    <c:if test="${type.type.equals('Small')}">
+                        ${small}
+                    </c:if>
+                    <c:if test="${type.type.equals('Middle')}">
+                        ${middle}
+                    </c:if>
+                    <c:if test="${type.type.equals('Minibus')}">
+                        ${minibus}
+                    </c:if>
+                    <c:if test="${type.type.equals('Premium')}">
+                        ${premium}
+                    </c:if>
+                    <c:if test="${type.type.equals('Vintage')}">
+                        ${vintage}
+                    </c:if>
+                </option>
             </c:forEach>
         </select>
 
-        <p>Government: </p>
+        <p>${mGovNumber}: </p>
         <input type="text" name="govNumber" required maxlength="8" pattern="[0-9]{4}[A-CEHIKMOPTX]{2}-[0-7]"/>
 
-        <p>Vin: </p>
+        <p>${mVinCode}: </p>
         <input type="text" name="vin" required maxlength="17" pattern="[0-9A-Z]{17}"/>
 
-        <p>Info: </p>
+        <p>${mInformation}: </p>
         <textarea name="car-info" cols="40" rows="3"></textarea>
 
-        <p>Image: </p>
+        <p>${mImage}: </p>
         <input type="file" name="image"/>
         <br/>
         <input type="hidden" name="command" value="add-car">

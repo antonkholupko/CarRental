@@ -53,6 +53,10 @@
     <fmt:message bundle="${locale}" key="local.minibus" var="minibus"/>
     <fmt:message bundle="${locale}" key="local.premium" var="premium"/>
     <fmt:message bundle="${locale}" key="local.vintage" var="vintage"/>
+    <fmt:message bundle="${locale}" key="local.messageReg" var="messageReq" />
+    <fmt:message bundle="${locale}" key="local.messageCarYear" var="messageCarYear" />
+    <fmt:message bundle="${locale}" key="local.messageGovNumber" var="messageGovNumber" />
+    <fmt:message bundle="${locale}" key="local.messageVinCode" var="messageVinCode" />
 </head>
 <body>
 <header>
@@ -128,6 +132,8 @@
 
     <hr/>
 
+    <p>${messageReq}</p>
+
     <p>
         <c:if test="${requestScope.invalidMark == true}">
             ${mChooseMark}
@@ -149,7 +155,7 @@
         </c:if>
     </p>
 
-    <p>${mMark}: </p>
+    <p>${mMark}*: </p>
 
     <form action="Controller" method="post">
         <input type="hidden" name="command" value="take-models">
@@ -164,7 +170,7 @@
 
     <form action="Controller" method="post" enctype="multipart/form-data">
         <c:if test="${carMark != null}">
-            <p>${mModel}: </p>
+            <p>${mModel}*: </p>
             <select name="carModel">
                 <c:forEach var="model" items="${models}">
                     <option value="${model}">${model}</option>
@@ -173,10 +179,12 @@
         </c:if>
 
 
-        <p>${mYear}: </p>
-        <input type="text" name="carYear" required maxlength="4" pattern="[1-3][0-9]{3}"/>
+        <p>
+            <abbr title="${messageCarYear}">${mYear}*: </abbr>
+        </p>
+        <input type="text" name="carYear" required placeholder="XXXX" maxlength="4" pattern="[1-3][0-9]{3}" title="${messageCarYear}"/>
 
-        <p>${mTransmission}: </p>
+        <p>${mTransmission}*: </p>
         <select name="transmission">
             <option value="АКПП">${mAutomatic}</option>
             <option value="МКПП">${mMechanic}</option>
@@ -189,7 +197,7 @@
             <option value="электричество">${mElectricity}</option>
         </select>
 
-        <p>${mType}: </p>
+        <p>${mType}*: </p>
         <select name="carType">
             <c:forEach var="type" items="${allCarTypes}">
                 <option value="${type.type}">
@@ -224,11 +232,15 @@
             </c:forEach>
         </select>
 
-        <p>${mGovNumber}: </p>
-        <input type="text" name="govNumber" required maxlength="8" pattern="[0-9]{4}[A-CEHIKMOPTX]{2}-[0-7]"/>
+        <p>
+            <abbr title="${messageGovNumber}">${mGovNumber}*: </abbr>
+        </p>
+        <input type="text" name="govNumber" required placeholder="xxxxXX-x" maxlength="8" pattern="[0-9]{4}[A-CEHIKMOPTX]{2}-[0-7]" title="${messageGovNumber}"/>
 
-        <p>${mVinCode}: </p>
-        <input type="text" name="vin" required maxlength="17" pattern="[0-9A-Z]{17}"/>
+        <p>
+            <abbr title="${messageVinCode}">${mVinCode}*: </abbr>
+        </p>
+        <input type="text" name="vin" required placeholder="XXXXXXXXXXXXXXXXX" maxlength="17" pattern="[0-9A-Z]{17}" title="${messageVinCode}"/>
 
         <p>${mInformation}: </p>
         <textarea name="car-info" cols="40" rows="3"></textarea>

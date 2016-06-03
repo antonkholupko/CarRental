@@ -147,47 +147,47 @@
             <p>
                 <abbr title="${messageLogin}">${reqLogin}</abbr>
             </p>
-            <input type="text" name="login" value="" maxlength="25"/>
+            <input type="text" name="login" value="" maxlength="25" required pattern="[A-Za-z0-9_]+" title="${messageLogin}"/>
 
             <p>
                 <abbr title="${messagePassword}">${reqPassword}</abbr>
             </p>
-            <input type="password" name="password" value="" maxlength="35"/>
+            <input type="password" name="password" value="" maxlength="35" required pattern="\S+" title="${messagePassword}"/>
 
             <p>
                 <abbr title="${messageConfirmPassword}">${reqConfirmPassword}</abbr>
             </p>
-            <input type="password" name="confirm-password" value="" maxlength="35"/>
+            <input type="password" name="confirm-password" value="" maxlength="35" required pattern="\S+" title="${messageConfirmPassword}"/>
 
             <p>
                 <abbr title="${messageEmail}">${reqEMail}</abbr>
             </p>
-            <input type="text" name="e-mail" value="" maxlength="60"/>
+            <input type="text" name="e-mail" value="" maxlength="60" required pattern="([.[^@\s]]+)@([.[^@\s]]+)\.([a-z]+)" title="${messageEmail}"/>
 
             <p>
                 <abbr title="${messageName}"> ${reqLastName}</abbr>
             </p>
-            <input type="text" name="last-name" value="" maxlength="25"/>
+            <input type="text" name="last-name" value="" maxlength="25" required pattern="[A-Za-zА-Яа-я-]+" title="${messageName}"/>
 
             <p>
                 <abbr title="${messageName}"> ${reqFirstName}</abbr>
             </p>
-            <input type="text" name="first-name" value="" maxlength="25"/>
+            <input type="text" name="first-name" value="" maxlength="25" required pattern="[A-Za-zА-Яа-я-]+" title="${messageName}"/>
 
             <p>
                 <abbr title="${messageName}">${reqMiddleName}</abbr>
             </p>
-            <input type="text" name="middle-name" value="" maxlength="25"/>
+            <input type="text" name="middle-name" value="" maxlength="25" required pattern="[A-Za-zА-Яа-я-]+" title="${messageName}"/>
 
             <p>
                 <abbr title="${messagePhone}">${reqPhone}</abbr>
             </p>
-            <input type="text" name="phone" value="" maxlength="30"/>
+            <input type="text" name="phone" value="" maxlength="30" required pattern="[0-9-+\s()]+" title="${messagePhone}"/>
 
             <p>
                 <abbr title="${messagePassport}">${reqPassport}</abbr>
             </p>
-            <input type="text" name="passport" value="" maxlength="15"/>
+            <input type="text" name="passport" value="" maxlength="15" required pattern="[A-Z0-9]+" title="${messagePassport}"/>
 
             <p>
                 <abbr title="${messageAddress}">${address}</abbr>

@@ -115,7 +115,7 @@
     <form action="Controller" method="post">
 
         <c:if test="${requestScope.invalidDate == true}">
-            <c:out value="${mInvalidDate}" />
+            <p> ${mInvalidDate} </p>
         </c:if>
 
         <p>${fromDate}</p>
@@ -127,7 +127,7 @@
         <input type="time" name="supposedTimeTo" value="${sessionScope.supposedTimeTo}" required/>
 
         <c:if test="${requestScope.invalidPlaces == true}">
-            <c:out value="${mInvalidPlaces}" />
+            <p> ${mInvalidPlaces} </p>
         </c:if>
 
         <p>${mShippingPlace}</p>

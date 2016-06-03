@@ -1,6 +1,8 @@
 package by.epam.carrental.entity;
 
-public class Car {
+import java.io.Serializable;
+
+public class Car implements Serializable {
 
     private int id;
     private String mark;
@@ -15,6 +17,10 @@ public class Car {
     private String info;
     private String image;
     private double price;
+
+    public Car() {
+
+    }
 
     public String getMark() {
         return mark;

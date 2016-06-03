@@ -1,9 +1,15 @@
 package by.epam.carrental.entity;
 
-public class CarType {
+import java.io.Serializable;
+
+public class CarType implements Serializable {
 
     String type;
     double price;
+
+    public CarType() {
+
+    }
 
     public String getType() {
         return type;

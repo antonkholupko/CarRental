@@ -7,7 +7,7 @@
 <head>
     <title>All cars</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="css/style.css">
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="locale"/>
     <fmt:message bundle="${locale}" key="local.carRental" var="carRental"/>

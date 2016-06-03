@@ -1,6 +1,8 @@
 package by.epam.carrental.entity;
 
-public class Order {
+import java.io.Serializable;
+
+public class Order implements Serializable {
 
     private int id;
     private int userId;
@@ -20,6 +22,10 @@ public class Order {
     private String carGovNumber;
     private Car car;
     private User user;
+
+    public Order() {
+
+    }
 
     public int getId() {
         return id;

@@ -43,5 +43,25 @@ public class ValidatorUniqueUser {
         this.uniquePassport = uniquePassport;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        ValidatorUniqueUser that = (ValidatorUniqueUser) o;
+
+        if (uniqueEmail != that.uniqueEmail) return false;
+        if (uniqueLogin != that.uniqueLogin) return false;
+        if (uniquePassport != that.uniquePassport) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (uniqueLogin ? 1 : 0);
+        result = 31 * result + (uniqueEmail ? 1 : 0);
+        result = 31 * result + (uniquePassport ? 1 : 0);
+        return result;
+    }
 }

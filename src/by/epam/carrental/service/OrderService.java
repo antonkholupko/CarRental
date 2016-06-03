@@ -22,6 +22,18 @@ public class OrderService {
 
     private static final OrderService instance = new OrderService();
 
+    private static final String FIND_ORSERS_BY_USER_MSG = "OrderService : findOrdersByUserId";
+    private static final String FIND_ORDER_BY_ID = "OrderService : findOrdersByOrderId";
+    private static final String TAKE_ALL_ORDERS = "OrderService : takeAllOrders";
+    private static final String TAKE_ADMIN_ORDER_BY_ID = "OrderService : takeAdminOrderByOrderId";
+    private static final String UPDATE_STATUS_BY_ID_STARTS = "OrderService : updateStatusById : starts";
+    private static final String UPDATE_STATUS_BY_ID_ENDS = "OrderService : updateStatusById : ends";
+    private static final String UPDATE_STATUS_BY_ID_ERROR = "OrderService : updateStatusById : ERROR";
+    private static final String UPDATE_DAMAGE_PRICE_BY_ID = "OrderService : updateDamagePriceByOrderId";
+    private static final String UPDATE_REAL_TIME_FROM = "OrderService : updateRealTimeFrom";
+    private static final String UPDATE_REAL_TIME_TO = "OrderService : updateRealTimeTo";
+
+
     private OrderService() {
 
     }
@@ -79,7 +91,7 @@ public class OrderService {
      * @throws ServiceException ошибка при поиске заказов
      */
     public List<Order> findOrdersByUserId(int userId) throws ServiceException {
-        LOG.debug("OrderService : findOrdersByUserId");
+        LOG.debug(FIND_ORSERS_BY_USER_MSG);
         List<Order> orders = null;
         DAOFactory daoFactory = DAOFactory.getInstance();
         OrderDAO orderDAO = daoFactory.getOrderDAO();
@@ -98,7 +110,7 @@ public class OrderService {
      * @throws ServiceException ошибка при поиске заказа
      */
     public Order findOrderByOrderId(int orderId) throws ServiceException {
-        LOG.debug("OrderService : findOrdersByUserId");
+        LOG.debug(FIND_ORDER_BY_ID);
         Order order = null;
         DAOFactory daoFactory = DAOFactory.getInstance();
         OrderDAO orderDAO = daoFactory.getOrderDAO();
@@ -116,7 +128,7 @@ public class OrderService {
      * @throws ServiceException ошибка при получении списков всех заказов
      */
     public List<Order> takeAllOrders() throws ServiceException {
-        LOG.debug("OrderService : takeAllOrders");
+        LOG.debug(TAKE_ALL_ORDERS);
         List<Order> orders = null;
         DAOFactory daoFactory = DAOFactory.getInstance();
         OrderDAO orderDAO = daoFactory.getOrderDAO();
@@ -135,7 +147,7 @@ public class OrderService {
      * @throws ServiceException ошибка при получении заказа
      */
     public Order takeAdminOrderByOrderId(int orderId) throws ServiceException {
-        LOG.debug("OrderService : takeAdminOrderByOrderId");
+        LOG.debug(TAKE_ADMIN_ORDER_BY_ID);
         Order order = null;
         DAOFactory daoFactory = DAOFactory.getInstance();
         OrderDAO orderDAO = daoFactory.getOrderDAO();
@@ -154,14 +166,14 @@ public class OrderService {
      * @throws ServiceException ошибка при изменении статуса заказа
      */
     public void updateStatusById(String status, int orderId) throws ServiceException {
-        LOG.debug("OrderService : updateStatusById : starts");
+        LOG.debug(UPDATE_STATUS_BY_ID_STARTS);
         DAOFactory daoFactory = DAOFactory.getInstance();
         OrderDAO orderDAO = daoFactory.getOrderDAO();
         try {
             orderDAO.updateStatusById(status, orderId);
-            LOG.debug("OrderService : updateStatusById : ends");
+            LOG.debug(UPDATE_STATUS_BY_ID_ENDS);
         } catch (DAOException ex) {
-            LOG.error("OrderService : updateStatusById : ERROR");
+            LOG.error(UPDATE_STATUS_BY_ID_ERROR);
             throw new ServiceException(ex);
         }
     }
@@ -174,7 +186,7 @@ public class OrderService {
      * @throws ServiceException ошибка при изменении статуса заказа
      */
     public void updateStatusById(String status, int orderId, String orderInfo) throws ServiceException {
-        LOG.debug("OrderService : updateStatusById");
+        LOG.debug(UPDATE_STATUS_BY_ID_STARTS);
         DAOFactory daoFactory = DAOFactory.getInstance();
         OrderDAO orderDAO = daoFactory.getOrderDAO();
         try {
@@ -184,16 +196,6 @@ public class OrderService {
         }
     }
 
-    /*public void updateRealDateByOrderId(String realDateFrom, String realDateTo, int orderId) throws ServiceException {
-        LOG.debug("OrderService : updateRealDateByOrderId");
-        DAOFactory daoFactory = DAOFactory.getInstance();
-        OrderDAO orderDAO = daoFactory.getOrderDAO();
-        try {
-            orderDAO.updateRealDateByOrderId(realDateFrom, realDateTo, orderId);
-        } catch (DAOException ex) {
-            throw new ServiceException(ex);
-        }
-    }*/
 
     /**
      * Передача данных на DAO для установления/обновления стоимости ущерба, нанесенного пользователем
@@ -202,7 +204,7 @@ public class OrderService {
      * @throws ServiceException ошибка при изменении стоимости ущерба
      */
     public void updateDamagePriceByOrderId(int orderId, double damagePrice) throws ServiceException {
-        LOG.debug("OrderService : updateDamagePriceByOrderId");
+        LOG.debug(UPDATE_DAMAGE_PRICE_BY_ID);
         DAOFactory daoFactory = DAOFactory.getInstance();
         OrderDAO orderDAO = daoFactory.getOrderDAO();
         try {
@@ -219,7 +221,7 @@ public class OrderService {
      * @throws ServiceException ошибка при установке даты и времени
      */
     public void updateRealTimeFrom(int orderId, String date) throws ServiceException {
-        LOG.debug("OrderService : updateRealTimeFrom");
+        LOG.debug(UPDATE_REAL_TIME_FROM);
         DAOFactory daoFactory = DAOFactory.getInstance();
         OrderDAO orderDAO = daoFactory.getOrderDAO();
         try {
@@ -236,7 +238,7 @@ public class OrderService {
      * @throws ServiceException ошибка при установке даты и времени
      */
     public void updateRealTimeTo(int orderId, String date) throws ServiceException {
-        LOG.debug("OrderService : updateRealTimeTo");
+        LOG.debug(UPDATE_REAL_TIME_TO);
         DAOFactory daoFactory = DAOFactory.getInstance();
         OrderDAO orderDAO = daoFactory.getOrderDAO();
         try {

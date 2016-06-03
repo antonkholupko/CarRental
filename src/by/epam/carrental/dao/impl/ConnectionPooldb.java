@@ -27,6 +27,12 @@ public class ConnectionPooldb implements IConnectionPool {
     private static final String OFFER_EXC = "Error allocation connection in the pool. ConnectionPool";
     private static final String NUMB_FORM_EXC = "NumberFormatException in ConnectionPool, poolSize=20";
     private static final String CON_POOL_EXC = "Error in connection pool. ConnectionPoolException";
+    private static final String INIT_MSG = "ConnectionPooldb : initPoolData";
+    private static final String DISPOSE_MSG = "ConnectionPool : dispose";
+    private static final String CLEAR_MSG = "ConnectionPool : clearConnectionQueue";
+    private static final String TAKE_CONNECTION_MSG = "ConnectionPooldb : takeConnection";
+    private static final String CLOSE_CONNECTION_MSG = "ConnectionPooldb : closeConnection";
+    private static final String CLOSE_CONNECTION_QUERY_MSG = "ConnectionPooldb : closeConnectionsQueue";
 
     private BlockingQueue<Connection> connectionQueue;
     private BlockingQueue<Connection> givenAwayConQueue;
@@ -57,7 +63,7 @@ public class ConnectionPooldb implements IConnectionPool {
     }
 
     public void initPoolData() throws ConnectionPoolException {
-        LOG.debug("ConnectionPooldb : initPoolData");
+        LOG.debug(INIT_MSG);
         Locale.setDefault(Locale.ENGLISH);
         try {
             Class.forName(driverName);
@@ -78,12 +84,12 @@ public class ConnectionPooldb implements IConnectionPool {
     }
 
     public void dispose() throws ConnectionPoolException {
-        LOG.debug("ConnectionPool : dispose");
+        LOG.debug(DISPOSE_MSG);
         clearConnectionQueue();
     }
 
     private void clearConnectionQueue() throws ConnectionPoolException {
-        LOG.debug("ConnectionPool : clearConnectionQueue");
+        LOG.debug(CLEAR_MSG);
         try {
             closeConnectionsQueue(givenAwayConQueue);
             closeConnectionsQueue(connectionQueue);
@@ -94,7 +100,7 @@ public class ConnectionPooldb implements IConnectionPool {
     }
 
     public Connection takeConnection() throws ConnectionPoolException {
-        LOG.debug("ConnectionPooldb : takeConnection");
+        LOG.debug(TAKE_CONNECTION_MSG);
         Connection connection = null;
         try {
             connection = connectionQueue.take();
@@ -107,7 +113,7 @@ public class ConnectionPooldb implements IConnectionPool {
     }
 
     public void closeConnection(Connection con, Statement st, ResultSet rs) throws ConnectionPoolException {
-        LOG.debug("ConnectionPooldb : closeConnection");
+        LOG.debug(CLOSE_CONNECTION_MSG);
         try {
             if (rs != null)
                 rs.close();
@@ -133,7 +139,7 @@ public class ConnectionPooldb implements IConnectionPool {
     }
 
     public void closeConnection(Connection con, PreparedStatement ps, ResultSet rs) throws ConnectionPoolException {
-        LOG.debug("ConnectionPooldb : closeConnection");
+        LOG.debug(CLOSE_CONNECTION_MSG);
         try {
             if (rs != null)
                 rs.close();
@@ -159,7 +165,7 @@ public class ConnectionPooldb implements IConnectionPool {
     }
 
     public void closeConnection(Connection con, Statement st) throws ConnectionPoolException {
-        LOG.debug("ConnectionPooldb : closeConnection");
+        LOG.debug(CLOSE_CONNECTION_MSG);
         try {
             con.close();
         } catch (SQLException ex) {
@@ -175,7 +181,7 @@ public class ConnectionPooldb implements IConnectionPool {
     }
 
     private void closeConnectionsQueue(BlockingQueue<Connection> queue) throws SQLException {
-        LOG.debug("ConnectionPooldb : closeConnectionsQueue");
+        LOG.debug(CLOSE_CONNECTION_QUERY_MSG);
         Connection connection;
         while ((connection = queue.poll()) != null) {
             if (!connection.getAutoCommit()) {

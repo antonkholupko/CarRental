@@ -127,16 +127,33 @@ public class User {
         User user = (User) o;
 
         if (hashPassword != user.hashPassword) return false;
-        if (!address.equals(user.address)) return false;
-        if (!eMail.equals(user.eMail)) return false;
-        if (!firstName.equals(user.firstName)) return false;
-        if (!lastName.equals(user.lastName)) return false;
-        if (!login.equals(user.login)) return false;
-        if (!middleName.equals(user.middleName)) return false;
-        if (!passport.equals(user.passport)) return false;
-        if (!phone.equals(user.phone)) return false;
+        if (id != user.id) return false;
+        if (address != null ? !address.equals(user.address) : user.address != null) return false;
+        if (eMail != null ? !eMail.equals(user.eMail) : user.eMail != null) return false;
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+        if (login != null ? !login.equals(user.login) : user.login != null) return false;
+        if (middleName != null ? !middleName.equals(user.middleName) : user.middleName != null) return false;
+        if (passport != null ? !passport.equals(user.passport) : user.passport != null) return false;
+        if (phone != null ? !phone.equals(user.phone) : user.phone != null) return false;
+        if (type != null ? !type.equals(user.type) : user.type != null) return false;
 
         return true;
     }
 
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + hashPassword;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (eMail != null ? eMail.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        result = 31 * result + (passport != null ? passport.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        return result;
+    }
 }

@@ -20,8 +20,23 @@ import java.util.List;
 public class CarService {
 
     private static final Logger LOG = LogManager.getLogger(CarService.class.getName());
-
     private static final CarService instance = new CarService();
+    private static final String TAKE_MARKS_MSG = "CarService : takeMarks";
+    private static final String TAKE_MODELS_MSG = "CarService : takeModels";
+    private static final String TAKE_CAR_TYPES_MSG = "CarService : takeCarTypes";
+    private static final String TAKE_CARS_BY_TYPE_START_MSG = "CarService : takeCarsByType : starts";
+    private static final String TAKE_CARS_BY_TYPE_END_MSG = "CarService : takeCarsByType : ends";
+    private static final String TAKE_CARS_BY_TYPE_AND_DATE_START_MSG = "CarService : takeCarsByTypeAndDate : starts";
+    private static final String TAKE_CARS_BY_TYPE_AND_DATE_END_MSG = "CarService : takeCarsByTypeAndDate : ends";
+    private static final String TAKE_UNUSED_CARS_MSG = "CarService : takeUnusedCars";
+    private static final String TAKE_ALL_CARS_MSG = "CarService : takeAllCars";
+    private static final String INSERT_CAR_MSG = "CarService : insertCar";
+    private static final String DELETE_CAR_MSG = "CarService : deleteCar";
+    private static final String COUNT_PAGE_AMOUNT_ALL_CARS_MSG = "CarService : countPageAmountAllCars";
+    private static final String COUNT_PAGE_AMOUNT_TYPE_MSG = "CarService : countPageAmountTypeCars";
+    private static final String COUNT_PAGE_AMOUNT_UNUSED_CARS_MSG_START = "CarService : countPageAmountUnusedTypeCars : starts";
+    private static final String COUNT_PAGE_AMOUNT_UNUSED_CARS_MSG_END = "CarService : countPageAmountUnusedTypeCars : ends";
+    private static final String CAR_TO_START_PAGE = "CarService : carToStartPage";
 
     private CarService() {
 
@@ -38,7 +53,7 @@ public class CarService {
      * @throws ServiceException ошибка при получении списка марок автомобилей
      */
     public List<String> takeMarks() throws ServiceException {
-        LOG.debug("CarService : takeMarks");
+        LOG.debug(TAKE_MARKS_MSG);
         try {
             DAOFactory factory = DAOFactory.getInstance();
             CarDAO dao = factory.getCarDAO();
@@ -57,7 +72,7 @@ public class CarService {
      * @throws ServiceException ошибка при получении списка моделей автомобилей
      */
     public List<String> takeModels(String mark) throws ServiceException {
-        LOG.debug("CarService : takeModels");
+        LOG.debug(TAKE_MODELS_MSG);
         try {
             DAOFactory factory = DAOFactory.getInstance();
             CarDAO dao = factory.getCarDAO();
@@ -75,7 +90,7 @@ public class CarService {
      * @throws ServiceException ошибка при получении всех типов автомобилей
      */
     public List<CarType> takeCarTypes() throws ServiceException {
-        LOG.debug("CarService : takeCarTypes");
+        LOG.debug(TAKE_CAR_TYPES_MSG);
         try {
             DAOFactory factory = DAOFactory.getInstance();
             CarDAO dao = factory.getCarDAO();
@@ -87,14 +102,14 @@ public class CarService {
     }
 
     public List<Car> takeCarsByType(String type, int pageNumber, int carsOnPage) throws ServiceException {
-        LOG.debug("CarService : takeCarsByType : starts");
+        LOG.debug(TAKE_CARS_BY_TYPE_START_MSG);
         DAOFactory factory = DAOFactory.getInstance();
         CarDAO dao = factory.getCarDAO();
         int startPage = carToStartPage(pageNumber, carsOnPage);
         List<Car> cars = null;
         try {
             cars = dao.takeCarsByType(type, startPage, carsOnPage);
-            LOG.debug("CarService : takeCarsByType : ends");
+            LOG.debug(TAKE_CARS_BY_TYPE_END_MSG);
             return cars;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -114,13 +129,13 @@ public class CarService {
      */
     public List<Car> takeCarsByTypeAndDate(String type, String dateFrom, String dateTo,
                                            int pageNumber, int carsOnPage) throws ServiceException {
-        LOG.debug("CarService : takeCarsByTypeAndDate : starts");
+        LOG.debug(TAKE_CARS_BY_TYPE_AND_DATE_START_MSG);
         DAOFactory factory = DAOFactory.getInstance();
         int startPage = carToStartPage(pageNumber, carsOnPage);
         CarDAO dao = factory.getCarDAO();
         try {
             List<Car> cars = dao.takeUnusedCarsByType(type, dateFrom, dateTo, startPage, carsOnPage);
-            LOG.debug("CarService : takeCarsByTypeAndDate : ends");
+            LOG.debug(TAKE_CARS_BY_TYPE_AND_DATE_END_MSG);
             return cars;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -137,7 +152,7 @@ public class CarService {
      */
     public List<Car> takeUnusedCars(String supposedDateFrom, String supposedDateTo,
                                     int pageNumber, int carsOnPage) throws ServiceException {
-        LOG.debug("CarService : takeUnusedCars");
+        LOG.debug(TAKE_UNUSED_CARS_MSG);
         DAOFactory factory = DAOFactory.getInstance();
         int startPage = carToStartPage(pageNumber, carsOnPage);
         CarDAO dao = factory.getCarDAO();
@@ -158,7 +173,7 @@ public class CarService {
      * @throws ServiceException ошибка при получении списка автомобилей
      */
     public List<Car> takeAllCars(int pageNumber, int carsOnPage) throws ServiceException {
-        LOG.debug("CarService : takeAllCars");
+        LOG.debug(TAKE_ALL_CARS_MSG);
         DAOFactory factory = DAOFactory.getInstance();
         int startPage = carToStartPage(pageNumber, carsOnPage);
         CarDAO dao = factory.getCarDAO();
@@ -177,7 +192,7 @@ public class CarService {
      * @throws ServiceException ошибка при вставке автомобиля
      */
     public void insertCar(Car car) throws ServiceException {
-        LOG.debug("CarService : insertCar");
+        LOG.debug(INSERT_CAR_MSG);
         DAOFactory factory = DAOFactory.getInstance();
         CarDAO dao = factory.getCarDAO();
         try {
@@ -194,7 +209,7 @@ public class CarService {
      * @throws ServiceException ошибка при удалении автомобиля
      */
     public void deleteCar(int carId) throws ServiceException {
-        LOG.debug("CarService : deleteCar");
+        LOG.debug(DELETE_CAR_MSG);
         DAOFactory factory = DAOFactory.getInstance();
         CarDAO dao = factory.getCarDAO();
         try {
@@ -205,7 +220,7 @@ public class CarService {
     }
 
     public int countPageAmountAllCars(int amountCarsOnPage) throws ServiceException {
-        LOG.debug("CarService : countPageAmountAllCars");
+        LOG.debug(COUNT_PAGE_AMOUNT_ALL_CARS_MSG);
         int pageAmount = 0;
         int carsAmount = 0;
         DAOFactory factory = DAOFactory.getInstance();
@@ -224,7 +239,7 @@ public class CarService {
     }
 
     public int countPageAmountTypeCars(String type, int amountCarsOnPage) throws ServiceException {
-        LOG.debug("CarService : countPageAmountAllCars");
+        LOG.debug(COUNT_PAGE_AMOUNT_TYPE_MSG);
         int pageAmount = 0;
         int carsAmount = 0;
         DAOFactory factory = DAOFactory.getInstance();
@@ -243,7 +258,7 @@ public class CarService {
     }
 
     public int countPageAmountUnusedTypeCars(String type, int amountCarsOnPage, String dateFrom, String dateTo) throws ServiceException {
-        LOG.debug("CarService : countPageAmountUnusedTypeCars : starts");
+        LOG.debug(COUNT_PAGE_AMOUNT_UNUSED_CARS_MSG_START);
         int pageAmount = 0;
         int carsAmount = 0;
         DAOFactory factory = DAOFactory.getInstance();
@@ -255,7 +270,7 @@ public class CarService {
             } else {
                 pageAmount = (carsAmount / amountCarsOnPage);
             }
-            LOG.debug("CarService : countPageAmountUnusedTypeCars : ends");
+            LOG.debug(COUNT_PAGE_AMOUNT_UNUSED_CARS_MSG_END);
             return pageAmount;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -263,7 +278,7 @@ public class CarService {
     }
 
     private int carToStartPage(int pageNumber, int carsOnPage) {
-        LOG.debug("CarService : carToStartPage");
+        LOG.debug(CAR_TO_START_PAGE);
         return ((pageNumber * carsOnPage) - carsOnPage);
     }
 }

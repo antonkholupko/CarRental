@@ -81,9 +81,24 @@ public class CarDAOdb implements CarDAO {
             "((orders.supposedFromDate BETWEEN ? AND ?)AND(orders.supposedToDate " +
             "BETWEEN ? AND ?)))) AND cars.type=?;";
 
+    private static final String CAR_FREE_STATUS = "свободна";
+    private static final String TAKE_MARKS_MSG = "CarDAOdb : takeMarks";
+    private static final String TAKE_MODELS_MSG = "CarDAOdb : takeModels";
+    private static final String TAKE_CAR_TYPES_MSG = "CarDAOdb : takeCarTypes";
+    private static final String TAKE_CARS_BY_TYPE_MSG = "CarDAOdb : takeCarsByType";
+    private static final String TAKE_UNUSED_CARS_MSG = "CarDAOdb : takeUnusedCars";
+    private static final String TAKE_UNUSED_CARS_BY_TYPE_MSG = "CarDAOdb : takeUnusedCarsByType";
+    private static final String TAKE_ALL_CARS_MSG = "CarDAOdb : takeAllCars";
+    private static final String INSERT_CAR_MSG = "CarDAOdb : insertCar";
+    private static final String FIND_CAR_BY_VIN_NUMBER_MSG = "CarDAOdb : findCarByGovNumberVin";
+    private static final String DELETE_CAR_BY_ID_MSG = "CarDAOdb : deleteCarById";
+    private static final String COUNT_ALL_CARS_MSG = "CarDAOdb : countAllCars";
+    private static final String COUNT_ALL_TYPE_CARS_MSG = "CarDAOdb : countAllCars";
+    private static final String COUNT_UNUSED_TYPE_CARS_MSG = "CarDAOdb : countUnusedTypeCars";
+
     @Override
     public List<String> takeMarks() throws DAOException {
-        LOG.debug("CarDAOdb : takeMarks");
+        LOG.debug(TAKE_MARKS_MSG);
         List<String> marks = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -111,7 +126,7 @@ public class CarDAOdb implements CarDAO {
 
     @Override
     public List<String> takeModels(String mark) throws DAOException {
-        LOG.debug("CarDAOdb : takeModels");
+        LOG.debug(TAKE_MODELS_MSG);
         List<String> models = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -141,7 +156,7 @@ public class CarDAOdb implements CarDAO {
 
     @Override
     public List<CarType> takeCarTypes() throws DAOException {
-        LOG.debug("CarDAOdb : takeCarTypes");
+        LOG.debug(TAKE_CAR_TYPES_MSG);
         List<CarType> carTypes = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -172,7 +187,7 @@ public class CarDAOdb implements CarDAO {
 
     @Override
     public List<Car> takeCarsByType(String type, int toStartPage, int carsOnPage) throws DAOException {
-        LOG.debug("CarDAOdb : takeCarsByType");
+        LOG.debug(TAKE_CARS_BY_TYPE_MSG);
         List<Car> cars = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -215,7 +230,7 @@ public class CarDAOdb implements CarDAO {
     @Override
     public List<Car> takeUnusedCars(String supposedDateFrom, String supposedDateTo,
                                     int startPage, int carsOnPage) throws DAOException {
-        LOG.debug("CarDAOdb : takeUnusedCars");
+        LOG.debug(TAKE_UNUSED_CARS_MSG);
         List<Car> cars = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -266,7 +281,7 @@ public class CarDAOdb implements CarDAO {
     @Override
     public List<Car> takeUnusedCarsByType(String type, String supposedDateFrom, String supposedDateTo,
                                           int startPage, int carsOnPage) throws DAOException {
-        LOG.debug("CarDAOdb : takeUnusedCars");
+        LOG.debug(TAKE_UNUSED_CARS_BY_TYPE_MSG);
         List<Car> cars = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -317,7 +332,7 @@ public class CarDAOdb implements CarDAO {
 
     @Override
     public List<Car> takeAllCars(int toStartPage, int carsOnPage) throws DAOException {
-        LOG.debug("CarDAOdb : takeAllCars");
+        LOG.debug(TAKE_ALL_CARS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -360,7 +375,7 @@ public class CarDAOdb implements CarDAO {
     @Override
     public void insertCar(Car car) throws DAOException {
 
-        LOG.debug("CarDAOdb : insertCar");
+        LOG.debug(INSERT_CAR_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -374,7 +389,7 @@ public class CarDAOdb implements CarDAO {
             ps.setString(4, car.getYear());
             ps.setString(5, car.getTransmission());
             ps.setString(6, car.getType());
-            ps.setString(7, "свободна");
+            ps.setString(7, CAR_FREE_STATUS);
             ps.setString(8, car.getFuel());
             ps.setString(9, car.getInfo());
             ps.setBlob(10, new ByteArrayInputStream(Base64.decode(car.getImage())));
@@ -392,7 +407,7 @@ public class CarDAOdb implements CarDAO {
 
     @Override
     public String findCarByGovNumberVin(String govNumber, String vin) throws DAOException {
-        LOG.debug("CarDAOdb : findCarByGovNumberVin");
+        LOG.debug(FIND_CAR_BY_VIN_NUMBER_MSG);
         String model = null;
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -422,7 +437,7 @@ public class CarDAOdb implements CarDAO {
 
     @Override
     public void deleteCarById(int carId) throws DAOException {
-        LOG.debug("CarDAOdb : deleteCarById");
+        LOG.debug(DELETE_CAR_BY_ID_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -444,7 +459,7 @@ public class CarDAOdb implements CarDAO {
     }
 
     public int countAllCars() throws DAOException {
-        LOG.debug("CarDAOdb : countAllCars");
+        LOG.debug(COUNT_ALL_CARS_MSG);
         int carsAmount = 0;
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -471,7 +486,7 @@ public class CarDAOdb implements CarDAO {
     }
 
     public int countAllTypeCars(String type) throws DAOException {
-        LOG.debug("CarDAOdb : countAllCars");
+        LOG.debug(COUNT_ALL_TYPE_CARS_MSG);
         int carsAmount = 0;
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -499,7 +514,7 @@ public class CarDAOdb implements CarDAO {
     }
 
     public int countUnusedTypeCars(String type, String dateFrom, String dateTo) throws DAOException {
-        LOG.debug("CarDAOdb : countUnusedTypeCars : starts");
+        LOG.debug(COUNT_UNUSED_TYPE_CARS_MSG);
         int carsAmount = 0;
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -529,7 +544,6 @@ public class CarDAOdb implements CarDAO {
         } finally {
             try {
                 connectionPooldb.closeConnection(connection, ps, rs);
-                LOG.debug("CarDAOdb : countUnusedTypeCars : ends");
             } catch (ConnectionPoolException ex) {
                 throw new DAOException(ex);
             }

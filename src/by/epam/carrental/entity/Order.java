@@ -164,4 +164,63 @@ public class Order {
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Order order = (Order) o;
+
+        if (carId != order.carId) return false;
+        if (Double.compare(order.damagePrice, damagePrice) != 0) return false;
+        if (id != order.id) return false;
+        if (Double.compare(order.orderPrice, orderPrice) != 0) return false;
+        if (userId != order.userId) return false;
+        if (car != null ? !car.equals(order.car) : order.car != null) return false;
+        if (carGovNumber != null ? !carGovNumber.equals(order.carGovNumber) : order.carGovNumber != null) return false;
+        if (carMark != null ? !carMark.equals(order.carMark) : order.carMark != null) return false;
+        if (carModel != null ? !carModel.equals(order.carModel) : order.carModel != null) return false;
+        if (info != null ? !info.equals(order.info) : order.info != null) return false;
+        if (realDateFrom != null ? !realDateFrom.equals(order.realDateFrom) : order.realDateFrom != null) return false;
+        if (realDateTo != null ? !realDateTo.equals(order.realDateTo) : order.realDateTo != null) return false;
+        if (returnPlace != null ? !returnPlace.equals(order.returnPlace) : order.returnPlace != null) return false;
+        if (shippingPlace != null ? !shippingPlace.equals(order.shippingPlace) : order.shippingPlace != null)
+            return false;
+        if (status != null ? !status.equals(order.status) : order.status != null) return false;
+        if (supposedDateFrom != null ? !supposedDateFrom.equals(order.supposedDateFrom) : order.supposedDateFrom != null)
+            return false;
+        if (supposedDateTo != null ? !supposedDateTo.equals(order.supposedDateTo) : order.supposedDateTo != null)
+            return false;
+        if (user != null ? !user.equals(order.user) : order.user != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = id;
+        result = 31 * result + userId;
+        result = 31 * result + carId;
+        result = 31 * result + (supposedDateFrom != null ? supposedDateFrom.hashCode() : 0);
+        result = 31 * result + (supposedDateTo != null ? supposedDateTo.hashCode() : 0);
+        result = 31 * result + (realDateFrom != null ? realDateFrom.hashCode() : 0);
+        result = 31 * result + (realDateTo != null ? realDateTo.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (shippingPlace != null ? shippingPlace.hashCode() : 0);
+        result = 31 * result + (returnPlace != null ? returnPlace.hashCode() : 0);
+        temp = Double.doubleToLongBits(orderPrice);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(damagePrice);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (info != null ? info.hashCode() : 0);
+        result = 31 * result + (carMark != null ? carMark.hashCode() : 0);
+        result = 31 * result + (carModel != null ? carModel.hashCode() : 0);
+        result = 31 * result + (carGovNumber != null ? carGovNumber.hashCode() : 0);
+        result = 31 * result + (car != null ? car.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        return result;
+    }
 }

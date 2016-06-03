@@ -21,30 +21,38 @@ public class ViewTypeByDateCommand implements Command {
 
     private static final Logger LOG = LogManager.getLogger(ViewTypeByDateCommand.class.getName());
 
+    private static final String CAR_TYPE_PARAM = "carType";
+    private static final String SUPPOSED_DATE_FROM_PARAM = "supposedDateFrom";
+    private static final String SUPPOSED_TIME_FROM_PARAM = "supposedTimeFrom";
+    private static final String SUPPOSED_DATE_TO_PARAM = "supposedDateTo";
+    private static final String SUPPOSED_TIME_TO_PARAM = "supposedTimeTo";
+    private static final String INVALID_DATE_PARAM = "invalidDate";
+    private static final String ALL_CARS_PARAM = "allCars";
+    private static final String USER_PARAM = "user";
+
+
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug("ViewTypeCommand : execute");
-        User user = (User) request.getSession(true).getAttribute("user");
-        String type = request.getParameter("carType");
+        User user = (User) request.getSession(true).getAttribute(USER_PARAM);
+        String type = request.getParameter(CAR_TYPE_PARAM);
         String supposedDateFrom = null;
         String supposedDateTo = null;
-        request.getSession().setAttribute("carType", type);
-        if (request.getSession().getAttribute("supposedDateFrom") != null && request.getSession().getAttribute("supposedTimeFrom") != null
-                && request.getSession().getAttribute("supposedDateTo") != null && request.getSession().getAttribute("supposedTimeTo") != null) {
-            supposedDateFrom = request.getSession(true).getAttribute("supposedDateFrom") + " " + request.getSession(true).getAttribute("supposedTimeFrom");
-            supposedDateTo = request.getSession(true).getAttribute("supposedDateTo") + " " + request.getSession(true).getAttribute("supposedTimeTo");
+        request.getSession().setAttribute(CAR_TYPE_PARAM, type);
+        if (request.getSession().getAttribute(SUPPOSED_DATE_FROM_PARAM) != null && request.getSession().getAttribute(SUPPOSED_TIME_FROM_PARAM) != null
+                && request.getSession().getAttribute(SUPPOSED_DATE_TO_PARAM) != null && request.getSession().getAttribute(SUPPOSED_TIME_TO_PARAM) != null) {
+            supposedDateFrom = request.getSession(true).getAttribute(SUPPOSED_DATE_FROM_PARAM) + " " + request.getSession(true).getAttribute(SUPPOSED_TIME_FROM_PARAM);
+            supposedDateTo = request.getSession(true).getAttribute(SUPPOSED_DATE_TO_PARAM) + " " + request.getSession(true).getAttribute(SUPPOSED_TIME_TO_PARAM);
         }
         CarService service = CarService.getInstance();
         Validator validator = Validator.getInstance();
         List<Car> cars = null;
         try {
             if (supposedDateFrom != null && supposedDateTo != null && !validator.validateDate(supposedDateFrom, supposedDateTo)) {
-                request.setAttribute("invalidDate", true);
+                request.setAttribute(INVALID_DATE_PARAM, true);
                 return PageName.ALL_CARS;
             } else {
-                //cars = service.takeCarsByTypeAndDate(type, supposedDateFrom, supposedDateTo);
-
-                request.getSession().setAttribute("allCars", cars);
+                request.getSession().setAttribute(ALL_CARS_PARAM, cars);
                 throw new ServiceException("");
 
             }

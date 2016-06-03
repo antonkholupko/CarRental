@@ -162,7 +162,7 @@
             <p>
                 <abbr title="${messageEmail}">${reqEMail}</abbr>
             </p>
-            <input type="text" name="e-mail" value="" maxlength="60" required pattern="([.[^@\s]]+)@([.[^@\s]]+)\.([a-z]+)" title="${messageEmail}"/>
+            <input type="text" name="e-mail" value="" maxlength="60" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="${messageEmail}"/>
 
             <p>
                 <abbr title="${messageName}"> ${reqLastName}</abbr>

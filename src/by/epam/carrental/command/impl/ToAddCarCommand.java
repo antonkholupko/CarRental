@@ -18,18 +18,21 @@ import java.util.List;
 public class ToAddCarCommand implements Command {
 
     private static final Logger LOG = LogManager.getLogger(ToAddCarCommand.class.getName());
+    private static final String EXECUTE_STARTS = "ToAddCarCommand  : execute";
+    private static final String ALL_CAR_MARKS_PARAM = "allCarMarks";
+    private static final String ALL_CAR_TYPES_PARAM = "allCarTypes";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
-        LOG.debug("ToAddCarCommand  : execute");
+        LOG.debug(EXECUTE_STARTS);
         List<String> marks = null;
         List<CarType> types = null;
         CarService service = CarService.getInstance();
         try {
             marks = service.takeMarks();
             types = service.takeCarTypes();
-            request.getSession().setAttribute("allCarMarks", marks);
-            request.getSession().setAttribute("allCarTypes", types);
+            request.getSession().setAttribute(ALL_CAR_MARKS_PARAM, marks);
+            request.getSession().setAttribute(ALL_CAR_TYPES_PARAM, types);
             return PageName.ADD_CAR;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

@@ -19,23 +19,28 @@ import java.util.List;
 public class PayForDamageCommand implements Command {
 
     private static final Logger LOG = LogManager.getLogger(PayCommand.class.getName());
-    private static final String STATUS = "закрыт";
+    private static final String EXECUTE_STARTS = "PayForDamageCommand : execute";
+    private static final String STATUS_VALUE = "закрыт";
+    private static final String SELECTED_ORDER_ID_PARAM = "selectedOrderId";
+    private static final String USER_PARAM = "user";
+    private static final String ORDERS_PARAM = "orders";
+    private static final String SUCCESSFUL_PAYMENT_PARAM = "successfulPayment";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
-        LOG.debug("PayForDamageCommand : execute");
+        LOG.debug(EXECUTE_STARTS);
         User user = null;
-        user = (User) request.getSession().getAttribute("user");
+        user = (User) request.getSession().getAttribute(USER_PARAM);
         int userId = user.getId();
-        int orderId = (Integer) request.getSession().getAttribute("selectedOrderId");
+        int orderId = (Integer) request.getSession().getAttribute(SELECTED_ORDER_ID_PARAM);
         OrderService service = OrderService.getInstance();
         Order order = null;
         List<Order> orders = null;
         try {
-            service.updateStatusById(STATUS, orderId);
+            service.updateStatusById(STATUS_VALUE, orderId);
             orders = service.findOrdersByUserId(userId);
-            request.getSession().setAttribute("orders", orders);
-            request.setAttribute("successfulPayment", true);
+            request.getSession().setAttribute(ORDERS_PARAM, orders);
+            request.setAttribute(SUCCESSFUL_PAYMENT_PARAM, true);
             return PageName.USER_ORDERS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

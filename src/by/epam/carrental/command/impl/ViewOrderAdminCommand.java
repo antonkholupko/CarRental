@@ -17,17 +17,22 @@ import javax.servlet.http.HttpServletRequest;
 public class ViewOrderAdminCommand implements Command {
 
     private static final Logger LOG = LogManager.getLogger(ViewOrderAdminCommand.class.getName());
+    private static final String EXECUTE_STARTS = "ViewOrderAdminCommand : execute";
+    private static final String SELECTED_ORDER_ID_PARAM = "selectedOrderId";
+    private static final String SELECTED_ORDER_PARAM = "selectedOrder";
+    private static final String ORDER_ID_PARAM = "orderId";
+
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
-        LOG.debug("ViewOrderAdminCommand : execute");
-        int orderId = Integer.parseInt(request.getParameter("selectedOrderId"));
-        request.getSession().setAttribute("orderId", orderId);
+        LOG.debug(EXECUTE_STARTS);
+        int orderId = Integer.parseInt(request.getParameter(SELECTED_ORDER_ID_PARAM));
+        request.getSession().setAttribute(ORDER_ID_PARAM, orderId);
         OrderService service = OrderService.getInstance();
         Order order = null;
         try {
             order = service.takeAdminOrderByOrderId(orderId);
-            request.getSession().setAttribute("selectedOrder", order);
+            request.getSession().setAttribute(SELECTED_ORDER_PARAM, order);
             return PageName.ADMIN_ORDER;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

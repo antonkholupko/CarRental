@@ -14,18 +14,21 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Команда получает информацию о пользователе
  */
-public class ViewUserCommand implements Command{
+public class ViewUserCommand implements Command {
 
     private static final Logger LOG = LogManager.getLogger(ViewUserCommand.class.getName());
+    private static final String EXECUTE_STARTS = "ViewUserCommand : execute";
+    private static final String SELECTED_USER_ID_PARAM = "selectedUserId";
+    private static final String SELECTED_USER_PARAM = "selectedUser";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
-        LOG.debug("ViewUserCommand : execute");
-        int userId = Integer.parseInt(request.getParameter("selectedUserId"));
+        LOG.debug(EXECUTE_STARTS);
+        int userId = Integer.parseInt(request.getParameter(SELECTED_USER_ID_PARAM));
         UserService service = UserService.getInstance();
         try {
             User user = service.findUserById(userId);
-            request.setAttribute("selectedUser", user);
+            request.setAttribute(SELECTED_USER_PARAM, user);
             return PageName.USER;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

@@ -19,14 +19,21 @@ import java.util.List;
 public class UpdateRealDateToCommand implements Command{
 
     private static final Logger LOG = LogManager.getLogger(UpdateRealDateFromCommand.class.getName());
+    private static final String EXECUTE_STARTS = "UpdateRealDateFromCommand : execute";
+    private static final String ORDER_ID_PARAM = "orderId";
+    private static final String SELECTED_ORDER_PARAM = "selectedOrder";
+    private static final String REAL_DATE_TO = "real-date-to";
+    private static final String REAL_TIME_TO = "real-time-to";
+    private static final String ORDERS_PARAM = "orders";
+    private static final String INVALID_DATE_TO = "invalidDateTo";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
-        LOG.debug("UpdateRealDateFromCommand : execute");
-        int orderId = (Integer) request.getSession(true).getAttribute("orderId");
-        Order order = (Order) request.getSession().getAttribute("selectedOrder");
+        LOG.debug(EXECUTE_STARTS);
+        int orderId = (Integer) request.getSession(true).getAttribute(ORDER_ID_PARAM);
+        Order order = (Order) request.getSession().getAttribute(SELECTED_ORDER_PARAM);
         String realDateFrom = order.getRealDateFrom();
-        String realDateTo = request.getParameter("real-date-to") + " " + request.getParameter("real-time-to");
+        String realDateTo = request.getParameter(REAL_DATE_TO) + " " + request.getParameter(REAL_TIME_TO);
         OrderService service = OrderService.getInstance();
         Validator validator = Validator.getInstance();
         order = null;
@@ -35,10 +42,10 @@ public class UpdateRealDateToCommand implements Command{
             if (validator.validateDate(realDateFrom, realDateTo)) {
                 service.updateRealTimeTo(orderId,realDateTo);
                 orders = service.takeAllOrders();
-                request.getSession().setAttribute("orders", orders);
+                request.getSession().setAttribute(ORDERS_PARAM, orders);
                 return PageName.ADMIN_ORDERS;
             } else {
-                request.setAttribute("invalidDateTo", true);
+                request.setAttribute(INVALID_DATE_TO, true);
                 return PageName.ADMIN_ORDER;
             }
         } catch (ServiceException ex) {

@@ -44,6 +44,7 @@
     <fmt:message bundle="${locale}" key="local.Automobiles" var="autos"/>
     <fmt:message bundle="${locale}" key="local.searchForFreeCars" var="searchForFree"/>
     <fmt:message bundle="${locale}" key="local.selectType" var="selectType"/>
+    <fmt:message bundle="${locale}" key="local.noCars" var="mNoCars" />
 </head>
 <body>
 <header>
@@ -299,6 +300,10 @@
         </c:if>
 
     </h2>
+
+    <c:if test="${requestScope.noCars == true}">
+        <p>${mNoCars}</p>
+    </c:if>
 
     <article>
         <div class="div1">

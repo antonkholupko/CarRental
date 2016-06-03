@@ -28,7 +28,7 @@ public class Validator {
 
     private static final String PATTERN_LOGIN = "[A-Za-z0-9_]+";
     private static final String PATTERN_PASSWORD = "\\S+";
-    private static final String PATTERN_EMAIL = "([.[^@\\s]]+)@([.[^@\\s]]+)\\.([a-z]+)";
+    private static final String PATTERN_EMAIL = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$";
     private static final String PATTERN_NAME = "[A-Za-zА-Яа-я-]+";
     private static final String PATTERN_PHONE = "[0-9-+\\s()]+";
     private static final String PATTERN_PASSPORT = "[A-Z0-9]+";

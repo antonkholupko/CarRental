@@ -14,10 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 public class ToRegPageCommand implements Command {
 
     private static final Logger LOG = LogManager.getLogger(ToRegPageCommand.class.getName());
+    private static final String EXECUTE_STARTS = "ToRegPageCommand : execute";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
-        LOG.debug("ToRegPageCommand : execute");
+        LOG.debug(EXECUTE_STARTS);
         return PageName.REGISTRATION_PAGE;
     }
 }

@@ -42,6 +42,7 @@
     <fmt:message bundle="${locale}" key="local.statusExpectsComp" var="ExpectsComp" />
     <fmt:message bundle="${locale}" key="local.statusClosed" var="Closed" />
     <fmt:message bundle="${locale}" key="local.mDetails" var="mDetails" />
+    <fmt:message bundle="${locale}" key="local.noOrders" var="mNoOrders" />
 </head>
 <body>
 <header>
@@ -115,6 +116,10 @@
     </div>
 
     <hr/>
+
+    <c:if test="${requestScope.noOrders == true }">
+        <p>${mNoOrders}</p>
+    </c:if>
 
     <article>
         <c:forEach var="order" items="${orders}">

@@ -19,12 +19,18 @@ import java.util.List;
 public class UpdateRealDateFromCommand implements Command{
 
     private static final Logger LOG = LogManager.getLogger(UpdateRealDateToCommand.class.getName());
+    private static final String EXECUTE_STARTS = "UpdateRealDateToCommand : execute";
+    private static final String ORDER_ID_PARAM = "orderId";
+    private static final String REAL_DATE_FROM = "real-date-from";
+    private static final String REAL_TIME_FROM = "real-time-from";
+    private static final String ORDERS_PARAM = "orders";
+    private static final String INVALID_DATE_FROM = "invalidDateFrom";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
-        LOG.debug("UpdateRealDateToCommand : execute");
-        int orderId = (Integer) request.getSession(true).getAttribute("orderId");
-        String realDateFrom = request.getParameter("real-date-from") + " " + request.getParameter("real-time-from");
+        LOG.debug(EXECUTE_STARTS);
+        int orderId = (Integer) request.getSession(true).getAttribute(ORDER_ID_PARAM);
+        String realDateFrom = request.getParameter(REAL_DATE_FROM) + " " + request.getParameter(REAL_TIME_FROM);
         OrderService service = OrderService.getInstance();
         Validator validator = Validator.getInstance();
         Order order = null;
@@ -33,10 +39,10 @@ public class UpdateRealDateFromCommand implements Command{
             if (validator.validateRealDateFrom(realDateFrom)) {
                 service.updateRealTimeFrom(orderId,realDateFrom);
                 orders = service.takeAllOrders();
-                request.getSession().setAttribute("orders", orders);
+                request.getSession().setAttribute(ORDERS_PARAM, orders);
                 return PageName.ADMIN_ORDERS;
             } else {
-                request.setAttribute("invalidDateFrom", true);
+                request.setAttribute(INVALID_DATE_FROM, true);
                 return PageName.ADMIN_ORDER;
             }
         } catch (ServiceException ex) {

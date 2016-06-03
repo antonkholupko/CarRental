@@ -28,11 +28,28 @@ public class RegisterUserCommand implements Command {
     private static final String PHONE = "phone";
     private static final String PASSPORT = "passport";
     private static final String ADDRESS = "address";
+    private static final String EXECUTE_STARTS = "RegisterUserCommand : execute";
+    private static final String VALID_PARAM_MSG = "RegisterUserCommand : validParameters";
+    private static final String LOGIN_VALID = "validLogin";
+    private static final String PASSWORD_VALID = "validPassword";
+    private static final String CONFIRM_PASSWORD_VALID = "validConfirmPassword";
+    private static final String CONFIRMATION_PASSWORD = "confirmationPassword";
+    private static final String E_MAIL_VALID = "validEmail";
+    private static final String LAST_NAME_VALID = "validLastName";
+    private static final String FIRST_NAME_VALID = "validFirstName";
+    private static final String MIDDLE_NAME_VALID = "validMiddleName";
+    private static final String PHONE_VALID = "validPhone";
+    private static final String PASSPORT_VALID = "validPassport";
+    private static final String ADDRESS_VALID = "validAddress";
+    private static final String UNIQUE_LOGIN = "uniqueLogin";
+    private static final String UNIQUE_EMAIL = "uniqueEmail";
+    private static final String UNIQUE_PASSPORT = "uniquePassport";
+
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
 
-        LOG.debug("RegisterUserCommand : execute");
+        LOG.debug(EXECUTE_STARTS);
         if (validParameters(request)) {
             return PageName.INDEX_PAGE;
         } else {
@@ -43,7 +60,7 @@ public class RegisterUserCommand implements Command {
 
 
     private boolean validParameters(HttpServletRequest request) throws CommandException {
-        LOG.debug("RegisterUserCommand : validParameters");
+        LOG.debug(VALID_PARAM_MSG);
         String login = request.getParameter(LOGIN_PARAMETER);
         String password = request.getParameter(PASSWORD_PARAMETER);
         String confirmPassword = request.getParameter(CONFIRM_PASSWORD_PARAMETER);
@@ -63,60 +80,60 @@ public class RegisterUserCommand implements Command {
 
         Validator validator = Validator.getInstance();
 
-        request.setAttribute("validLogin", true);
-        request.setAttribute("validPassword", true);
-        request.setAttribute("validConfirmPassword", true);
-        request.setAttribute("confirmationPassword", true);
-        request.setAttribute("validEmail", true);
-        request.setAttribute("validLastName", true);
-        request.setAttribute("validFirstName", true);
-        request.setAttribute("validMiddleName", true);
-        request.setAttribute("validPhone", true);
-        request.setAttribute("validPassport", true);
-        request.setAttribute("validAddress", true);
+        request.setAttribute(LOGIN_VALID, true);
+        request.setAttribute(PASSWORD_VALID, true);
+        request.setAttribute(CONFIRM_PASSWORD_VALID, true);
+        request.setAttribute(CONFIRMATION_PASSWORD, true);
+        request.setAttribute(E_MAIL_VALID, true);
+        request.setAttribute(LAST_NAME_VALID, true);
+        request.setAttribute(FIRST_NAME_VALID, true);
+        request.setAttribute(MIDDLE_NAME_VALID, true);
+        request.setAttribute(PHONE_VALID, true);
+        request.setAttribute(PASSPORT_VALID, true);
+        request.setAttribute(ADDRESS_VALID, true);
 
         if (!validator.validateLogin(login)) {
-            request.setAttribute("validLogin", false);
+            request.setAttribute(LOGIN_VALID, false);
             countFailedValidations++;
         }
         if (!validator.validatePassword(password)) {
-            request.setAttribute("validPassword", false);
+            request.setAttribute(PASSWORD_VALID, false);
             countFailedValidations++;
         }
         if (!validator.validatePassword(confirmPassword)) {
-            request.setAttribute("validConfirmPassword", false);
+            request.setAttribute(CONFIRM_PASSWORD_VALID, false);
             countFailedValidations++;
         }
         if (!validator.validateConfirmationPassword(password, confirmPassword)) {
-            request.setAttribute("confirmationPassword", false);
+            request.setAttribute(CONFIRMATION_PASSWORD, false);
             countFailedValidations++;
         }
         if (!validator.validateEmail(eMail)) {
-            request.setAttribute("validEmail", false);
+            request.setAttribute(E_MAIL_VALID, false);
             countFailedValidations++;
         }
         if (!validator.validateLastName(lastName)) {
-            request.setAttribute("validLastName", false);
+            request.setAttribute(LAST_NAME_VALID, false);
             countFailedValidations++;
         }
         if (!validator.validateFirstName(firstName)) {
-            request.setAttribute("validFirstName", false);
+            request.setAttribute(FIRST_NAME_VALID, false);
             countFailedValidations++;
         }
         if (!validator.validateMiddleName(middleName)) {
-            request.setAttribute("validMiddleName", false);
+            request.setAttribute(LAST_NAME_VALID, false);
             countFailedValidations++;
         }
         if (!validator.validatePhone(phone)) {
-            request.setAttribute("validPhone", false);
+            request.setAttribute(PHONE_VALID, false);
             countFailedValidations++;
         }
         if (!validator.validatePassport(passport)) {
-            request.setAttribute("validPassport", false);
+            request.setAttribute(PASSPORT_VALID, false);
             countFailedValidations++;
         }
         if (!validator.validateAddress(address)) {
-            request.setAttribute("validAddress", false);
+            request.setAttribute(ADDRESS_VALID, false);
             countFailedValidations++;
         }
 
@@ -130,9 +147,9 @@ public class RegisterUserCommand implements Command {
                 uniqueLogin = validatorUniqueUser.isUniqueLogin();
                 uniqueEmail = validatorUniqueUser.isUniqueEmail();
                 uniquePassport = validatorUniqueUser.isUniquePassport();
-                request.setAttribute("uniqueLogin", uniqueLogin);
-                request.setAttribute("uniqueEmail", uniqueEmail);
-                request.setAttribute("uniquePassport", uniquePassport);
+                request.setAttribute(UNIQUE_LOGIN, uniqueLogin);
+                request.setAttribute(UNIQUE_EMAIL, uniqueEmail);
+                request.setAttribute(UNIQUE_PASSPORT, uniquePassport);
                 if (!(uniqueLogin && uniqueEmail && uniquePassport)) {
                     return false;
                 }

@@ -22,13 +22,19 @@ public class ViewAllCarsCommand implements Command {
 
     private static  final int AMOUNT_CARS_ON_PAGE = 9;
 
+    private static final String EXECUTE_STARTS = "ViewAllCarsCommand : execute";
+    private static final String PAGE_NUMBER_PARAM = "pageNumber";
+    private static final String AMOUNT_PAGES_PARAM = "pageNumber";
+    private static final String ALL_CARS_PARAM = "allCars";
+    private static final String ALL_TYPES_PARAM = "allTypes";
+
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
-        LOG.debug("ViewAllCarsCommand : execute");
+        LOG.debug(EXECUTE_STARTS);
         int amountPages = 0;
         int pageNumber = 1;
-        if (request.getParameter("pageNumber") != null) {
-            pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        if (request.getParameter(PAGE_NUMBER_PARAM) != null) {
+            pageNumber = Integer.parseInt(request.getParameter(PAGE_NUMBER_PARAM));
         }
         List<Car> cars = null;
         List<CarType> carTypes = null;
@@ -37,9 +43,9 @@ public class ViewAllCarsCommand implements Command {
             cars = service.takeAllCars(pageNumber, AMOUNT_CARS_ON_PAGE);
             carTypes = service.takeCarTypes();
             amountPages = service.countPageAmountAllCars(AMOUNT_CARS_ON_PAGE);
-            request.setAttribute("amountPages", amountPages);
-            request.getSession().setAttribute("allCars", cars);
-            request.getSession().setAttribute("allTypes", carTypes);
+            request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
+            request.getSession().setAttribute(ALL_CARS_PARAM, cars);
+            request.getSession().setAttribute(ALL_TYPES_PARAM, carTypes);
             return PageName.ALL_CARS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

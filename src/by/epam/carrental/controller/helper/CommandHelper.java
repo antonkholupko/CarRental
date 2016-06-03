@@ -14,6 +14,7 @@ public class CommandHelper {
     private Map<CommandName, Command> commands = new HashMap<>();
     private static final Logger LOG = LogManager.getLogger(CommandHelper.class.getName());
     private final static CommandHelper instance = new CommandHelper();
+    private final static String INIT_MSG = "CommandHelper : init";
 
     private CommandHelper() {
         LOG.debug("CommandHelper : init");

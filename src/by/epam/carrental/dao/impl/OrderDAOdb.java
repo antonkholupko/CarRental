@@ -68,10 +68,23 @@ public class OrderDAOdb implements OrderDAO {
     private static final String UPDATE_REAL_TIME_FROM_QUERY = "UPDATE orders SET realFromDate=? WHERE orderID=?;";
     private static final String UPDATE_REAL_TIME_TO_QUERY = "UPDATE orders SET realToDate=? WHERE orderID=?;";
 
+    private static final String UPDATE_REAL_TIME_FROM_MSG = "OrderDAOdb : updateRealTimeFrom";
+    private static final String UPDATE_REAL_TIME_TO_MSG = "OrderDAOdb : updateRealTimeTo";
+    private static final String UPDATE_DAMAGE_PRICE_BY_ID_MSG = "OrderDAOdb : updateDamagePriceByOrderId";
+    private static final String UPDATE_REAL_DATE_MSG = "OrderDAOdb : updateRealDateByOrderId";
+    private static final String UPDATE_STATUS_MSG = "OrderDAOdb : updateStatusById";
+    private static final String TAKE_ADMIN_ORDER_MSG = "OrderDAOdb : takeAdminOrderByOrderId";
+    private static final String ADD_ORDER_MSG = "OrderDAOdb : addOrder";
+    private static final String STATUS_NEW = "новый";
+    private static final String TAKE_ORDER = "OrderDAOdb : takeOrderByOrderId";
+    private static final String FIND_ORDERS = "OrderDAOdb : findOrdersByUserId";
+    private static final String FIND_ORDER = "OrderDAOdb : findOrderByOrderId";
+    private static final String TAKE_ALL_ORDERS = "OrderDAOdb : takeAllOrders";
+
 
     @Override
     public void addOrder(Order order) throws DAOException {
-        LOG.debug("OrderDAOdb : addOrder");
+        LOG.debug(ADD_ORDER_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -85,7 +98,7 @@ public class OrderDAOdb implements OrderDAO {
             ps.setString(4, order.getSupposedDateTo());
             ps.setString(5, order.getShippingPlace());
             ps.setString(6, order.getReturnPlace());
-            ps.setString(7, "новый");
+            ps.setString(7, STATUS_NEW);
             ps.executeUpdate();
         } catch (ConnectionPoolException | SQLException ex) {
             throw new DAOException(ex);
@@ -99,7 +112,7 @@ public class OrderDAOdb implements OrderDAO {
     }
 
     public List<Integer> takeOrderByOrder(Order order) throws DAOException {
-        LOG.debug("OrderDAOdb : takeOrderByOrder");
+        LOG.debug(TAKE_ORDER);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -136,7 +149,7 @@ public class OrderDAOdb implements OrderDAO {
     }
 
     public List<Order> findOrdersByUserId(int userId) throws DAOException{
-        LOG.debug("OrderDAOdb : findOrdersByUserId");
+        LOG.debug(FIND_ORDERS);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -180,7 +193,7 @@ public class OrderDAOdb implements OrderDAO {
     }
 
     public Order findOrderByOrderId(int orderId) throws DAOException {
-        LOG.debug("OrderDAOdb : findOrderByOrderId");
+        LOG.debug(FIND_ORDER);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -229,7 +242,7 @@ public class OrderDAOdb implements OrderDAO {
     }
 
     public List<Order> takeAllOrders() throws DAOException {
-        LOG.debug("OrderDAOdb : takeAllOrders");
+        LOG.debug(TAKE_ALL_ORDERS);
         List<Order> orders = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -271,7 +284,7 @@ public class OrderDAOdb implements OrderDAO {
     }
 
     public Order takeAdminOrderByOrderId(int orderId) throws DAOException {
-        LOG.debug("OrderDAOdb : takeAdminOrderByOrderId");
+        LOG.debug(TAKE_ADMIN_ORDER_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -330,7 +343,7 @@ public class OrderDAOdb implements OrderDAO {
     }
 
     public void updateStatusById(String status, int orderId) throws DAOException{
-        LOG.debug("OrderDAOdb : updateStatusById");
+        LOG.debug(UPDATE_STATUS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -353,7 +366,7 @@ public class OrderDAOdb implements OrderDAO {
     }
 
     public void updateStatusById(String status, int orderId, String orderInfo) throws DAOException{
-        LOG.debug("OrderDAOdb : updateStatusById");
+        LOG.debug(UPDATE_STATUS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -377,7 +390,7 @@ public class OrderDAOdb implements OrderDAO {
     }
 
     public void updateRealDateByOrderId(String realDateFrom, String realDateTo, int orderId) throws DAOException {
-        LOG.debug("OrderDAOdb : updateRealDateByOrderId");
+        LOG.debug(UPDATE_REAL_DATE_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -401,7 +414,7 @@ public class OrderDAOdb implements OrderDAO {
     }
 
     public void updateDamagePriceByOrderId(int orderId, double damagePrice) throws DAOException{
-        LOG.debug("OrderDAOdb : updateDamagePriceByOrderId");
+        LOG.debug(UPDATE_DAMAGE_PRICE_BY_ID_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -424,7 +437,7 @@ public class OrderDAOdb implements OrderDAO {
     }
 
     public void updateRealTimeFrom(int orderId, String date) throws DAOException{
-        LOG.debug("OrderDAOdb : updateRealTimeFrom");
+        LOG.debug(UPDATE_REAL_TIME_FROM_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -447,7 +460,7 @@ public class OrderDAOdb implements OrderDAO {
     }
 
     public void updateRealTimeTo(int orderId, String date) throws DAOException{
-        LOG.debug("OrderDAOdb : updateRealTimeTo");
+        LOG.debug(UPDATE_REAL_TIME_TO_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;

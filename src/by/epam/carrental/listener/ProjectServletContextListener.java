@@ -11,13 +11,15 @@ import javax.servlet.ServletContextListener;
 public class ProjectServletContextListener implements ServletContextListener{
 
     private static final Logger LOG = LogManager.getLogger(ProjectServletContextListener.class.getName());
+    private static final String DESTROY_MSG = "ServletContextListener : Connection Pool has been destroyed";
+    private static final String INIT_MSG = "ServletContextListener : Connection Pool has been initialized";
 
     @Override
     public void contextDestroyed(ServletContextEvent arg0) {
         try {
             ConnectionPooldb pool = ConnectionPooldb.getInstance();
             pool.dispose();
-            LOG.debug("ServletContextListener : Connection Pool has been destroyed");
+            LOG.debug(DESTROY_MSG);
         } catch (ConnectionPoolException ex) {
             LOG.error(ex);
             throw new RuntimeException(ex);
@@ -29,7 +31,7 @@ public class ProjectServletContextListener implements ServletContextListener{
         try {
             ConnectionPooldb pool = ConnectionPooldb.getInstance();
             pool.initPoolData();
-            LOG.debug("ServletContextListener : Connection Pool has been initialized");
+            LOG.debug(INIT_MSG);
         } catch (ConnectionPoolException ex) {
             LOG.error(ex);
             throw new RuntimeException(ex);

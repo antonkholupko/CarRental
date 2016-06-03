@@ -24,9 +24,10 @@ public class ViewAllCarsCommand implements Command {
 
     private static final String EXECUTE_STARTS = "ViewAllCarsCommand : execute";
     private static final String PAGE_NUMBER_PARAM = "pageNumber";
-    private static final String AMOUNT_PAGES_PARAM = "pageNumber";
+    private static final String AMOUNT_PAGES_PARAM = "amountPages";
     private static final String ALL_CARS_PARAM = "allCars";
     private static final String ALL_TYPES_PARAM = "allTypes";
+    private static final String NO_CARS_PARAM = "noCars";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
@@ -41,6 +42,9 @@ public class ViewAllCarsCommand implements Command {
         CarService service = CarService.getInstance();
         try {
             cars = service.takeAllCars(pageNumber, AMOUNT_CARS_ON_PAGE);
+            if (cars.size() == 0) {
+                request.setAttribute(NO_CARS_PARAM, true);
+            }
             carTypes = service.takeCarTypes();
             amountPages = service.countPageAmountAllCars(AMOUNT_CARS_ON_PAGE);
             request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);

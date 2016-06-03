@@ -10,9 +10,10 @@ public final class DAOFactory {
 
     private static final Logger LOG = LogManager.getLogger(DAOFactory.class.getName());
     private static final DAOFactory instance = new DAOFactory();
+    private static final String INIT_DAO_FACTORY_MSG = "DAOFactory : init DAO factory";
 
     private DAOFactory() {
-        LOG.debug("DAOFactory : init DAO factory");
+        LOG.debug(INIT_DAO_FACTORY_MSG);
     }
 
     public static DAOFactory getInstance() {
@@ -23,7 +24,11 @@ public final class DAOFactory {
         return new UserDAOdb();
     }
 
-    public CarDAO getCarDAO() {return new CarDAOdb();}
+    public CarDAO getCarDAO() {
+        return new CarDAOdb();
+    }
 
-    public OrderDAO getOrderDAO() {return new OrderDAOdb();}
+    public OrderDAO getOrderDAO() {
+        return new OrderDAOdb();
+    }
 }

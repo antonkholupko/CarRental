@@ -19,8 +19,12 @@ import java.util.List;
 public class UserService {
 
     private static final Logger LOG = LogManager.getLogger(UserService.class.getName());
-
     private static final UserService instance = new UserService();
+    private static final String LOGIN_START_MSG = "UserService : login";
+    private static final String REGISTER_START_MSG = "UserService : register";
+    private static final String TAKE_ALL_USERS_START_MSG = "UserService : takeAllUsers";
+    private static final String TAKE_USER_BY_ID_START_MSG = "UserService : takeUserById";
+
 
     private UserService() {
 
@@ -38,7 +42,7 @@ public class UserService {
      * @throws ServiceException ошибка при авторизации пользователя
      */
     public User login(String login, String password) throws ServiceException{
-        LOG.debug("UserService : login");
+        LOG.debug(LOGIN_START_MSG);
         int hashPassword = password.hashCode();
         try {
             DAOFactory factory = DAOFactory.getInstance();
@@ -59,7 +63,7 @@ public class UserService {
      * @param middleName отчество пользователя
      * @param email e-mail пользователя
      * @param phone телефон пользователя
-     * @param passport паспорт пользователя
+     * @param passport паспорт пользователя private static final String REGISTER_START_MSG
      * @param address адрес пользователя
      * @return объект класса ValidatorUniqueUser, который несет в себе информацию о причине отказа
      * в регистрации пользователя или успешной регистрации
@@ -67,7 +71,7 @@ public class UserService {
      */
     public ValidatorUniqueUser register(String login, int hashPassword, String lastName, String firstName, String middleName,
             String email, String phone, String passport, String address) throws ServiceException {
-        LOG.debug("UserService : register");
+        LOG.debug(REGISTER_START_MSG);
         User user = new User(login, hashPassword, lastName, firstName, middleName, email, phone, passport, address);
         DAOFactory factory = DAOFactory.getInstance();
         UserDAO userDAO = factory.getUserDAO();
@@ -90,7 +94,7 @@ public class UserService {
      * @throws ServiceException ошибка при получении всех пользователей
      */
     public List<User> takeAllUsers() throws ServiceException{
-        LOG.debug("UserService : takeAllUsers");
+        LOG.debug(TAKE_ALL_USERS_START_MSG);
         DAOFactory factory = DAOFactory.getInstance();
         UserDAO dao = factory.getUserDAO();
         try {
@@ -102,7 +106,7 @@ public class UserService {
     }
 
     public User findUserById(int userId) throws ServiceException {
-        LOG.debug("UserService : takeUserById");
+        LOG.debug(TAKE_USER_BY_ID_START_MSG);
         DAOFactory factory = DAOFactory.getInstance();
         UserDAO dao = factory.getUserDAO();
         try {

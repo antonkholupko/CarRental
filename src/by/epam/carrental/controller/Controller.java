@@ -26,21 +26,26 @@ public class Controller extends HttpServlet {
     private static final Logger LOG = LogManager.getLogger(Controller.class.getName());
     private static final long serialVersionUID = 1L;
     private static final String COMMAND_PARAMETER = "command";
+    private static final String DO_GET_MSG = "Controller : doGet";
+    private static final String DO_POST_MSG = "Controller : doPost";
+    private static final String PROCESS_REQUEST_MSG = "Controller : processRequest";
+    private static final String ERROR_MSG = "Controller : ERROR : ";
+
 
     public Controller() {}
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LOG.debug("Controller : doGet");
+        LOG.debug(DO_GET_MSG);
         processRequest(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LOG.debug("Controller : doPost");
+        LOG.debug(DO_POST_MSG);
         processRequest(request, response);
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        LOG.debug("Controller : processRequest");
+        LOG.debug(PROCESS_REQUEST_MSG);
         String commandName = null;
         Command command = null;
         String page = PageName.INDEX_PAGE;
@@ -62,7 +67,7 @@ public class Controller extends HttpServlet {
                 dispatcher.forward(request, response);
             }
         } catch (CommandException ex) {
-            LOG.error("Controller : ERROR : ", ex);
+            LOG.error(ERROR_MSG, ex);
             page = PageName.ERROR_PAGE;
             RequestDispatcher dispatcher = request.getRequestDispatcher(page);
             dispatcher.forward(request, response);

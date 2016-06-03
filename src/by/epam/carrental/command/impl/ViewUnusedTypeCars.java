@@ -90,6 +90,9 @@ public class ViewUnusedTypeCars implements Command {
 
         try {
             cars = service.takeCarsByTypeAndDate(carType, dateFrom, dateTo, pageNumber, AMOUNT_CARS_ON_PAGE);
+            if (cars.size() == 0) {
+                request.setAttribute(NO_CARS_PARAM, true);
+            }
             amountPages = service.countPageAmountUnusedTypeCars(carType, AMOUNT_CARS_ON_PAGE, dateFrom, dateTo);
             request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
             request.setAttribute(ALL_CARS_PARAM, cars);

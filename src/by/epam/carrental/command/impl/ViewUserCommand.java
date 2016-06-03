@@ -25,7 +25,7 @@ public class ViewUserCommand implements Command{
         UserService service = UserService.getInstance();
         try {
             User user = service.findUserById(userId);
-            request.getSession().setAttribute("selectedUser", user);
+            request.setAttribute("selectedUser", user);
             return PageName.USER;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

@@ -15,6 +15,11 @@
 <fmt:message bundle="${locale}" key="local.privateOfficeUser" var="privateOffice"/>
 <fmt:message bundle="${locale}" key="local.welcomeToOffice" var="welcomeToOffice"/>
 <fmt:message bundle="${locale}" key="local.logOut" var="logOut"/>
+<fmt:message bundle="${locale}" key="local.home" var="home"/>
+<fmt:message bundle="${locale}" key="local.cars" var="cars"/>
+<fmt:message bundle="${locale}" key="local.info" var="info"/>
+<fmt:message bundle="${locale}" key="local.orders" var="myOrders"/>
+<fmt:message bundle="${locale}" key="local.privateOffice" var="privateOffice"/>
 <body>
 <header>
     <div>
@@ -52,31 +57,31 @@
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="to-home-page">
-                <input type="submit" value="Home" class="buttonMenu"/>
+                <input type="submit" value="${home}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="view-all-cars">
-                <input type="submit" value="Cars" class="buttonMenu"/>
+                <input type="submit" value="${cars}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="to-priv-office-user">
-                <input type="submit" value="Private office" class="buttonMenu"/>
+                <input type="submit" value="${privateOffice}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="view-orders-user">
-                <input type="submit" value="My Orders" class="buttonMenu"/>
+                <input type="submit" value="${myOrders}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="">
-                <input type="submit" value="Info" class="buttonMenu"/>
+                <input type="submit" value="${info}" class="buttonMenu"/>
             </form>
         </div>
     </div>

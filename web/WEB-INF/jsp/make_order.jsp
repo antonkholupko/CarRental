@@ -16,6 +16,21 @@
     <fmt:message bundle="${locale}" key="local.privateOfficeUser" var="privateOffice"/>
     <fmt:message bundle="${locale}" key="local.welcomeToOffice" var="welcomeToOffice"/>
     <fmt:message bundle="${locale}" key="local.logOut" var="logOut"/>
+    <fmt:message bundle="${locale}" key="local.home" var="home"/>
+    <fmt:message bundle="${locale}" key="local.cars" var="cars"/>
+    <fmt:message bundle="${locale}" key="local.info" var="info"/>
+    <fmt:message bundle="${locale}" key="local.orders" var="myOrders"/>
+    <fmt:message bundle="${locale}" key="local.privateOffice" var="privateOffice"/>
+    <fmt:message bundle="${locale}" key="local.carIsUsed" var="carIsUsed"/>
+    <fmt:message bundle="${locale}" key="local.seeUnusedCarsMessage" var="unusedCarsMsg"/>
+    <fmt:message bundle="${locale}" key="local.toCarsPage" var="toCars" />
+    <fmt:message bundle="${locale}" key="local.supposedFromDate" var="fromDate" />
+    <fmt:message bundle="${locale}" key="local.supposedToDate" var="toDate" />
+    <fmt:message bundle="${locale}" key="local.shippingPlaceMessage" var="mShippingPlace" />
+    <fmt:message bundle="${locale}" key="local.returnPlaceMessage" var="mReturnPlace" />
+    <fmt:message bundle="${locale}" key="local.mInvalidDate" var="mInvalidDate" />
+    <fmt:message bundle="${locale}" key="local.mInvalidPlaces" var="mInvalidPlaces" />
+    <fmt:message bundle="${locale}" key="local.makeOrder" var="makeOrder" />
 </head>
 <body>
 <header>
@@ -45,23 +60,52 @@
             <div><input type="submit" value="${logOut}" class="reg"></div>
         </form>
     </div>
+    <div class="div3">
+        <div class="divMenu">
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="to-home-page">
+                <input type="submit" value="${home}" class="buttonMenu"/>
+            </form>
+        </div>
+        <div class="divMenu">
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="view-all-cars">
+                <input type="submit" value="${cars}" class="buttonMenu"/>
+            </form>
+        </div>
+        <div class="divMenu">
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="to-priv-office-user">
+                <input type="submit" value="${privateOffice}" class="buttonMenu"/>
+            </form>
+        </div>
+        <div class="divMenu">
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="view-orders-user">
+                <input type="submit" value="${myOrders}" class="buttonMenu"/>
+            </form>
+        </div>
+        <div class="divMenu">
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="">
+                <input type="submit" value="${info}" class="buttonMenu"/>
+            </form>
+        </div>
+    </div>
 </header>
 <section>
     <h2>Make order</h2>
     <c:if test="${requestScope.addOrderFailed == true}">
-        <p>This car is used at this time.</p>
+        <p>${carIsUsed}</p>
 
-        <p>If you want to see witch cars are not busy at the moment of your trip,
-            go to private office, and there you can choose cars by date</p>
+        <p>${unusedCarsMsg}</p>
 
         <form action="Controller" method="get">
-            <input type="hidden" name="command" value="to-priv-office-user"/>
-            <input type="submit" value="To private office"/>
+            <input type="hidden" name="command" value="view-all-cars"/>
+            <input type="submit" value="${toCars}"/>
         </form>
     </c:if>
-    <c:if test="${requestScope.invalidDate == true}">
-        <p>Invalid date</p>
-    </c:if>
+
     <c:if test="${sessionScope.selectedCar.id != null}">
         <img class="imgSmall" src="data:image/jpg;base64,${sessionScope.selectedCar.image}"/>
 
@@ -69,24 +113,30 @@
     </c:if>
 
     <form action="Controller" method="post">
-        <c:if test="${requestScope.invalidPlaces == true}">
-            <p>Invalid places</p>
+
+        <c:if test="${requestScope.invalidDate == true}">
+            <c:out value="${mInvalidDate}" />
         </c:if>
-        <p>Supposed from date:</p>
+
+        <p>${fromDate}</p>
         <input type="date" name="supposedDateFrom" value="${sessionScope.supposedDateFrom}" required/>
         <input type="time" name="supposedTimeFrom" value="${sessionScope.supposedTimeFrom}" required/>
 
-        <p>Supposed to date:</p>
+        <p>${toDate}</p>
         <input type="date" name="supposedDateTo" value="${sessionScope.supposedDateTo}" required/>
         <input type="time" name="supposedTimeTo" value="${sessionScope.supposedTimeTo}" required/>
 
-        <p>Shipping place:</p>
+        <c:if test="${requestScope.invalidPlaces == true}">
+            <c:out value="${mInvalidPlaces}" />
+        </c:if>
+
+        <p>${mShippingPlace}</p>
         <input type="text" name="shippingPlace" value="" maxlength="44"/>
 
-        <p>Return place:</p>
+        <p>${mReturnPlace}</p>
         <input type="text" name="returnPlace" value="" maxlength="44"/>
         <input type="hidden" name="command" value="make-order">
-        <input type="submit" value="Make order"/>
+        <input type="submit" value="${makeOrder}"/>
     </form>
 
 </section>

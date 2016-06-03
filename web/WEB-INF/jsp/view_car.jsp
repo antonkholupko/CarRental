@@ -47,6 +47,7 @@
 <fmt:message bundle="${locale}" key="local.electricity" var="electricity"/>
 <fmt:message bundle="${locale}" key="local.automaticTransmission" var="automatic"/>
 <fmt:message bundle="${locale}" key="local.mechanicTransmission" var="mechanic"/>
+<fmt:message bundle="${locale}" key="local.deleteCar" var="deleteCar" />
 
 <body>
 <header>
@@ -239,7 +240,7 @@
 
                     <form action="Controller" method="post">
                         <input type="hidden" name="command" value="delete-car">
-                        <input type="submit" value="Delete car">
+                        <input type="submit" value="${deleteCar}">
                     </form>
                 </div>
             </c:if>

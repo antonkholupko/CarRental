@@ -39,6 +39,11 @@
     <fmt:message bundle="${locale}" key="local.premium" var="premium"/>
     <fmt:message bundle="${locale}" key="local.vintage" var="vintage"/>
     <fmt:message bundle="${locale}" key="local.all" var="all"/>
+    <fmt:message bundle="${locale}" key="local.carAddedMessage" var="carAdded"/>
+    <fmt:message bundle="${locale}" key="local.carDeletedMessage" var="carDeleted"/>
+    <fmt:message bundle="${locale}" key="local.Automobiles" var="autos"/>
+    <fmt:message bundle="${locale}" key="local.searchForFreeCars" var="searchForFree"/>
+    <fmt:message bundle="${locale}" key="local.selectType" var="selectType"/>
 </head>
 <body>
 <header>
@@ -113,7 +118,7 @@
                 <input type="submit" value="${cars}" class="buttonMenu"/>
             </form>
         </div>
-        <c:if test="${sessionScope.user.type.equals('get')}">
+        <c:if test="${sessionScope.user.type.equals('user')}">
             <div class="divMenu">
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="to-priv-office-user">
@@ -127,9 +132,9 @@
                 </form>
             </div>
         </c:if>
-        <c:if test="${sessionScope.user.type.equals('get')}">
+        <c:if test="${sessionScope.user.type.equals('admin')}">
             <div class="divMenu">
-                <form action="Controller" method="post">
+                <form action="Controller" method="get">
                     <input type="hidden" name="command" value="to-priv-office-admin">
                     <input type="submit" value="${privateOffice}" class="buttonMenu"/>
                 </form>
@@ -147,14 +152,14 @@
 </header>
 
 <section>
-    <h2>Cars</h2>
+    <h2>${autos}</h2>
 
     <c:if test="${requestScope.carSuccessfulAdded == true}">
-        <c:out value="Car successful added."/>
+        <c:out value="${carAdded}"/>
     </c:if>
 
     <c:if test="${requestScope.carSuccessfulDeleted == true}">
-        <c:out value="Car successful deleted."/>
+        <c:out value="${carDeleted}"/>
     </c:if>
 
 
@@ -163,13 +168,41 @@
 
             <c:forEach var="type" items="${allTypes}">
                 <div class="divMenu">
-                    <input type="radio" name="carType" value="${type.type}"> ${type.type} <br/>
+                    <input type="radio" name="carType" value="${type.type}">
+                    <c:if test="${type.type.equals('Cabriolet')}">
+                        ${cabriolet}
+                    </c:if>
+                    <c:if test="${type.type.equals('Cargo')}">
+                        ${cargo}
+                    </c:if>
+                    <c:if test="${type.type.equals('Coupe')}">
+                        ${coupe}
+                    </c:if>
+                    <c:if test="${type.type.equals('Jeep')}">
+                        ${jeep}
+                    </c:if>
+                    <c:if test="${type.type.equals('Small')}">
+                        ${small}
+                    </c:if>
+                    <c:if test="${type.type.equals('Middle')}">
+                        ${middle}
+                    </c:if>
+                    <c:if test="${type.type.equals('Minibus')}">
+                        ${minibus}
+                    </c:if>
+                    <c:if test="${type.type.equals('Premium')}">
+                        ${premium}
+                    </c:if>
+                    <c:if test="${type.type.equals('Vintage')}">
+                        ${vintage}
+                    </c:if>
+                    <br/>
                 </div>
             </c:forEach>
 
             <c:if test="${requestScope.invalidType == true}">
                 <p>
-                    <c:out value="select type"/>
+                    <c:out value="${selectType}"/>
                 </p>
             </c:if>
 
@@ -188,7 +221,7 @@
             <br/>
 
             <input type="hidden" name="command" value="view-type-unused"/>
-            <input type="submit" value="go">
+            <input type="submit" value="${searchForFree}">
 
 
         </form>
@@ -232,10 +265,40 @@
     <div class="divMenu">
         <form action="Controller" method="get">
             <input type="hidden" name="command" value="view-all-cars"/>
-            <input type="hidden" name="carType" value="All"/>
             <input type="submit" value="${all}"/>
         </form>
     </div>
+
+    <h2>
+        <c:if test="${requestScope.carType.equals('Cabriolet')}">
+            ${cabriolet}
+        </c:if>
+        <c:if test="${requestScope.carType.equals('Cargo')}">
+            ${cargo}
+        </c:if>
+        <c:if test="${requestScope.carType.equals('Coupe')}">
+            ${coupe}
+        </c:if>
+        <c:if test="${requestScope.carType.equals('Jeep')}">
+            ${jeep}
+        </c:if>
+        <c:if test="${requestScope.carType.equals('Small')}">
+            ${small}
+        </c:if>
+        <c:if test="${requestScope.carType.equals('Middle')}">
+            ${middle}
+        </c:if>
+        <c:if test="${requestScope.carType.equals('Minibus')}">
+            ${minibus}
+        </c:if>
+        <c:if test="${requestScope.carType.equals('Premium')}">
+            ${premium}
+        </c:if>
+        <c:if test="${requestScope.carType.equals('Vintage')}">
+            ${vintage}
+        </c:if>
+
+    </h2>
 
     <article>
         <div class="div1">

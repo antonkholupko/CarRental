@@ -17,7 +17,24 @@
     <fmt:message bundle="${locale}" key="local.privateOfficeUser" var="privateOffice"/>
     <fmt:message bundle="${locale}" key="local.welcomeToOffice" var="welcomeToOffice"/>
     <fmt:message bundle="${locale}" key="local.logOut" var="logOut"/>
-</head>
+    <fmt:message bundle="${locale}" key="local.home" var="home"/>
+    <fmt:message bundle="${locale}" key="local.cars" var="cars"/>
+    <fmt:message bundle="${locale}" key="local.info" var="info"/>
+    <fmt:message bundle="${locale}" key="local.privateOffice" var="privateOffice"/>
+    <fmt:message bundle="${locale}" key="local.userNumber" var="nUser" />
+    <fmt:message bundle="${locale}" key="local.mLogin" var="mLogin" />
+    <fmt:message bundle="${locale}" key="local.mType" var="mType" />
+    <fmt:message bundle="${locale}" key="local.mLastName" var="mLastName" />
+    <fmt:message bundle="${locale}" key="local.mFirstName" var="mFirstName" />
+    <fmt:message bundle="${locale}" key="local.mMiddleName" var="mMiddleName" />
+    <fmt:message bundle="${locale}" key="local.mPhone" var="mPhone" />
+    <fmt:message bundle="${locale}" key="local.mPassport" var="mPassport" />
+    <fmt:message bundle="${locale}" key="local.mAddress" var="mAddress" />
+    <fmt:message bundle="${locale}" key="local.mUserType" var="mUserType" />
+    <fmt:message bundle="${locale}" key="local.mAdminType" var="mAdminType" />
+    <fmt:message bundle="${locale}" key="local.toAllUsers" var="toAllUsers" />
+    <fmt:message bundle="${locale}" key="local.mUser" var="mUser" />
+ </head>
 <body>
 <header>
     <div>
@@ -54,42 +71,79 @@
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="to-home-page">
-                <input type="submit" value="Home" class="buttonMenu"/>
+                <input type="submit" value="${home}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="view-all-cars">
-                <input type="submit" value="Cars" class="buttonMenu"/>
+                <input type="submit" value="${cars}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="to-priv-office-admin">
-                <input type="submit" value="Private office" class="buttonMenu"/>
+                <input type="submit" value="${privateOffice}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="">
-                <input type="submit" value="Info" class="buttonMenu"/>
+                <input type="submit" value="${info}" class="buttonMenu"/>
             </form>
         </div>
     </div>
 </header>
 <section>
-    <h2>User</h2>
+    <h2>${mUser}</h2>
+
     <hr/>
-    <c:out value="${sessionScope.selectedUser.id}"/> <br/>
-    <c:out value="${sessionScope.selectedUser.login}"/> <br/>
-    <c:out value="${sessionScope.selectedUser.type}"/> <br/>
-    <c:out value="${sessionScope.selectedUser.lastName}"/> <br/>
-    <c:out value="${sessionScope.selectedUser.firstName}"/> <br/>
-    <c:out value="${sessionScope.selectedUser.middleName}"/> <br/>
-    <c:out value="${sessionScope.selectedUser.EMail}"/> <br/>
-    <c:out value="${sessionScope.selectedUser.phone}"/> <br/>
-    <c:out value="${sessionScope.selectedUser.passport}"/> <br/>
-    <c:out value="${sessionScope.selectedUser.address}"/> <br/>
+
+    <div class="divMenu">
+        <form action="Controller" method="get">
+            <input type="hidden" name="command" value="view-all-users">
+            <input type="submit" value="${toAllUsers}">
+        </form>
+    </div>
+
+    <hr/>
+
+    <p>
+        ${nUser}: <c:out value="${requestScope.selectedUser.id}"/>
+    </p>
+    <p>
+        ${mLogin}: <c:out value="${requestScope.selectedUser.login}"/>
+    </p>
+    <p>
+        ${mType}:
+        <c:if test="${requestScope.selectedUser.type.equals('user')}">
+            ${mUserType}
+        </c:if>
+        <c:if test="${requestScope.selectedUser.type.equals('admin')}">
+            ${mAdminType}
+        </c:if>
+    </p>
+    <p>
+        ${mLastName}: <c:out value="${requestScope.selectedUser.lastName}"/>
+    </p>
+    <p>
+        ${mFirstName}: <c:out value="${requestScope.selectedUser.firstName}"/>
+    </p>
+    <p>
+        ${mMiddleName}: <c:out value="${requestScope.selectedUser.middleName}"/>
+    </p>
+    <p>
+        e-mail: <c:out value="${requestScope.selectedUser.EMail}"/>
+    </p>
+    <p>
+        ${mPhone}: <c:out value="${requestScope.selectedUser.phone}"/>
+    </p>
+    <p>
+        ${mPassport}: <c:out value="${requestScope.selectedUser.passport}"/>
+    </p>
+    <p>
+        ${mAddress}: <c:out value="${requestScope.selectedUser.address}"/>
+    </p>
 </section>
 <footer>
     <p>&copy; 2016 Car rental. All rights reserved.</p>

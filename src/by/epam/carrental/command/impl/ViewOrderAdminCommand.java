@@ -22,7 +22,7 @@ public class ViewOrderAdminCommand implements Command {
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug("ViewOrderAdminCommand : execute");
         int orderId = Integer.parseInt(request.getParameter("selectedOrderId"));
-        request.getSession(true).setAttribute("orderId", orderId);
+        request.getSession().setAttribute("orderId", orderId);
         OrderService service = OrderService.getInstance();
         Order order = null;
         try {

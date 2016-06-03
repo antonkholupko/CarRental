@@ -26,17 +26,29 @@ public class DeleteCarCommand implements Command {
 
     private static  final int AMOUNT_CARS_ON_PAGE = 9;
 
+    private static final String EXECUTE_STARTS = "DeleteCarCommand : execute : starts";
+
+    private static final String COMMAND_NAME_PARAM = "commandName";
+    private static final String SELECTED_CAR_ID_PARAM = "selectedCarId";
+    private static final String PAGE_NUMBER_PARAM = "pageNumber";
+    private static final String ALL_CARS_PARAM = "allCars";
+    private static final String ALL_TYPES_PARAM = "allTypes";
+    private static final String AMOUNT_PAGES_PARAM = "amountPages";
+    private static final String SUCCESSFUL_DELETED = "carSuccessfulDeleted";
+
+    private static final String DELETE_CAR_VALUE = "delete-car";
+
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
-        LOG.debug("DeleteCarCommand : execute");
-        request.setAttribute("commandName", "delete-car");
+        LOG.debug(EXECUTE_STARTS);
+        request.setAttribute(COMMAND_NAME_PARAM, DELETE_CAR_VALUE);
         int amountPages = 0;
         int pageNumber = 1;
         List<Car> cars = null;
         List<CarType> carTypes = null;
-        int selectedCarId = (Integer) request.getSession().getAttribute("selectedCarId");
-        if (request.getParameter("pageNumber") != null) {
-            pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        int selectedCarId = (Integer) request.getSession().getAttribute(SELECTED_CAR_ID_PARAM);
+        if (request.getParameter(PAGE_NUMBER_PARAM) != null) {
+            pageNumber = Integer.parseInt(request.getParameter(PAGE_NUMBER_PARAM));
         }
         CarService service = CarService.getInstance();
         try {
@@ -44,10 +56,10 @@ public class DeleteCarCommand implements Command {
             cars = service.takeAllCars(pageNumber, AMOUNT_CARS_ON_PAGE);
             carTypes = service.takeCarTypes();
             amountPages = service.countPageAmountAllCars(AMOUNT_CARS_ON_PAGE);
-            request.setAttribute("amountPages", amountPages);
-            request.getSession().setAttribute("allCars", cars);
-            request.getSession().setAttribute("allTypes", carTypes);
-            request.setAttribute("carSuccessfulDeleted", true);
+            request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
+            request.getSession().setAttribute(ALL_CARS_PARAM, cars);
+            request.getSession().setAttribute(ALL_TYPES_PARAM, carTypes);
+            request.setAttribute(SUCCESSFUL_DELETED, true);
             return PageName.ALL_CARS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

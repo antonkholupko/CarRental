@@ -16,6 +16,21 @@
     <fmt:message bundle="${locale}" key="local.welcomePrivateOfficeAdmin" var="welcomeAdmin"/>
     <fmt:message bundle="${locale}" key="local.adminPrivateOffice" var="adminPrivateOffice"/>
     <fmt:message bundle="${locale}" key="local.logOut" var="logOut"/>
+    <fmt:message bundle="${locale}" key="local.home" var="home"/>
+    <fmt:message bundle="${locale}" key="local.cars" var="cars"/>
+    <fmt:message bundle="${locale}" key="local.info" var="info"/>
+    <fmt:message bundle="${locale}" key="local.privateOffice" var="privateOffice"/>
+    <fmt:message bundle="${locale}" key="local.mUsers" var="mUsers" />
+    <fmt:message bundle="${locale}" key="local.userNumber" var="nUser" />
+    <fmt:message bundle="${locale}" key="local.mLogin" var="mLogin" />
+    <fmt:message bundle="${locale}" key="local.mType" var="mType" />
+    <fmt:message bundle="${locale}" key="local.mLastName" var="mLastName" />
+    <fmt:message bundle="${locale}" key="local.mFirstName" var="mFirstName" />
+    <fmt:message bundle="${locale}" key="local.mPhone" var="mPhone" />
+    <fmt:message bundle="${locale}" key="local.mUserType" var="mUserType" />
+    <fmt:message bundle="${locale}" key="local.mAdminType" var="mAdminType" />
+    <fmt:message bundle="${locale}" key="local.mDetails" var="mDetails" />
+    <fmt:message bundle="${locale}" key="local.toPrivOffice" var="toPrivOffice" />
 </head>
 <body>
 <header>
@@ -53,51 +68,70 @@
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="to-home-page">
-                <input type="submit" value="Home" class="buttonMenu"/>
+                <input type="submit" value="${home}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="view-all-cars">
-                <input type="submit" value="Cars" class="buttonMenu"/>
+                <input type="submit" value="${cars}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="to-priv-office-admin">
-                <input type="submit" value="Private office" class="buttonMenu"/>
+                <input type="submit" value="${privateOffice}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="">
-                <input type="submit" value="Info" class="buttonMenu"/>
+                <input type="submit" value="${info}" class="buttonMenu"/>
             </form>
         </div>
     </div>
 </header>
 <section>
-    <h2>Users</h2>
+    <h2>${mUsers}</h2>
+
+    <hr/>
+
+    <div class="divMenu">
+        <form action="Controller" method="get">
+            <input type="hidden" name="command" value="to-priv-office-admin">
+            <input type="submit" value="${toPrivOffice}">
+        </form>
+    </div>
+
+    <hr/>
+
     <article>
         <c:forEach var="user" items="${allUsers}">
             <div class="divOrders">
                 <table border="1" width="100%">
                     <thead>
                     <tr>
-                        <th>User ID</th>
-                        <th>Login</th>
-                        <th>Type</th>
-                        <th>Last Name</th>
-                        <th>First Name</th>
+                        <th>${nUser}</th>
+                        <th>${mLogin}</th>
+                        <th>${mType}</th>
+                        <th>${mLastName}</th>
+                        <th>${mFirstName}</th>
                         <th>e-mail</th>
-                        <th>Phone</th>
+                        <th>${mPhone}</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td><c:out value="${user.id}"/></td>
                         <td><c:out value="${user.login}"/></td>
-                        <td><c:out value="${user.type}"/></td>
+                        <td>
+                            <c:if test="${user.type.equals('user')}">
+                                ${mUserType}
+                            </c:if>
+                            <c:if test="${user.type.equals('admin')}">
+                                ${mAdminType}
+                            </c:if>
+                        </td>
                         <td><c:out value="${user.lastName}"/></td>
                         <td><c:out value="${user.firstName}"/></td>
                         <td><c:out value="${user.EMail}"/></td>
@@ -108,7 +142,7 @@
                 <form action="Controller" method="get">
                     <input type="hidden" name="selectedUserId" value="${user.id}">
                     <input type="hidden" name="command" value="view-user">
-                    <input type="submit" value="Details" class="button2"/>
+                    <input type="submit" value="${mDetails}" class="button2"/>
                 </form>
             </div>
         </c:forEach>

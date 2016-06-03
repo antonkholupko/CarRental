@@ -16,9 +16,11 @@ public class LogOutCommand implements Command {
 
     private static final Logger LOG = LogManager.getLogger(LogOutCommand.class.getName());
 
+    private static final String EXECUTE_STARTS_MSG = "LogOutCommand : execute : starts";
+
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
-        LOG.debug("LogOutCommand : execute");
+        LOG.debug(EXECUTE_STARTS_MSG);
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();

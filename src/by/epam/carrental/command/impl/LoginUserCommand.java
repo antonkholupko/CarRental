@@ -25,29 +25,42 @@ import java.util.List;
 public class LoginUserCommand implements Command{
 
     private static final Logger LOG = LogManager.getLogger(LoginUserCommand.class.getName());
+
+    private static final String EXECUTE_STARTS_MSG = "LoginUserCommand : execute : starts";
+
     private static final String PARAM_LOGIN = "login";
     private static final String PARAM_PASSWORD = "password";
     private static final String PARAM_LOGIN_FAILED = "loginFailed";
+    private static final String PARAM_USER = "user";
+    private static final String PARAM_PAGE_NAME = "page-name";
+    private static final String PARAM_PAGE_NUMBER = "pageNumber";
+    private static final String ALL_CARS_PARAM = "allCars";
+    private static final String ALL_TYPES_PARAM = "allTypes";
+    private static final String AMOUNT_PAGES_PARAM = "amountPages";
+
+    private static final String INDEX_VALUE = "index";
+    private static final String ALL_CARS_VALUE = "all-cars";
+    private static final String VIEW_CAR_VALUE = "view-car";
 
     private static final int AMOUNT_CARS_ON_PAGE = 9;
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
-        LOG.debug("LoginUserCommand : execute");
+        LOG.debug(EXECUTE_STARTS_MSG);
         String login = request.getParameter(PARAM_LOGIN);
         String password = request.getParameter(PARAM_PASSWORD);
         UserService service = UserService.getInstance();
         try {
             User user = service.login(login, password);
             if (user != null) {
-                request.getSession(true).setAttribute("user", user);
-                if (request.getParameter("page-name").equals("index")) {
+                request.getSession(true).setAttribute(PARAM_USER, user);
+                if (request.getParameter(PARAM_PAGE_NAME).equals(INDEX_VALUE)) {
                     return PageName.INDEX_PAGE;
-                } else if (request.getParameter("page-name").equals("all-cars")) {
+                } else if (request.getParameter(PARAM_PAGE_NAME).equals(ALL_CARS_VALUE)) {
                     int amountPages = 0;
                     int pageNumber = 1;
-                    if (request.getParameter("pageNumber") != null) {
-                        pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+                    if (request.getParameter(PARAM_PAGE_NUMBER) != null) {
+                        pageNumber = Integer.parseInt(request.getParameter(PARAM_PAGE_NUMBER));
                     }
                     List<Car> cars = null;
                     List<CarType> carTypes = null;
@@ -55,22 +68,22 @@ public class LoginUserCommand implements Command{
                     cars = carService.takeAllCars(pageNumber, AMOUNT_CARS_ON_PAGE);
                     carTypes = carService.takeCarTypes();
                     amountPages = carService.countPageAmountAllCars(AMOUNT_CARS_ON_PAGE);
-                    request.setAttribute("amountPages", amountPages);
-                    request.getSession().setAttribute("allCars", cars);
-                    request.getSession().setAttribute("allTypes", carTypes);
+                    request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
+                    request.getSession().setAttribute(ALL_CARS_PARAM, cars);
+                    request.getSession().setAttribute(ALL_TYPES_PARAM, carTypes);
                     return PageName.ALL_CARS;
-                } else if (request.getParameter("page-name").equals("view-car")) {
+                } else if (request.getParameter(PARAM_PAGE_NAME).equals(VIEW_CAR_VALUE)) {
                     return PageName.VIEW_CAR;
                 } else {
                     return PageName.ERROR_PAGE;
                 }
             } else {
                 request.setAttribute(PARAM_LOGIN_FAILED, true);
-                if (request.getParameter("page-name").equals("index")) {
+                if (request.getParameter(PARAM_PAGE_NAME).equals(INDEX_VALUE)) {
                     return PageName.INDEX_PAGE;
-                } else if (request.getParameter("page-name").equals("all-cars")) {
+                } else if (request.getParameter(PARAM_PAGE_NAME).equals(ALL_CARS_VALUE)) {
                     return PageName.ALL_CARS;
-                } else if (request.getParameter("page-name").equals("view-car")) {
+                } else if (request.getParameter(PARAM_PAGE_NAME).equals(VIEW_CAR_VALUE)) {
                     return PageName.VIEW_CAR;
                 } else {
                     return PageName.ERROR_PAGE;

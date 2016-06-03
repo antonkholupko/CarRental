@@ -33,30 +33,52 @@ public class AddCarCommand implements Command {
 
     private static final Logger LOG = LogManager.getLogger(AddCarCommand.class.getName());
 
-    private static  final int AMOUNT_CARS_ON_PAGE = 9;
+    private static final int AMOUNT_CARS_ON_PAGE = 9;
+
+    private static final String EXECUTE_STARTS_MSG = "AddCarCommand : execute : starts";
+    private static final String VALID_PARAMETERS_STARTS_MSG = "AddCarCommand : validParameters : starts";
+
+    private static final String PAGE_NUMBER_PARAM = "pageNumber";
+    private static final String CAR_MODEL_PARAM = "carModel";
+    private static final String CAR_YEAR_PARAM = "carYear";
+    private static final String TRANSMISSION_PARAM = "transmission";
+    private static final String CAR_FUEL_PARAM = "carFuel";
+    private static final String CAR_TYPE_PARAM = "carType";
+    private static final String GOV_NUMBER_PARAM = "govNumber";
+    private static final String VIN_PARAM = "vin";
+    private static final String CAR_INFO_PARAM = "car-info";
+    private static final String IMAGE_PARAM = "image";
+    private static final String AMOUNT_PAGES_PARAM = "amountPages";
+    private static final String ALL_CARS_PARAM = "allCars";
+    private static final String ALL_TYPES_PARAM = "allTypes";
+    private static final String CAR_SUCCESSFUL_ADDED_PARAM = "carSuccessfulAdded";
+    private static final String INVALID_MODEL_PARAM = "invalidModel";
+    private static final String INVALID_YEAR_PARAM = "invalidYear";
+    private static final String INVALID_GOV_NUMBER_PARAM = "invalidGovNumber";
+    private static final String INVALID_VIN_CODE_PARAM = "invalidVinCode";
+    private static final String INVALID_NUMBER_VIN_PARAM = "invalidNumberVin";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
-        LOG.debug("AddCarCommand : execute");
+        LOG.debug(EXECUTE_STARTS_MSG);
         int amountPages = 0;
         int pageNumber = 1;
         List<Car> cars = null;
         List<CarType> carTypes = null;
-        if (request.getParameter("pageNumber") != null) {
-            pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        if (request.getParameter(PAGE_NUMBER_PARAM) != null) {
+            pageNumber = Integer.parseInt(request.getParameter(PAGE_NUMBER_PARAM));
         }
         CarService service = CarService.getInstance();
         try {
-            String model = request.getParameter("carModel");
-            String year = request.getParameter("carYear");
-            String transmission = request.getParameter("transmission");
-            String fuel = request.getParameter("carFuel");
-            String type = request.getParameter("carType");
-            String govNumber = request.getParameter("govNumber");
-            String vin = request.getParameter("vin");
-            String info = request.getParameter("car-info");
-            //String filePath = request.getParameter("image");
-            Part image = request.getPart("image");
+            String model = request.getParameter(CAR_MODEL_PARAM);
+            String year = request.getParameter(CAR_YEAR_PARAM);
+            String transmission = request.getParameter(TRANSMISSION_PARAM);
+            String fuel = request.getParameter(CAR_FUEL_PARAM);
+            String type = request.getParameter(CAR_TYPE_PARAM);
+            String govNumber = request.getParameter(GOV_NUMBER_PARAM);
+            String vin = request.getParameter(VIN_PARAM);
+            String info = request.getParameter(CAR_INFO_PARAM);
+            Part image = request.getPart(IMAGE_PARAM);
             InputStream inputStream = image.getInputStream();
             if (validParameters(request)) {
                 Car car = new Car();
@@ -75,10 +97,10 @@ public class AddCarCommand implements Command {
                 amountPages = service.countPageAmountAllCars(AMOUNT_CARS_ON_PAGE);
 
                 carTypes = service.takeCarTypes();
-                request.setAttribute("amountPages", amountPages);
-                request.getSession().setAttribute("allCars", cars);
-                request.getSession().setAttribute("allTypes", carTypes);
-                request.getSession().setAttribute("carSuccessfulAdded", true);
+                request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
+                request.getSession().setAttribute(ALL_CARS_PARAM, cars);
+                request.getSession().setAttribute(ALL_TYPES_PARAM, carTypes);
+                request.getSession().setAttribute(CAR_SUCCESSFUL_ADDED_PARAM, true);
                 return PageName.ALL_CARS;
             } else {
                 return PageName.ADD_CAR;
@@ -98,32 +120,34 @@ public class AddCarCommand implements Command {
      */
     private boolean validParameters (HttpServletRequest request) throws CommandException{
 
+        LOG.debug(VALID_PARAMETERS_STARTS_MSG);
+
         int countFailedValidations = 0;
         Validator validator = Validator.getInstance();
 
-        String model = request.getParameter("carModel");
-        String year = request.getParameter("carYear");
-        String govNumber = request.getParameter("govNumber");
-        String vin = request.getParameter("vin");
+        String model = request.getParameter(CAR_MODEL_PARAM);
+        String year = request.getParameter(CAR_YEAR_PARAM);
+        String govNumber = request.getParameter(GOV_NUMBER_PARAM);
+        String vin = request.getParameter(VIN_PARAM);
 
 
         if (!validator.validateModel(model)) {
-            request.setAttribute("invalidModel", true);
+            request.setAttribute(INVALID_MODEL_PARAM, true);
             countFailedValidations++;
         }
 
         if (!validator.validateCarYear(year)) {
-            request.setAttribute("invalidYear", true);
+            request.setAttribute(INVALID_YEAR_PARAM, true);
             countFailedValidations++;
         }
 
         if (!validator.validateGovNumber(govNumber)) {
-            request.setAttribute("invalidGovNumber", true);
+            request.setAttribute(INVALID_GOV_NUMBER_PARAM, true);
             countFailedValidations++;
         }
 
         if (!validator.validateVinCode(vin)) {
-            request.setAttribute("invalidVinCode", true);
+            request.setAttribute(INVALID_VIN_CODE_PARAM, true);
             countFailedValidations++;
         }
 
@@ -136,7 +160,7 @@ public class AddCarCommand implements Command {
                 if (unique) {
                     return true;
                 } else {
-                    request.setAttribute("invalidNumberVin", true);
+                    request.setAttribute(INVALID_NUMBER_VIN_PARAM, true);
                     return false;
                 }
             } catch (ServiceException ex) {

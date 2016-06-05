@@ -20,29 +20,29 @@
     <fmt:message bundle="${locale}" key="local.cars" var="cars"/>
     <fmt:message bundle="${locale}" key="local.info" var="info"/>
     <fmt:message bundle="${locale}" key="local.privateOffice" var="privateOffice"/>
-    <fmt:message bundle="${locale}" key="local.orders" var="mOrders" />
-    <fmt:message bundle="${locale}" key="local.toPrivOffice" var="toPrivOffice" />
-    <fmt:message bundle="${locale}" key="local.mLastName" var="mLastName" />
-    <fmt:message bundle="${locale}" key="local.mFirstName" var="mFirstName" />
-    <fmt:message bundle="${locale}" key="local.mMiddleName" var="mMiddleName" />
-    <fmt:message bundle="${locale}" key="local.mark" var="mMark" />
-    <fmt:message bundle="${locale}" key="local.model" var="mModel" />
-    <fmt:message bundle="${locale}" key="local.mGovNumber" var="mGovNumber" />
-    <fmt:message bundle="${locale}" key="local.mStatus" var="mStatus" />
-    <fmt:message bundle="${locale}" key="local.price" var="price" />
-    <fmt:message bundle="${locale}" key="local.mDamagePrice" var="mDmgPrice" />
-    <fmt:message bundle="${locale}" key="local.mOrderNumber" var="mOrderNumber" />
-    <fmt:message bundle="${locale}" key="local.statusNew" var="sNew" />
-    <fmt:message bundle="${locale}" key="local.statusCanceled" var="sCanceld" />
-    <fmt:message bundle="${locale}" key="local.statusRejected" var="sRejected" />
-    <fmt:message bundle="${locale}" key="local.statusAccepted" var="Accepted" />
-    <fmt:message bundle="${locale}" key="local.statusPaid" var="Paid" />
-    <fmt:message bundle="${locale}" key="local.statusDelivered" var="Delivered" />
-    <fmt:message bundle="${locale}" key="local.statusReturned" var="Returned" />
-    <fmt:message bundle="${locale}" key="local.statusExpectsComp" var="ExpectsComp" />
-    <fmt:message bundle="${locale}" key="local.statusClosed" var="Closed" />
-    <fmt:message bundle="${locale}" key="local.mDetails" var="mDetails" />
-    <fmt:message bundle="${locale}" key="local.noOrders" var="mNoOrders" />
+    <fmt:message bundle="${locale}" key="local.orders" var="mOrders"/>
+    <fmt:message bundle="${locale}" key="local.toPrivOffice" var="toPrivOffice"/>
+    <fmt:message bundle="${locale}" key="local.mLastName" var="mLastName"/>
+    <fmt:message bundle="${locale}" key="local.mFirstName" var="mFirstName"/>
+    <fmt:message bundle="${locale}" key="local.mMiddleName" var="mMiddleName"/>
+    <fmt:message bundle="${locale}" key="local.mark" var="mMark"/>
+    <fmt:message bundle="${locale}" key="local.model" var="mModel"/>
+    <fmt:message bundle="${locale}" key="local.mGovNumber" var="mGovNumber"/>
+    <fmt:message bundle="${locale}" key="local.mStatus" var="mStatus"/>
+    <fmt:message bundle="${locale}" key="local.price" var="price"/>
+    <fmt:message bundle="${locale}" key="local.mDamagePrice" var="mDmgPrice"/>
+    <fmt:message bundle="${locale}" key="local.mOrderNumber" var="mOrderNumber"/>
+    <fmt:message bundle="${locale}" key="local.statusNew" var="sNew"/>
+    <fmt:message bundle="${locale}" key="local.statusCanceled" var="sCanceld"/>
+    <fmt:message bundle="${locale}" key="local.statusRejected" var="sRejected"/>
+    <fmt:message bundle="${locale}" key="local.statusAccepted" var="Accepted"/>
+    <fmt:message bundle="${locale}" key="local.statusPaid" var="Paid"/>
+    <fmt:message bundle="${locale}" key="local.statusDelivered" var="Delivered"/>
+    <fmt:message bundle="${locale}" key="local.statusReturned" var="Returned"/>
+    <fmt:message bundle="${locale}" key="local.statusExpectsComp" var="ExpectsComp"/>
+    <fmt:message bundle="${locale}" key="local.statusClosed" var="Closed"/>
+    <fmt:message bundle="${locale}" key="local.mDetails" var="mDetails"/>
+    <fmt:message bundle="${locale}" key="local.noOrders" var="mNoOrders"/>
 </head>
 <body>
 <header>
@@ -108,10 +108,10 @@
 
     <hr/>
 
-    <div class="divMenu">
+    <div class="divSubMenu">
         <form action="Controller" method="get">
             <input type="hidden" name="command" value="to-priv-office-admin">
-            <input type="submit" value="${toPrivOffice}">
+            <input type="submit" value="${toPrivOffice}" class="buttonSubMenu">
         </form>
     </div>
 
@@ -121,9 +121,9 @@
         <p>${mNoOrders}</p>
     </c:if>
 
-    <article>
-        <c:forEach var="order" items="${orders}">
 
+    <c:forEach var="order" items="${orders}">
+        <article>
             <div class="divOrders">
 
                 <table border="1" width="100%">
@@ -151,28 +151,28 @@
                         <td><c:out value="${order.car.model}"/></td>
                         <td><c:out value="${order.car.govNumber}"/></td>
                         <td>
-                            <c:if test="${order.status.equals('новый')}">
+                            <c:if test="${order.status.equals('new')}">
                                 ${sNew}
                             </c:if>
-                            <c:if test="${order.status.equals('отменен')}">
+                            <c:if test="${order.status.equals('canceled')}">
                                 ${sCanceld}
                             </c:if>
-                            <c:if test="${order.status.equals('отклонен')}">
+                            <c:if test="${order.status.equals('rejected')}">
                                 ${sRejected}
                             </c:if>
-                            <c:if test="${order.status.equals('оплачен')}">
+                            <c:if test="${order.status.equals('payed')}">
                                 ${Paid}
                             </c:if>
-                            <c:if test="${order.status.equals('принят')}">
+                            <c:if test="${order.status.equals('accepted')}">
                                 ${Accepted}
                             </c:if>
-                            <c:if test="${order.status.equals('доставлен')}">
+                            <c:if test="${order.status.equals('delivered')}">
                                 ${Delivered}
                             </c:if>
-                            <c:if test="${order.status.equals('возвращен')}">
+                            <c:if test="${order.status.equals('returned')}">
                                 ${Returned}
                             </c:if>
-                            <c:if test="${order.status.equals('ожидаетКомп')}">
+                            <c:if test="${order.status.equals('expectsComp')}">
                                 ${ExpectsComp}
                             </c:if>
                             <c:if test="${order.status.equals('закрыт')}">
@@ -184,15 +184,19 @@
                     </tr>
                     </tbody>
                 </table>
-                <form action="Controller" method="get">
-                    <input type="hidden" name="selectedOrderId" value="${order.id}">
-                    <input type="hidden" name="command" value="view-order-admin">
-                    <input type="submit" value="${mDetails}" class="button2"/>
-                </form>
-            </div>
+                <br/>
 
-        </c:forEach>
-    </article>
+                <div class="divSubMenu">
+                    <form action="Controller" method="get">
+                        <input type="hidden" name="selectedOrderId" value="${order.id}">
+                        <input type="hidden" name="command" value="view-order-admin">
+                        <input type="submit" value="${mDetails}" class="buttonSubMenu"/>
+                    </form>
+                </div>
+            </div>
+        </article>
+        <br/>
+    </c:forEach>
 
 </section>
 <footer>

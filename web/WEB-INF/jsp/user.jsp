@@ -99,10 +99,10 @@
 
     <hr/>
 
-    <div class="divMenu">
+    <div class="divSubMenu">
         <form action="Controller" method="get">
             <input type="hidden" name="command" value="view-all-users">
-            <input type="submit" value="${toAllUsers}">
+            <input type="submit" value="${toAllUsers}" class="divSubMenu">
         </form>
     </div>
 

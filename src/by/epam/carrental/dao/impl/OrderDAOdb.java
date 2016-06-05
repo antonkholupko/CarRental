@@ -23,7 +23,7 @@ public class OrderDAOdb implements OrderDAO {
     private static final String ADD_ORDER_QUERY = "INSERT INTO orders (userID, carID, supposedFromDate, supposedToDate, " +
             "shippingPlace, returnPlace, status) VALUES (?,?,?,?,?,?,?);";
     private static final String CHECK_INSERT_QUERY = "SELECT carID FROM orders WHERE " +
-            "(NOT (orders.status='отменен' OR orders.status='отклонен' OR orders.status='закрыт' OR orders.status='возвращен')) AND " +
+            "(NOT (orders.status='canceled' OR orders.status='rejected' OR orders.status='closed' OR orders.status='returned')) AND " +
             "((? BETWEEN orders.supposedFromDate AND orders.supposedToDate) OR " +
             "(? BETWEEN orders.supposedFromDate AND orders.supposedToDate) OR " +
             "(? BETWEEN orders.supposedFromDate AND orders.supposedToDate) OR " +
@@ -75,7 +75,7 @@ public class OrderDAOdb implements OrderDAO {
     private static final String UPDATE_STATUS_MSG = "OrderDAOdb : updateStatusById";
     private static final String TAKE_ADMIN_ORDER_MSG = "OrderDAOdb : takeAdminOrderByOrderId";
     private static final String ADD_ORDER_MSG = "OrderDAOdb : addOrder";
-    private static final String STATUS_NEW = "новый";
+    private static final String STATUS_NEW = "new";
     private static final String TAKE_ORDER = "OrderDAOdb : takeOrderByOrderId";
     private static final String FIND_ORDERS = "OrderDAOdb : findOrdersByUserId";
     private static final String FIND_ORDER = "OrderDAOdb : findOrderByOrderId";

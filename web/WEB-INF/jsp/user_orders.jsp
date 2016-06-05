@@ -112,10 +112,10 @@
 
     <hr/>
 
-    <div class="divMenu">
+    <div class="divSubMenu">
         <form action="Controller" method="get">
             <input type="hidden" name="command" value="to-priv-office-user">
-            <input type="submit" value="${mToPrivateOffice}">
+            <input type="submit" value="${mToPrivateOffice}" class="buttonSubMenu">
         </form>
     </div>
 
@@ -149,31 +149,31 @@
                         <td><c:out value="${order.supposedDateFrom}"/></td>
                         <td><c:out value="${order.supposedDateTo}"/></td>
                         <td>
-                            <c:if test="${order.status.equals('новый')}">
+                            <c:if test="${order.status.equals('new')}">
                                 ${sNew}
                             </c:if>
-                            <c:if test="${order.status.equals('отменен')}">
+                            <c:if test="${order.status.equals('canceled')}">
                                 ${sCanceld}
                             </c:if>
-                            <c:if test="${order.status.equals('отклонен')}">
+                            <c:if test="${order.status.equals('rejected')}">
                                 ${sRejected}
                             </c:if>
-                            <c:if test="${order.status.equals('принят')}">
+                            <c:if test="${order.status.equals('accepted')}">
                                 ${Accepted}
                             </c:if>
-                            <c:if test="${order.status.equals('оплачен')}">
+                            <c:if test="${order.status.equals('payed')}">
                                 ${Paid}
                             </c:if>
-                            <c:if test="${order.status.equals('доставлен')}">
+                            <c:if test="${order.status.equals('delivered')}">
                                 ${Delivered}
                             </c:if>
-                            <c:if test="${order.status.equals('возвращен')}">
+                            <c:if test="${order.status.equals('returned')}">
                                 ${Returned}
                             </c:if>
-                            <c:if test="${order.status.equals('ожидаетКомп')}">
+                            <c:if test="${order.status.equals('expectsComp')}">
                                 ${ExpectsComp}
                             </c:if>
-                            <c:if test="${order.status.equals('закрыт')}">
+                            <c:if test="${order.status.equals('closed')}">
                                 ${Closed}
                             </c:if>
                         </td>
@@ -183,11 +183,11 @@
                 </table>
                 <br/>
 
-                <div class="divMenu">
+                <div class="divSubMenu">
                     <form action="Controller" method="get">
                         <input type="hidden" name="selectedOrderId" value="${order.id}">
                         <input type="hidden" name="command" value="view-order-user">
-                        <input type="submit" value="${mDetails}"/>
+                        <input type="submit" value="${mDetails}" class="buttonSubMenu"/>
                     </form>
                 </div>
             </div>

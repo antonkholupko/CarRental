@@ -146,10 +146,10 @@
     <h2>${mOrder}</h2>
     <hr/>
 
-    <div class="divMenu">
+    <div class="divSubMenu">
         <form action="Controller" method="get">
             <input type="hidden" name="command" value="view-orders-admin">
-            <input type="submit" value="${mToAllOrders}">
+            <input type="submit" value="${mToAllOrders}" class="buttonSubMenu">
         </form>
     </div>
 
@@ -157,11 +157,11 @@
     <article>
         <div class="divOrders">
             <h2>${mOrderNumber} <c:out value="${requestScope.selectedOrder.id}"/></h2>
-            <c:if test="${sessionScope.selectedOrder.status.equals('доставлен') &&
+            <c:if test="${sessionScope.selectedOrder.status.equals('delivered') &&
                                     sessionScope.selectedOrder.realDateFrom == null}">
                 <c:out value="${selectFrom}"/>
             </c:if>
-            <c:if test="${sessionScope.selectedOrder.status.equals('возвращен') &&
+            <c:if test="${sessionScope.selectedOrder.status.equals('returned') &&
                                 requestScope.selectedOrder.realDateTo == null}">
                 <c:out value="${selectTo}"/>
             </c:if>
@@ -169,55 +169,55 @@
                 <p>${invalidReason}</p>
             </c:if>
             <p> ${mStatus}:
-                <c:if test="${sessionScope.selectedOrder.status.equals('новый')}">
+                <c:if test="${sessionScope.selectedOrder.status.equals('new')}">
                     ${sNew}
                 </c:if>
-                <c:if test="${sessionScope.selectedOrder.status.equals('отменен')}">
+                <c:if test="${sessionScope.selectedOrder.status.equals('canceled')}">
                     ${sCanceld}
                 </c:if>
-                <c:if test="${sessionScope.selectedOrder.status.equals('отклонен')}">
+                <c:if test="${sessionScope.selectedOrder.status.equals('rejected')}">
                     ${sRejected}
                 </c:if>
-                <c:if test="${sessionScope.selectedOrder.status.equals('принят')}">
+                <c:if test="${sessionScope.selectedOrder.status.equals('accepted')}">
                     ${Accepted}
                 </c:if>
-                <c:if test="${sessionScope.selectedOrder.status.equals('оплачен')}">
+                <c:if test="${sessionScope.selectedOrder.status.equals('payed')}">
                     ${Paid}
                 </c:if>
-                <c:if test="${sessionScope.selectedOrder.status.equals('доставлен')}">
+                <c:if test="${sessionScope.selectedOrder.status.equals('delivered')}">
                     ${Delivered}
                 </c:if>
-                <c:if test="${sessionScope.selectedOrder.status.equals('возвращен')}">
+                <c:if test="${sessionScope.selectedOrder.status.equals('returned')}">
                     ${Returned}
                 </c:if>
-                <c:if test="${sessionScope.selectedOrder.status.equals('ожидаетКомп')}">
+                <c:if test="${sessionScope.selectedOrder.status.equals('expectsComp')}">
                     ${ExpectsComp}
                 </c:if>
-                <c:if test="${sessionScope.selectedOrder.status.equals('закрыт')}">
+                <c:if test="${sessionScope.selectedOrder.status.equals('closed')}">
                     ${Closed}
                 </c:if>
             </p>
-            <c:if test="${!sessionScope.selectedOrder.status.equals('отклонен') &&
-                        !sessionScope.selectedOrder.status.equals('отменен') &&
-                        !sessionScope.selectedOrder.status.equals('закрыт') &&
-                        !sessionScope.selectedOrder.status.equals('принят') &&
-                        !sessionScope.selectedOrder.status.equals('ожидаетКомп')}">
+            <c:if test="${!sessionScope.selectedOrder.status.equals('rejected') &&
+                        !sessionScope.selectedOrder.status.equals('canceled') &&
+                        !sessionScope.selectedOrder.status.equals('closed') &&
+                        !sessionScope.selectedOrder.status.equals('accepted') &&
+                        !sessionScope.selectedOrder.status.equals('expectsComp')}">
             <form action="Controller" method="post">
                 <select name="statusOrder">
-                    <c:if test="${sessionScope.selectedOrder.status.equals('новый')}">
-                        <option value="принят">${Accepted}</option>
-                        <option value="отклонен">${sRejected}</option>
+                    <c:if test="${sessionScope.selectedOrder.status.equals('new')}">
+                        <option value="accepted">${Accepted}</option>
+                        <option value="rejected">${sRejected}</option>
                     </c:if>
-                    <c:if test="${sessionScope.selectedOrder.status.equals('оплачен')}">
-                        <option value="доставлен">${Delivered}</option>
+                    <c:if test="${sessionScope.selectedOrder.status.equals('payed')}">
+                        <option value="delivered">${Delivered}</option>
                     </c:if>
-                    <c:if test="${sessionScope.selectedOrder.status.equals('доставлен') &&
+                    <c:if test="${sessionScope.selectedOrder.status.equals('delivered') &&
                                     sessionScope.selectedOrder.realDateFrom != null}">
-                        <option value="возвращен">${Returned}</option>
+                        <option value="returned">${Returned}</option>
                     </c:if>
-                    <c:if test="${sessionScope.selectedOrder.status.equals('возвращен') &&
+                    <c:if test="${sessionScope.selectedOrder.status.equals('returned') &&
                                     sessionScope.selectedOrder.realDateTo != null}">
-                        <option value="закрыт">${Closed}</option>
+                        <option value="closed">${Closed}</option>
                     </c:if>
                 </select>
                 <br/>
@@ -245,7 +245,7 @@
 
             <p> ${mRealDateTo} <c:out value="${sessionScope.selectedOrder.realDateTo}"/></p>
 
-            <c:if test="${sessionScope.selectedOrder.status.equals('доставлен')}">
+            <c:if test="${sessionScope.selectedOrder.status.equals('delivered')}">
                 <c:if test="${requestScope.invalidDateFrom == true}">
                     <p>${mInvalidDate}</p>
                 </c:if>
@@ -259,7 +259,7 @@
                 </form>
             </c:if>
             <c:if test="${sessionScope.selectedOrder.realDateFrom != null &&
-                                sessionScope.selectedOrder.status.equals('возвращен')}">
+                                sessionScope.selectedOrder.status.equals('returned')}">
                 <c:if test="${requestScope.invalidDateTo == true}">
                     <p>${mInvalidDate}</p>
                 </c:if>
@@ -273,7 +273,7 @@
                 </form>
             </c:if>
             <p> ${mDmgPrice}: <c:out value="${sessionScope.selectedOrder.damagePrice}"/></p>
-            <c:if test="${sessionScope.selectedOrder.status.equals('возвращен')}">
+            <c:if test="${sessionScope.selectedOrder.status.equals('returned')}">
                 <c:if test="${requestScope.invalidDamagePrice == true}">
                     <p>${invalidDmgPrice}</p>
                 </c:if>
@@ -318,10 +318,10 @@
 
             <p>
                 ${mTransmission}:
-                <c:if test="${sessionScope.selectedOrder.car.transmission.equals('АКПП')}">
+                    <c:if test="${sessionScope.selectedOrder.car.transmission.equals('automatic')}">
                     ${mAutomatic}
                 </c:if>
-                <c:if test="${sessionScope.selectedOrder.car.transmission.equals('МКПП')}">
+                    <c:if test="${sessionScope.selectedOrder.car.transmission.equals('mechanic')}">
                     ${mMechamic}
                 </c:if>
             </p>
@@ -359,13 +359,13 @@
 
             <p>
                 ${mFuel}:
-                <c:if test="${sessionScope.selectedOrder.car.fuel.equals('бензин')}">
+                    <c:if test="${sessionScope.selectedOrder.car.fuel.equals('petrol')}">
                     ${petrol}
                 </c:if>
-                <c:if test="${sessionScope.selectedOrder.car.fuel.equals('дизель')}">
+                    <c:if test="${sessionScope.selectedOrder.car.fuel.equals('diesel')}">
                     ${diesel}
                 </c:if>
-                <c:if test="${sessionScope.selectedOrder.car.fuel.equals('электричество')}">
+                    <c:if test="${sessionScope.selectedOrder.car.fuel.equals('electricity')}">
                     ${electricity}
                 </c:if>
             </p>

@@ -123,10 +123,10 @@
 
     <hr/>
 
-    <div class="divMenu">
+    <div class="divSubMenu">
         <form action="Controller" method="get">
             <input type="hidden" name="command" value="to-priv-office-admin">
-            <input type="submit" value="${mToPrivOffice}">
+            <input type="submit" value="${mToPrivOffice}" class="buttonSubMenu">
         </form>
     </div>
 
@@ -186,15 +186,15 @@
 
         <p>${mTransmission}*: </p>
         <select name="transmission">
-            <option value="АКПП">${mAutomatic}</option>
-            <option value="МКПП">${mMechanic}</option>
+            <option value="automatic">${mAutomatic}</option>
+            <option value="mechanic">${mMechanic}</option>
         </select>
 
         <p>${mFuel}: </p>
         <select name="carFuel">
-            <option value="бензин">${mPetrol}</option>
-            <option value="дизель">${mDiesel}</option>
-            <option value="электричество">${mElectricity}</option>
+            <option value="petrol">${mPetrol}</option>
+            <option value="diesel">${mDiesel}</option>
+            <option value="electricity">${mElectricity}</option>
         </select>
 
         <p>${mType}*: </p>
@@ -248,8 +248,10 @@
         <p>${mImage}: </p>
         <input type="file" name="image"/>
         <br/>
+        <hr/>
+        <br/>
         <input type="hidden" name="command" value="add-car">
-        <input type="submit" value="Add car"/>
+        <input type="submit" value="Add car" class="buttonPurchase"/>
     </form>
 </section>
 <footer>

@@ -2,7 +2,7 @@
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@taglib prefix="cr" uri="WEB-INF/custom.tld"%>
+<%@taglib prefix="cr" uri="WEB-INF/custom.tld" %>
 
 <html>
 <head>
@@ -28,6 +28,15 @@
     <fmt:message bundle="${locale}" key="local.logOut" var="logOut"/>
     <fmt:message bundle="${locale}" key="local.privateOffice" var="privateOffice"/>
     <fmt:message bundle="${locale}" key="local.orders" var="orders"/>
+    <fmt:message bundle="${locale}" key="local.cabriolet" var="cabriolet"/>
+    <fmt:message bundle="${locale}" key="local.cargo" var="cargo"/>
+    <fmt:message bundle="${locale}" key="local.coupe" var="coupe"/>
+    <fmt:message bundle="${locale}" key="local.jeep" var="jeep"/>
+    <fmt:message bundle="${locale}" key="local.smallClass" var="small"/>
+    <fmt:message bundle="${locale}" key="local.middleClass" var="middle"/>
+    <fmt:message bundle="${locale}" key="local.minibus" var="minibus"/>
+    <fmt:message bundle="${locale}" key="local.premium" var="premium"/>
+    <fmt:message bundle="${locale}" key="local.vintage" var="vintage"/>
 </head>
 
 <body>
@@ -162,38 +171,60 @@
     <article>
         <div class="div1">
             <div class="div4">
-                <img src="img/p308cc.jpg"/>
-                <input type="button" value="Peugeot 308cc" class="ref2"/>
-            </div>
-            <div class="div4">
-                <img src="img/mbC.jpg"/>
-                <input type="button" value="Mercedes-Benz C-class" class="ref2"/>
-            </div>
-            <div class="div4">
-                <img src="img/fFocus.jpg"/>
-                <input type="button" value="Ford Focus" class="ref2"/>
-            </div>
-
-            <div class="div4">
-                <img src="img/vwPolo.jpg"/>
-                <input type="button" value="Volkswagen Polo" class="ref2"/>
-            </div>
-            <div class="div4">
-                <img src="img/mbSprinter.jpg"/>
-                <input type="button" value="Mercedes-Benz Sprinter" class="ref2"/>
-            </div>
-            <div class="div4">
-                <img src="img/lStretch.jpg"/>
-                <input type="button" value="Lincoln Stretch" class="ref2"/>
-            </div>
-            <div>
-                <br/>
-
                 <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="view-all-cars">
-                    <input type="submit" value="${seeAllBtn}" class="button2"/>
+                    <img src="img/fFocus.jpg"/>
+                    <input type="hidden" name="command" value="view-type">
+                    <input type="hidden" name="carType" value="Small"/>
+                    <input type="submit" value="${small}" class="ref2"/>
                 </form>
             </div>
+            <div class="div4">
+                <form action="Controller" method="get">
+                    <img src="img/n370.jpg"/>
+                    <input type="hidden" name="command" value="view-type">
+                    <input type="hidden" name="carType" value="Coupe"/>
+                    <input type="submit" value="${coupe}" class="ref2"/>
+                </form>
+            </div>
+            <div class="div4">
+                <form action="Controller" method="get">
+                    <img src="img/mbS.jpg"/>
+                    <input type="hidden" name="command" value="view-type">
+                    <input type="hidden" name="carType" value="Premium"/>
+                    <input type="submit" value="${premium}" class="ref2"/>
+                </form>
+            </div>
+            <div class="div4">
+                <form action="Controller" method="get">
+                    <img src="img/p308cc.jpg"/>
+                    <input type="hidden" name="command" value="view-type">
+                    <input type="hidden" name="carType" value="Cabriolet"/>
+                    <input type="submit" value="${cabriolet}" class="ref2"/>
+                </form>
+            </div>
+            <div class="div4">
+                <form action="Controller" method="get">
+                    <img src="img/mbSprinter.jpg"/>
+                    <input type="hidden" name="command" value="view-type">
+                    <input type="hidden" name="carType" value="Cargo">
+                    <input type="submit" value="${cargo}" class="ref2"/>
+                </form>
+            </div>
+            <div class="div4">
+                <form action="Controller" method="get">
+                    <img src="img/g21.jpg"/>
+                    <input type="hidden" name="command" value="view-type">
+                    <input type="hidden" name="carType" value="Vintage"/>
+                    <input type="submit" value="${vintage}" class="ref2"/>
+                </form>
+            </div>
+            <br/>
+
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="view-all-cars">
+                <input type="submit" value="${seeAllBtn}" class="buttonSubMenu"/>
+            </form>
+        </div>
         </div>
     </article>
 

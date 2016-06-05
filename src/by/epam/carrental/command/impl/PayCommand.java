@@ -22,7 +22,7 @@ public class PayCommand implements Command {
     private static final String EXECUTE_STARTS = "PayCommand : execute";
     private static final String SELECTED_ORDER_ID_PARAM = "selectedOrderId";
     private static final String USER_PARAM = "user";
-    private static final String STATUS_VALUE = "оплачен";
+    private static final String STATUS_VALUE = "payed";
     private static final String ORDERS_PARAM = "orders";
 
 

@@ -98,6 +98,7 @@ public class ViewUnusedTypeCars implements Command {
             request.setAttribute(ALL_CARS_PARAM, cars);
             request.setAttribute(COMMAND_PARAM, VIEW_TYPE_UNUSED_VALUE);
             request.setAttribute(CAR_TYPE_PARAM, carType);
+            request.setAttribute(PAGE_NUMBER_PARAM, pageNumber);
             LOG.debug(EXECUTE_ENDS);
             return PageName.ALL_CARS;
         } catch (ServiceException ex) {

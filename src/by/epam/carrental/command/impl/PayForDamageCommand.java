@@ -20,7 +20,7 @@ public class PayForDamageCommand implements Command {
 
     private static final Logger LOG = LogManager.getLogger(PayCommand.class.getName());
     private static final String EXECUTE_STARTS = "PayForDamageCommand : execute";
-    private static final String STATUS_VALUE = "закрыт";
+    private static final String STATUS_VALUE = "closed";
     private static final String SELECTED_ORDER_ID_PARAM = "selectedOrderId";
     private static final String USER_PARAM = "user";
     private static final String ORDERS_PARAM = "orders";

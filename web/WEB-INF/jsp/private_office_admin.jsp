@@ -89,22 +89,22 @@
 
     <hr/>
 
-    <div class="divMenu">
+    <div class="divSubMenu">
         <form action="Controller" method="get">
             <input type="hidden" name="command" value="view-orders-admin">
-            <input type="submit" value="${viewOrders}">
+            <input type="submit" value="${viewOrders}" class="buttonSubMenu">
         </form>
     </div>
-    <div class="divMenu">
+    <div class="divSubMenu">
         <form action="Controller" method="get">
             <input type="hidden" name="command" value="view-all-users">
-            <input type="submit" value="${viewUsers}">
+            <input type="submit" value="${viewUsers}" class="buttonSubMenu">
         </form>
     </div>
-    <div class="divMenu">
+    <div class="divSubMenu">
         <form action="Controller" method="get">
             <input type="hidden" name="command" value="to-add-car">
-            <input type="submit" value="${addCar}">
+            <input type="submit" value="${addCar}" class="buttonSubMenu">
         </form>
     </div>
 

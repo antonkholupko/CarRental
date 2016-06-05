@@ -35,7 +35,7 @@ public class CarDAOdb implements CarDAO {
             "FROM cars INNER JOIN models ON models.model = cars.model INNER JOIN cartypes ON cars.type = cartypes.type " +
             "WHERE carID NOT IN " +
             "(SELECT carID FROM orders WHERE " +
-            "(NOT (orders.status='отменен' OR orders.status='отклонен' OR orders.status='закрыт' OR orders.status='возвращен')) AND " +
+            "(NOT (orders.status='canceled' OR orders.status='rejected' OR orders.status='closed' OR orders.status='returned')) AND " +
             "((? BETWEEN orders.supposedFromDate AND orders.supposedToDate) OR " +
             "(? BETWEEN orders.supposedFromDate AND orders.supposedToDate) OR " +
             "(? BETWEEN orders.supposedFromDate AND orders.supposedToDate) OR" +
@@ -49,7 +49,7 @@ public class CarDAOdb implements CarDAO {
             "FROM cars INNER JOIN models ON models.model = cars.model INNER JOIN cartypes ON cars.type = cartypes.type " +
             "WHERE carID NOT IN " +
             "(SELECT carID FROM orders WHERE " +
-            "(NOT (orders.status='отменен' OR orders.status='отклонен' OR orders.status='закрыт' OR orders.status='возвращен')) AND " +
+            "(NOT (orders.status='canceled' OR orders.status='rejected' OR orders.status='closed' OR orders.status='returned')) AND " +
             "((? BETWEEN orders.supposedFromDate AND orders.supposedToDate) OR " +
             "(? BETWEEN orders.supposedFromDate AND orders.supposedToDate) OR " +
             "(? BETWEEN orders.supposedFromDate AND orders.supposedToDate) OR" +
@@ -72,7 +72,7 @@ public class CarDAOdb implements CarDAO {
     private static final String COUNT_UNUSED_TYPE_CARS = "SELECT COUNT(carID) FROM cars " +
             "WHERE carID NOT IN " +
             "(SELECT carID FROM orders WHERE " +
-            "(NOT (orders.status='отменен' OR orders.status='отклонен' OR orders.status='закрыт' OR orders.status='возвращен')) AND " +
+            "(NOT (orders.status='canceled' OR orders.status='rejected' OR orders.status='closed' OR orders.status='returned')) AND " +
             "((? BETWEEN orders.supposedFromDate AND orders.supposedToDate) OR " +
             "(? BETWEEN orders.supposedFromDate AND orders.supposedToDate) OR " +
             "(? BETWEEN orders.supposedFromDate AND orders.supposedToDate) OR" +
@@ -81,7 +81,7 @@ public class CarDAOdb implements CarDAO {
             "((orders.supposedFromDate BETWEEN ? AND ?)AND(orders.supposedToDate " +
             "BETWEEN ? AND ?)))) AND cars.type=?;";
 
-    private static final String CAR_FREE_STATUS = "свободна";
+    private static final String CAR_FREE_STATUS = "unused";
     private static final String TAKE_MARKS_MSG = "CarDAOdb : takeMarks";
     private static final String TAKE_MODELS_MSG = "CarDAOdb : takeModels";
     private static final String TAKE_CAR_TYPES_MSG = "CarDAOdb : takeCarTypes";

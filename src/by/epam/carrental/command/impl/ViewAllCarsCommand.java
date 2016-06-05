@@ -50,6 +50,7 @@ public class ViewAllCarsCommand implements Command {
             request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
             request.getSession().setAttribute(ALL_CARS_PARAM, cars);
             request.getSession().setAttribute(ALL_TYPES_PARAM, carTypes);
+            request.setAttribute(PAGE_NUMBER_PARAM, pageNumber);
             return PageName.ALL_CARS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

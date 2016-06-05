@@ -45,6 +45,7 @@
     <fmt:message bundle="${locale}" key="local.searchForFreeCars" var="searchForFree"/>
     <fmt:message bundle="${locale}" key="local.selectType" var="selectType"/>
     <fmt:message bundle="${locale}" key="local.noCars" var="mNoCars" />
+    <fmt:message bundle="${locale}" key="local.mPage" var="mPage"/>
 </head>
 <body>
 <header>
@@ -168,7 +169,7 @@
         <form action="Controller" method="get">
 
             <c:forEach var="type" items="${allTypes}">
-                <div class="divMenu">
+                <div class="divSubMenu">
                     <input type="radio" name="carType" value="${type.type}">
                     <c:if test="${type.type.equals('Cabriolet')}">
                         ${cabriolet}
@@ -220,53 +221,53 @@
             <input type="time" value="${sessionScope.supposedTimeTo}" name="supposedTimeTo" required/>
 
             <br/>
-
+            <br/>
             <input type="hidden" name="command" value="view-type-unused"/>
-            <input type="submit" value="${searchForFree}">
+            <input type="submit" value="${searchForFree}" class="buttonSubMenu">
 
 
         </form>
     </div>
 
     <c:forEach var="type" items="${allTypes}">
-        <div class="divMenu">
+        <div class="divSubMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="view-type"/>
                 <input type="hidden" name="carType" value="${type.type}"/>
                 <c:if test="${type.type.equals('Cabriolet')}">
-                    <input type="submit" value="${cabriolet}"/>
+                    <input type="submit" value="${cabriolet}" class="buttonSubMenu"/>
                 </c:if>
                 <c:if test="${type.type.equals('Cargo')}">
-                    <input type="submit" value="${cargo}"/>
+                    <input type="submit" value="${cargo}" class="buttonSubMenu"/>
                 </c:if>
                 <c:if test="${type.type.equals('Coupe')}">
-                    <input type="submit" value="${coupe}"/>
+                    <input type="submit" value="${coupe}" class="buttonSubMenu"/>
                 </c:if>
                 <c:if test="${type.type.equals('Jeep')}">
-                    <input type="submit" value="${jeep}"/>
+                    <input type="submit" value="${jeep}" class="buttonSubMenu"/>
                 </c:if>
                 <c:if test="${type.type.equals('Small')}">
-                    <input type="submit" value="${small}"/>
+                    <input type="submit" value="${small}" class="buttonSubMenu"/>
                 </c:if>
                 <c:if test="${type.type.equals('Middle')}">
-                    <input type="submit" value="${middle}"/>
+                    <input type="submit" value="${middle}" class="buttonSubMenu"/>
                 </c:if>
                 <c:if test="${type.type.equals('Minibus')}">
-                    <input type="submit" value="${minibus}"/>
+                    <input type="submit" value="${minibus}" class="buttonSubMenu"/>
                 </c:if>
                 <c:if test="${type.type.equals('Premium')}">
-                    <input type="submit" value="${premium}"/>
+                    <input type="submit" value="${premium}" class="buttonSubMenu"/>
                 </c:if>
                 <c:if test="${type.type.equals('Vintage')}">
-                    <input type="submit" value="${vintage}"/>
+                    <input type="submit" value="${vintage}" class="buttonSubMenu"/>
                 </c:if>
             </form>
         </div>
     </c:forEach>
-    <div class="divMenu">
+    <div class="divSubMenu">
         <form action="Controller" method="get">
             <input type="hidden" name="command" value="view-all-cars"/>
-            <input type="submit" value="${all}"/>
+            <input type="submit" value="${all}" class="buttonSubMenu"/>
         </form>
     </div>
 
@@ -322,13 +323,16 @@
 
 
     <c:if test="${requestScope.command == null}">
-
+        <p>
+            <c:out value="${mPage}: ${requestScope.pageNumber}"/>
+        </p>
+        <br/>
         <c:forEach var="i" begin="1" end="${amountPages}">
-            <div class="divMenu">
+            <div class="divSubMenu">
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="view-all-cars">
                     <input type="hidden" name="pageNumber" value="${i}"/>
-                    <input type="submit" value="${i}"/>
+                    <input type="submit" value="${i}" class="button2"/>
                 </form>
             </div>
         </c:forEach>
@@ -336,13 +340,17 @@
     </c:if>
 
     <c:if test="${requestScope.command != null}">
+        <p>
+            <c:out value="${mPage}: ${requestScope.pageNumber}"/>
+        </p>
+        <br/>
         <c:forEach var="i" begin="1" end="${amountPages}">
-            <div class="divMenu">
+            <div class="divSubMenu">
                 <form action="Controller" method="get">
                     <input type="hidden" name="carType" value="${requestScope.carType}">
                     <input type="hidden" name="command" value="${requestScope.command}">
                     <input type="hidden" name="pageNumber" value="${i}"/>
-                    <input type="submit" value="${i}"/>
+                    <input type="submit" value="${i}" class="button2"/>
                 </form>
             </div>
         </c:forEach>

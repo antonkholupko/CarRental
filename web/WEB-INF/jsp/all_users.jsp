@@ -20,17 +20,17 @@
     <fmt:message bundle="${locale}" key="local.cars" var="cars"/>
     <fmt:message bundle="${locale}" key="local.info" var="info"/>
     <fmt:message bundle="${locale}" key="local.privateOffice" var="privateOffice"/>
-    <fmt:message bundle="${locale}" key="local.mUsers" var="mUsers" />
-    <fmt:message bundle="${locale}" key="local.userNumber" var="nUser" />
-    <fmt:message bundle="${locale}" key="local.mLogin" var="mLogin" />
-    <fmt:message bundle="${locale}" key="local.mType" var="mType" />
-    <fmt:message bundle="${locale}" key="local.mLastName" var="mLastName" />
-    <fmt:message bundle="${locale}" key="local.mFirstName" var="mFirstName" />
-    <fmt:message bundle="${locale}" key="local.mPhone" var="mPhone" />
-    <fmt:message bundle="${locale}" key="local.mUserType" var="mUserType" />
-    <fmt:message bundle="${locale}" key="local.mAdminType" var="mAdminType" />
-    <fmt:message bundle="${locale}" key="local.mDetails" var="mDetails" />
-    <fmt:message bundle="${locale}" key="local.toPrivOffice" var="toPrivOffice" />
+    <fmt:message bundle="${locale}" key="local.mUsers" var="mUsers"/>
+    <fmt:message bundle="${locale}" key="local.userNumber" var="nUser"/>
+    <fmt:message bundle="${locale}" key="local.mLogin" var="mLogin"/>
+    <fmt:message bundle="${locale}" key="local.mType" var="mType"/>
+    <fmt:message bundle="${locale}" key="local.mLastName" var="mLastName"/>
+    <fmt:message bundle="${locale}" key="local.mFirstName" var="mFirstName"/>
+    <fmt:message bundle="${locale}" key="local.mPhone" var="mPhone"/>
+    <fmt:message bundle="${locale}" key="local.mUserType" var="mUserType"/>
+    <fmt:message bundle="${locale}" key="local.mAdminType" var="mAdminType"/>
+    <fmt:message bundle="${locale}" key="local.mDetails" var="mDetails"/>
+    <fmt:message bundle="${locale}" key="local.toPrivOffice" var="toPrivOffice"/>
 </head>
 <body>
 <header>
@@ -96,17 +96,18 @@
 
     <hr/>
 
-    <div class="divMenu">
+    <div class="divSubMenu">
         <form action="Controller" method="get">
             <input type="hidden" name="command" value="to-priv-office-admin">
-            <input type="submit" value="${toPrivOffice}">
+            <input type="submit" value="${toPrivOffice}" class="buttonSubMenu">
         </form>
     </div>
 
     <hr/>
 
-    <article>
-        <c:forEach var="user" items="${allUsers}">
+
+    <c:forEach var="user" items="${allUsers}">
+        <article>
             <div class="divOrders">
                 <table border="1" width="100%">
                     <thead>
@@ -139,14 +140,20 @@
                     </tr>
                     </tbody>
                 </table>
-                <form action="Controller" method="get">
-                    <input type="hidden" name="selectedUserId" value="${user.id}">
-                    <input type="hidden" name="command" value="view-user">
-                    <input type="submit" value="${mDetails}" class="button2"/>
-                </form>
+                <br/>
+
+                <div class="divSubMenu">
+                    <form action="Controller" method="get">
+                        <input type="hidden" name="selectedUserId" value="${user.id}">
+                        <input type="hidden" name="command" value="view-user">
+                        <input type="submit" value="${mDetails}" class="buttonSubMenu"/>
+                    </form>
+                </div>
             </div>
-        </c:forEach>
-    </article>
+        </article>
+        <br/>
+    </c:forEach>
+
 </section>
 <footer>
     <p>&copy; 2016 Car rental. All rights reserved.</p>

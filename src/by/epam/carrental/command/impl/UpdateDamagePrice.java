@@ -4,8 +4,8 @@ import by.epam.carrental.command.Command;
 import by.epam.carrental.command.PageName;
 import by.epam.carrental.command.exception.CommandException;
 import by.epam.carrental.entity.Order;
-import by.epam.carrental.service.Validator;
 import by.epam.carrental.service.OrderService;
+import by.epam.carrental.service.Validator;
 import by.epam.carrental.service.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +22,7 @@ public class UpdateDamagePrice implements Command {
     private static final String EXECUTE_STARTS = "UpdateDamagePrice : execute";
     private static final String ORDER_ID_PARAM = "orderId";
     private static final String DAMAGE_PRICE_PARAM = "damage-price";
-    private static final String STATUS_VALUE = "ожидаетКомп";
+    private static final String STATUS_VALUE = "expectsComp";
     private static final String ORDERS_PARAM = "orders";
     private static final String INV_PRICE_PARAM = "invalidDamagePrice";
     private static final String SELECTED_ORDER_PARAM = "selectedOrder";

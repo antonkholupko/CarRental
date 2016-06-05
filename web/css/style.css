@@ -53,6 +53,20 @@ p {
     font-size: 15px;
 }
 
+table, td, th {
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 15px;
+}
+
 .imgSmall {
     width: 300px;
     height: 200px;
@@ -125,6 +139,12 @@ p {
     border: none;
 }
 
+.divSubMenu {
+    height: auto;
+    text-align: center;
+    display: inline-block;
+}
+
 .button {
     background-color: #444;
     color: white;
@@ -147,7 +167,7 @@ p {
 }
 
 .button2 {
-    font-size: 25px;
+    font-size: 18px;
     background-color: #ddd;
     color: #444;
     font-weight: 600;
@@ -160,10 +180,79 @@ p {
 }
 
 .button2:hover {
-    background: grey;
+    background: #444;
+    color: #ddd
 }
 
 .button2:active {
+    background: white;
+}
+
+.buttonPurchase {
+    font-size: 25px;
+    background-color: lightgreen;
+    color: #444;
+    font-weight: 600;
+    text-decoration: none;
+    user-select: none;
+    outline: none;
+    border: 2px solid;
+    border-radius: 1px;
+    transition: 0.2s;
+}
+
+.buttonPurchase:hover {
+    background: #444;
+    color: lightgreen;
+}
+
+.buttonPurchase:active {
+    background: white;
+}
+
+.buttonDelete {
+    font-size: 25px;
+    background-color: lightcoral;
+    color: #444;
+    font-weight: 600;
+    text-decoration: none;
+    user-select: none;
+    outline: none;
+    border: 2px solid;
+    border-radius: 1px;
+    transition: 0.2s;
+}
+
+.buttonDelete:hover {
+    background: #444;
+    color: lightcoral;
+}
+
+.buttonDelete:active {
+    background: white;
+}
+
+.buttonSubMenu {
+
+    font-size: 20px;
+    background-color: lightblue;
+    color: #444;
+    font-weight: 600;
+    text-decoration: none;
+    user-select: none;
+    outline: none;
+    border: 2px solid;
+    border-radius: 1px;
+    transition: 0.2s;
+
+}
+
+.buttonSubMenu:hover {
+    background: #444;
+    color: lightblue;
+}
+
+.buttonSubMenu:active {
     background: white;
 }
 
@@ -240,10 +329,11 @@ p {
 
 .divDateTime {
     border: 2px solid #444;
-    background-color: #ffff99;
+    background-color: lightyellow;
 }
 
 .divMsgWelcome {
     background-color: #ffff99;
     font-size: 20px;
 }
+

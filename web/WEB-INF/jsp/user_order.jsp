@@ -56,6 +56,7 @@
     <fmt:message bundle="${locale}" key="local.diesel" var="mDiesel"/>
     <fmt:message bundle="${locale}" key="local.electricity" var="mElectricity"/>
     <fmt:message bundle="${locale}" key="local.mToAllOrders" var="mToAllOrders" />
+    <fmt:message bundle="${locale}" key="local.mOrder" var="mOrder"/>
 </head>
 <body>
 <header>
@@ -124,48 +125,50 @@
 </header>
 <section>
 
+    <h2>${mOrder}</h2>
+
     <hr/>
 
-    <div class="divMenu">
+    <div class="divSubMenu">
         <form action="Controller" method="get">
             <input type="hidden" name="selectedOrderId" value="${sessionScope.selectedOrder.id}">
             <input type="hidden" name="command" value="view-orders-user">
-            <input type="submit" value="${mToAllOrders}"/>
+            <input type="submit" value="${mToAllOrders}" class="buttonSubMenu"/>
         </form>
     </div>
 
-    <div class="divMenu">
+    <div class="divSubMenu">
         <form action="Controller" method="get">
             <input type="hidden" name="selectedOrderId" value="${sessionScope.selectedOrder.id}">
             <input type="hidden" name="command" value="view-order-user">
-            <input type="submit" value="${mUpdate}"/>
+            <input type="submit" value="${mUpdate}" class="buttonSubMenu"/>
         </form>
     </div>
 
-    <c:if test="${sessionScope.selectedOrder.status.equals('новый')}">
-        <div class="divMenu">
+    <c:if test="${sessionScope.selectedOrder.status.equals('new')}">
+        <div class="divSubMenu">
             <form action="Controller" method="post">
                 <input type="hidden" name="command" value="cancel-order"/>
-                <input type="submit" value="${mCancelOrder}"/>
+                <input type="submit" value="${mCancelOrder}" class="buttonSubMenu"/>
             </form>
         </div>
     </c:if>
-    <c:if test="${sessionScope.selectedOrder.status.equals('принят')}">
-        <div class="divMenu">
+    <c:if test="${sessionScope.selectedOrder.status.equals('accepted')}">
+        <div class="divSubMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="payment-type" value="order"/>
                 <input type="hidden" name="command" value="to-payment-page"/>
-                <input type="submit" value="${mPayForOrder}"/>
+                <input type="submit" value="${mPayForOrder}" class="buttonSubMenu"/>
             </form>
         </div>
     </c:if>
 
-    <c:if test="${sessionScope.selectedOrder.damagePrice != 0 && sessionScope.selectedOrder.status.equals('ожидаетКомп')}">
-        <div class="divMenu">
+    <c:if test="${sessionScope.selectedOrder.damagePrice != 0 && sessionScope.selectedOrder.status.equals('expectsComp')}">
+        <div class="divSubMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="payment-type" value="damage"/>
                 <input type="hidden" name="command" value="to-payment-page"/>
-                <input type="submit" value="${mPayForDmg}"/>
+                <input type="submit" value="${mPayForDmg}" class="buttonSubMenu"/>
             </form>
         </div>
     </c:if>
@@ -176,31 +179,31 @@
 
     <p>
         ${mStatus}:
-        <c:if test="${sessionScope.selectedOrder.status.equals('новый')}">
+            <c:if test="${sessionScope.selectedOrder.status.equals('new')}">
             ${sNew}
         </c:if>
-        <c:if test="${sessionScope.selectedOrder.status.equals('отменен')}">
+            <c:if test="${sessionScope.selectedOrder.status.equals('canceled')}">
             ${sCanceld}
         </c:if>
-        <c:if test="${sessionScope.selectedOrder.status.equals('отклонен')}">
+            <c:if test="${sessionScope.selectedOrder.status.equals('rejected')}">
             ${sRejected}
         </c:if>
-        <c:if test="${sessionScope.selectedOrder.status.equals('принят')}">
+            <c:if test="${sessionScope.selectedOrder.status.equals('accepted')}">
             ${Accepted}
         </c:if>
-        <c:if test="${sessionScope.selectedOrder.status.equals('оплачен')}">
+            <c:if test="${sessionScope.selectedOrder.status.equals('payed')}">
             ${Paid}
         </c:if>
-        <c:if test="${sessionScope.selectedOrder.status.equals('доставлен')}">
+            <c:if test="${sessionScope.selectedOrder.status.equals('delivered')}">
             ${Delivered}
         </c:if>
-        <c:if test="${sessionScope.selectedOrder.status.equals('возвращен')}">
+            <c:if test="${sessionScope.selectedOrder.status.equals('returned')}">
             ${Returned}
         </c:if>
-        <c:if test="${sessionScope.selectedOrder.status.equals('ожидаетКомп')}">
+            <c:if test="${sessionScope.selectedOrder.status.equals('expectsComp')}">
             ${ExpectsComp}
         </c:if>
-        <c:if test="${sessionScope.selectedOrder.status.equals('закрыт')}">
+            <c:if test="${sessionScope.selectedOrder.status.equals('closed')}">
             ${Closed}
         </c:if>
     </p>
@@ -217,22 +220,22 @@
     <p>${mModel}: <c:out value="${sessionScope.selectedOrder.car.model}"/></p>
 
     <p>${mFuel}:
-        <c:if test="${sessionScope.selectedOrder.car.fuel.equals('бензин')}">
+        <c:if test="${sessionScope.selectedOrder.car.fuel.equals('petrol')}">
             ${mPetrol}
         </c:if>
-        <c:if test="${sessionScope.selectedOrder.car.fuel.equals('дизель')}">
+        <c:if test="${sessionScope.selectedOrder.car.fuel.equals('diesel')}">
             ${mDiesel}
         </c:if>
-        <c:if test="${sessionScope.selectedOrder.car.fuel.equals('электричество')}">
+        <c:if test="${sessionScope.selectedOrder.car.fuel.equals('electricity')}">
             ${mElectricity}
         </c:if>
     </p>
 
     <p>${mTransmission}:
-        <c:if test="${sessionScope.selectedOrder.car.transmission.equals('АКПП')}">
+        <c:if test="${sessionScope.selectedOrder.car.transmission.equals('automatic')}">
             ${mAutomatic}
         </c:if>
-        <c:if test="${sessionScope.selectedOrder.car.transmission.equals('МКПП')}">
+        <c:if test="${sessionScope.selectedOrder.car.transmission.equals('mechanic')}">
             ${mMechanic}
         </c:if>
     </p>

@@ -30,7 +30,7 @@
 <fmt:message bundle="${locale}" key="local.type" var="type"/>
 <fmt:message bundle="${locale}" key="local.fuel" var="fuel"/>
 <fmt:message bundle="${locale}" key="local.transmission" var="transmission"/>
-<fmt:message bundle="${locale}" key="local.carInformation" var="info"/>
+<fmt:message bundle="${locale}" key="local.carInformation" var="carInfo"/>
 <fmt:message bundle="${locale}" key="local.forMakeOrderMessage" var="forMakeOrderMessage"/>
 <fmt:message bundle="${locale}" key="local.makeOrder" var="makeOrder"/>
 <fmt:message bundle="${locale}" key="local.cabriolet" var="cabriolet"/>
@@ -201,27 +201,27 @@
                 </p>
 
                 <p>${fuel}:
-                    <c:if test="${sessionScope.selectedCar.fuel.equals('бензин')}">
+                    <c:if test="${sessionScope.selectedCar.fuel.equals('petrol')}">
                         <c:out value="${petrol}"/>
                     </c:if>
-                    <c:if test="${sessionScope.selectedCar.fuel.equals('дизель')}">
+                    <c:if test="${sessionScope.selectedCar.fuel.equals('diesel')}">
                         <c:out value="${diesel}"/>
                     </c:if>
-                    <c:if test="${sessionScope.selectedCar.fuel.equals('электричество')}">
+                    <c:if test="${sessionScope.selectedCar.fuel.equals('electricity')}">
                         <c:out value="${electricity}"/>
                     </c:if>
                 </p>
 
                 <p>${transmission}:
-                    <c:if test="${sessionScope.selectedCar.transmission.equals('АКПП')}">
+                    <c:if test="${sessionScope.selectedCar.transmission.equals('automatic')}">
                         <c:out value="${automatic}"/>
                     </c:if>
-                    <c:if test="${sessionScope.selectedCar.transmission.equals('МКПП')}">
+                    <c:if test="${sessionScope.selectedCar.transmission.equals('mechanic')}">
                         <c:out value="${mechanic}"/>
                     </c:if>
                 </p>
 
-                <p>${info}: <c:out value="${sessionScope.selectedCar.info}"/></p>
+                <p>${carInfo}: <c:out value="${sessionScope.selectedCar.info}"/></p>
 
                 <c:if test="${sessionScope.user.type.equals('user')}">
                 <div>
@@ -229,7 +229,7 @@
 
                     <form action="Controller" method="post">
                         <input type="hidden" name="command" value="to-make-order">
-                        <input type="submit" value="${makeOrder}" class="button2"/>
+                        <input type="submit" value="${makeOrder}" class="buttonPurchase"/>
                     </form>
                 </div>
             </div>
@@ -240,7 +240,7 @@
 
                     <form action="Controller" method="post">
                         <input type="hidden" name="command" value="delete-car">
-                        <input type="submit" value="${deleteCar}">
+                        <input type="submit" value="${deleteCar}" class="buttonDelete">
                     </form>
                 </div>
             </c:if>

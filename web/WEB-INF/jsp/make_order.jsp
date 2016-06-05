@@ -31,6 +31,7 @@
     <fmt:message bundle="${locale}" key="local.mInvalidDate" var="mInvalidDate" />
     <fmt:message bundle="${locale}" key="local.mInvalidPlaces" var="mInvalidPlaces" />
     <fmt:message bundle="${locale}" key="local.makeOrder" var="makeOrder" />
+    <fmt:message bundle="${locale}" key="local.mMakingOrder" var="mMakingOrder"/>
 </head>
 <body>
 <header>
@@ -60,6 +61,12 @@
             <div><input type="submit" value="${logOut}" class="reg"></div>
         </form>
     </div>
+
+    <p>
+        <c:out value="${sessionScope.user.lastName}"/> <c:out value="${sessionScope.user.firstName}"/>
+    </p>
+
+
     <div class="div3">
         <div class="divMenu">
             <form action="Controller" method="get">
@@ -94,7 +101,7 @@
     </div>
 </header>
 <section>
-    <h2>Make order</h2>
+    <h2>${mMakingOrder}</h2>
     <c:if test="${requestScope.addOrderFailed == true}">
         <p>${carIsUsed}</p>
 
@@ -136,7 +143,7 @@
         <p>${mReturnPlace}</p>
         <input type="text" name="returnPlace" value="" maxlength="44"/>
         <input type="hidden" name="command" value="make-order">
-        <input type="submit" value="${makeOrder}"/>
+        <input type="submit" value="${makeOrder}" class="buttonPurchase"/>
     </form>
 
 </section>

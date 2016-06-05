@@ -99,11 +99,11 @@
 
     <hr/>
 
-    <div class="divMenu">
+    <div class="divSubMenu">
         <form action="Controller" method="get">
             <input type="hidden" name="selectedOrderId" value="${sessionScope.selectedOrder.id}">
             <input type="hidden" name="command" value="view-order-user">
-            <input type="submit" value="${mToOrder}"/>
+            <input type="submit" value="${mToOrder}" class="buttonSubMenu"/>
         </form>
     </div>
 
@@ -116,7 +116,7 @@
 
         <form action="Controller" method="post">
             <input type="hidden" name="command" value="pay">
-            <input type="submit" value="${mPayForOrder}" class="button2"/>
+            <input type="submit" value="${mPayForOrder}" class="buttonPurchase"/>
         </form>
     </c:if>
     <c:if test="${sessionScope.paymentType.equals('damage')}">
@@ -126,7 +126,7 @@
 
         <form action="Controller" method="post">
             <input type="hidden" name="command" value="pay-for-damage">
-            <input type="submit" value="${mPayForDmg}" class="button2"/>
+            <input type="submit" value="${mPayForDmg}" class="buttonPurchase"/>
         </form>
     </c:if>
 </section>

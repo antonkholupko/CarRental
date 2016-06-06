@@ -8,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -64,7 +63,6 @@ public class ConnectionPooldb implements IConnectionPool {
 
     public void initPoolData() throws ConnectionPoolException {
         LOG.debug(INIT_MSG);
-        Locale.setDefault(Locale.ENGLISH);
         try {
             Class.forName(driverName);
             givenAwayConQueue = new ArrayBlockingQueue<Connection>(poolSize);
@@ -174,6 +172,22 @@ public class ConnectionPooldb implements IConnectionPool {
         }
         try {
             st.close();
+        } catch (SQLException ex) {
+            LOG.error(CLOSE_CON_EXC);
+            throw new ConnectionPoolException(CLOSE_CON_EXC, ex);
+        }
+    }
+
+    public void closeConnection(Connection con, PreparedStatement ps) throws ConnectionPoolException {
+        LOG.debug(CLOSE_CONNECTION_MSG);
+        try {
+            con.close();
+        } catch (SQLException ex) {
+            LOG.error(CLOSE_CON_EXC);
+            throw new ConnectionPoolException(CLOSE_CON_EXC, ex);
+        }
+        try {
+            ps.close();
         } catch (SQLException ex) {
             LOG.error(CLOSE_CON_EXC);
             throw new ConnectionPoolException(CLOSE_CON_EXC, ex);

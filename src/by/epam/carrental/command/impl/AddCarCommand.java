@@ -5,9 +5,9 @@ import by.epam.carrental.command.PageName;
 import by.epam.carrental.command.exception.CommandException;
 import by.epam.carrental.entity.Car;
 import by.epam.carrental.entity.CarType;
+import by.epam.carrental.service.CarService;
 import by.epam.carrental.service.Validator;
 import by.epam.carrental.service.ValidatorUniqueCar;
-import by.epam.carrental.service.CarService;
 import by.epam.carrental.service.exception.ServiceException;
 import com.sun.org.apache.xml.internal.security.utils.Base64;
 import org.apache.logging.log4j.LogManager;
@@ -17,8 +17,6 @@ import sun.misc.IOUtils;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -100,7 +98,7 @@ public class AddCarCommand implements Command {
                 request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
                 request.getSession().setAttribute(ALL_CARS_PARAM, cars);
                 request.getSession().setAttribute(ALL_TYPES_PARAM, carTypes);
-                request.getSession().setAttribute(CAR_SUCCESSFUL_ADDED_PARAM, true);
+                request.setAttribute(CAR_SUCCESSFUL_ADDED_PARAM, true);
                 return PageName.ALL_CARS;
             } else {
                 return PageName.ADD_CAR;

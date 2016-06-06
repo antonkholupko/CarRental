@@ -43,6 +43,7 @@
     <fmt:message bundle="${locale}" key="local.statusClosed" var="Closed"/>
     <fmt:message bundle="${locale}" key="local.mDetails" var="mDetails"/>
     <fmt:message bundle="${locale}" key="local.noOrders" var="mNoOrders"/>
+    <fmt:message bundle="${locale}" key="local.mPage" var="mPage"/>
 </head>
 <body>
 <header>
@@ -53,14 +54,14 @@
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="en">
-                    <input type="submit" value="${en_button}" class="button">
+                    <input type="submit" value="${en_button}" class="buttonLocalReg">
                 </form>
             </div>
             <div>
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="ru">
-                    <input type="submit" value="${ru_button}" class="button">
+                    <input type="submit" value="${ru_button}" class="buttonLocalReg">
                 </form>
             </div>
         </div>
@@ -69,7 +70,7 @@
         <form action="Controller" method="post">
             <input type="hidden" name="command" value="log-out-user">
 
-            <div><input type="submit" value="${logOut}" class="reg"></div>
+            <div><input type="submit" value="${logOut}" class="buttonLogOut"></div>
         </form>
     </div>
     <p>
@@ -175,7 +176,7 @@
                             <c:if test="${order.status.equals('expectsComp')}">
                                 ${ExpectsComp}
                             </c:if>
-                            <c:if test="${order.status.equals('закрыт')}">
+                            <c:if test="${order.status.equals('closed')}">
                                 ${Closed}
                             </c:if>
                         </td>
@@ -197,6 +198,22 @@
         </article>
         <br/>
     </c:forEach>
+
+    <p>
+        <c:out value="${mPage}: ${requestScope.pageNumber}"/>
+    </p>
+
+    <br/>
+    <c:forEach var="i" begin="1" end="${amountPages}">
+        <div class="divSubMenu">
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="view-orders-admin">
+                <input type="hidden" name="pageNumber" value="${i}"/>
+                <input type="submit" value="${i}" class="button2"/>
+            </form>
+        </div>
+    </c:forEach>
+
 
 </section>
 <footer>

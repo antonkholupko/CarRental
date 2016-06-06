@@ -45,7 +45,7 @@ public class ViewTypeCommand implements Command {
             amountPages = service.countPageAmountTypeCars(type, AMOUNT_CARS_ON_PAGE);
             request.getSession().setAttribute(ALL_TYPES_PARAM, carTypes);
             request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
-            request.setAttribute(ALL_CARS_PARAM, cars);
+            request.getSession().setAttribute(ALL_CARS_PARAM, cars);
             request.setAttribute(COMMAND_PARAM, COMMAND_VALUE);
             request.setAttribute(CAR_TYPE_PARAM, type);
             request.setAttribute(PAGE_NUBMER_PARAM, pageNumber);

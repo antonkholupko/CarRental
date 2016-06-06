@@ -80,6 +80,12 @@ public class CarDAOdb implements CarDAO {
             "AND (? BETWEEN orders.supposedFromDate AND orders.supposedToDate)) OR " +
             "((orders.supposedFromDate BETWEEN ? AND ?)AND(orders.supposedToDate " +
             "BETWEEN ? AND ?)))) AND cars.type=?;";
+    private static final String TAKE_CAR_BY_ID_QUERY = "SELECT models.mark, cars.model, cars.govNumber, " +
+            "cars.year, cars.transmission, cars.type, cars.status, cars.fuel, cars.info, cars.image, cartypes.price " +
+            "FROM cars " +
+            "INNER JOIN models ON models.model = cars.model " +
+            "INNER JOIN cartypes ON cars.type = cartypes.type " +
+            "WHERE carID=?;";
 
     private static final String CAR_FREE_STATUS = "unused";
     private static final String TAKE_MARKS_MSG = "CarDAOdb : takeMarks";
@@ -95,6 +101,7 @@ public class CarDAOdb implements CarDAO {
     private static final String COUNT_ALL_CARS_MSG = "CarDAOdb : countAllCars";
     private static final String COUNT_ALL_TYPE_CARS_MSG = "CarDAOdb : countAllCars";
     private static final String COUNT_UNUSED_TYPE_CARS_MSG = "CarDAOdb : countUnusedTypeCars";
+    private static final String TAKE_CAR_BY_ID = "CarDAOdb : takeCarById";
 
     @Override
     public List<String> takeMarks() throws DAOException {
@@ -547,6 +554,38 @@ public class CarDAOdb implements CarDAO {
             } catch (ConnectionPoolException ex) {
                 throw new DAOException(ex);
             }
+        }
+    }
+
+    public Car takeCarById(int id) throws DAOException {
+        LOG.debug(TAKE_CAR_BY_ID);
+        Car car = new Car();
+        Connection connection = null;
+        ConnectionPooldb connectionPooldb = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            connectionPooldb = ConnectionPooldb.getInstance();
+            connection = connectionPooldb.takeConnection();
+            ps = connection.prepareStatement(TAKE_CAR_BY_ID_QUERY);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                car.setMark(rs.getString(1));
+                car.setModel(rs.getString(2));
+                car.setGovNumber(rs.getString(3));
+                car.setYear(rs.getString(4));
+                car.setTransmission(rs.getString(5));
+                car.setType(rs.getString(6));
+                car.setStatus(rs.getString(7));
+                car.setFuel(rs.getString(8));
+                car.setInfo(rs.getString(9));
+                car.setImage(Base64.encode(rs.getBytes(10)));
+                car.setPrice(rs.getDouble(11));
+            }
+            return car;
+        } catch (SQLException | ConnectionPoolException ex) {
+            throw new DAOException(ex);
         }
     }
 

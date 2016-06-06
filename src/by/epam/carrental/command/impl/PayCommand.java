@@ -24,11 +24,17 @@ public class PayCommand implements Command {
     private static final String USER_PARAM = "user";
     private static final String STATUS_VALUE = "payed";
     private static final String ORDERS_PARAM = "orders";
+    private static final String PAGE_NUMBER_PARAM = "pageNumber";
+    private static final String AMOUNT_PAGES_PARAM = "amountPages";
+    private static final String SUCCESSFUL_PAYMENT = "successfulPayment";
 
+    private static final int AMOUNT_ORDERS_ON_PAGE = 4;
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug(EXECUTE_STARTS);
+        int amountPages = 0;
+        int pageNumber = 1;
         User user = null;
         int orderId = (Integer) request.getSession().getAttribute(SELECTED_ORDER_ID_PARAM);
         user = (User) request.getSession().getAttribute(USER_PARAM);
@@ -37,9 +43,13 @@ public class PayCommand implements Command {
         Order order = null;
         List<Order> orders = null;
         try {
+            amountPages = service.countPageAmountUserOrders(user.getId(), AMOUNT_ORDERS_ON_PAGE);
             service.updateStatusById(STATUS_VALUE, orderId);
-            orders = service.findOrdersByUserId(userId);
+            orders = service.findOrdersByUserId(userId, pageNumber, AMOUNT_ORDERS_ON_PAGE);
             request.getSession().setAttribute(ORDERS_PARAM, orders);
+            request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
+            request.setAttribute(PAGE_NUMBER_PARAM, pageNumber);
+            request.setAttribute(SUCCESSFUL_PAYMENT, true);
             return PageName.USER_ORDERS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

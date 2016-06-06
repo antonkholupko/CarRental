@@ -58,6 +58,10 @@ table, td, th {
     text-align: left;
 }
 
+th {
+    background-color: aliceblue;
+}
+
 table {
     border-collapse: collapse;
     width: 100%;
@@ -65,6 +69,10 @@ table {
 
 th, td {
     padding: 15px;
+}
+
+.articleForTables {
+    background-color: whitesmoke;
 }
 
 .imgSmall {
@@ -139,6 +147,14 @@ th, td {
     border: none;
 }
 
+.buttonMenu:hover {
+    color: lightblue;
+}
+
+.buttonMenu:active {
+    color: aliceblue;
+}
+
 .divSubMenu {
     height: auto;
     text-align: center;
@@ -166,6 +182,76 @@ th, td {
     background: white;
 }
 
+.buttonLocalReg {
+    background-color: #444;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    user-select: none;
+    outline: none;
+    border: 2px solid white;
+    border-radius: 1px;
+    transition: 0.2s;
+    margin-top: 3px;
+}
+
+.buttonLocalReg:hover {
+    background: #444;
+    border: 2px solid lightblue;
+    color: lightblue;
+}
+
+.buttonLocalReg:active {
+    background: lightblue;
+    color: #444;
+    border: 2px solid #444;
+
+}
+
+.buttonSignIn {
+    background-color: #444;
+    color: yellowgreen;
+    font-weight: 600;
+    text-decoration: none;
+    user-select: none;
+    outline: none;
+    border: 2px solid yellowgreen;
+    border-radius: 1px;
+    transition: 0.2s;
+    margin-top: 3px;
+}
+
+.buttonSignIn:hover {
+    background: yellowgreen;
+    color: #444;
+}
+
+.buttonSignIn:active {
+    background: grey;
+}
+
+.buttonLogOut {
+    background-color: #444;
+    color: tomato;
+    font-weight: 600;
+    text-decoration: none;
+    user-select: none;
+    outline: none;
+    border: 2px solid tomato;
+    border-radius: 1px;
+    transition: 0.2s;
+    margin-top: 3px;
+}
+
+.buttonLogOut:hover {
+    background: tomato;
+    color: #444;
+}
+
+.buttonLogOut:active {
+    background: grey;
+}
+
 .button2 {
     font-size: 18px;
     background-color: #ddd;
@@ -190,7 +276,7 @@ th, td {
 
 .buttonPurchase {
     font-size: 25px;
-    background-color: lightgreen;
+    background-color: yellowgreen;
     color: #444;
     font-weight: 600;
     text-decoration: none;
@@ -203,7 +289,7 @@ th, td {
 
 .buttonPurchase:hover {
     background: #444;
-    color: lightgreen;
+    color: yellowgreen;
 }
 
 .buttonPurchase:active {
@@ -212,7 +298,7 @@ th, td {
 
 .buttonDelete {
     font-size: 25px;
-    background-color: lightcoral;
+    background-color: tomato;
     color: #444;
     font-weight: 600;
     text-decoration: none;
@@ -225,7 +311,7 @@ th, td {
 
 .buttonDelete:hover {
     background: #444;
-    color: lightcoral;
+    color: tomato;
 }
 
 .buttonDelete:active {
@@ -263,10 +349,21 @@ th, td {
     display: inline-block;
     outline: 2px solid grey;
     margin: 4px;
+    background-color: white;
 }
 
-.divBig {
+.divBigForPhoto {
     text-align: center;
+    width: 600px;
+    height: 400px;
+    display: inline-block;
+    outline: 2px solid grey;
+    margin: 4px;
+}
+
+.divBigForDescription {
+    text-align: center;
+    background-color: white;
     width: 600px;
     height: 400px;
     display: inline-block;
@@ -325,15 +422,27 @@ th, td {
 
 .divOrders {
     border: 2px solid #444;
+
 }
 
 .divDateTime {
     border: 2px solid #444;
-    background-color: lightyellow;
+    background-color: aliceblue;
 }
 
 .divMsgWelcome {
-    background-color: #ffff99;
-    font-size: 20px;
+    background-color: aliceblue;
+    font-size: 23px;
 }
 
+.invalidMessage {
+    color: red;
+}
+
+.helpMessage {
+    color: blue;
+}
+
+.rightMessage {
+    color: green;
+}

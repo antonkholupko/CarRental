@@ -3,9 +3,9 @@ package by.epam.carrental.command.impl;
 import by.epam.carrental.command.Command;
 import by.epam.carrental.command.PageName;
 import by.epam.carrental.command.exception.CommandException;
-import by.epam.carrental.service.Validator;
 import by.epam.carrental.entity.ValidatorUniqueUser;
 import by.epam.carrental.service.UserService;
+import by.epam.carrental.service.Validator;
 import by.epam.carrental.service.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,13 +44,14 @@ public class RegisterUserCommand implements Command {
     private static final String UNIQUE_LOGIN = "uniqueLogin";
     private static final String UNIQUE_EMAIL = "uniqueEmail";
     private static final String UNIQUE_PASSPORT = "uniquePassport";
-
+    private static final String SUCCESSFUL_REGISTER = "successfulRegister";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
 
         LOG.debug(EXECUTE_STARTS);
         if (validParameters(request)) {
+            request.setAttribute(SUCCESSFUL_REGISTER, true);
             return PageName.INDEX_PAGE;
         } else {
             return PageName.REGISTRATION_PAGE;

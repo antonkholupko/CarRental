@@ -23,6 +23,30 @@
     <fmt:message bundle="${locale}" key="local.viewOrders" var="viewOrders"/>
     <fmt:message bundle="${locale}" key="local.viewUsers" var="viewUsers"/>
     <fmt:message bundle="${locale}" key="local.addCar" var="addCar"/>
+    <fmt:message bundle="${locale}" key="local.statusNew" var="sNew"/>
+    <fmt:message bundle="${locale}" key="local.statusCanceled" var="sCanceld"/>
+    <fmt:message bundle="${locale}" key="local.statusRejected" var="sRejected"/>
+    <fmt:message bundle="${locale}" key="local.statusAccepted" var="Accepted"/>
+    <fmt:message bundle="${locale}" key="local.statusPaid" var="Paid"/>
+    <fmt:message bundle="${locale}" key="local.statusDelivered" var="Delivered"/>
+    <fmt:message bundle="${locale}" key="local.statusReturned" var="Returned"/>
+    <fmt:message bundle="${locale}" key="local.statusExpectsComp" var="ExpectsComp"/>
+    <fmt:message bundle="${locale}" key="local.statusClosed" var="Closed"/>
+    <fmt:message bundle="${locale}" key="local.mDetails" var="mDetails"/>
+    <fmt:message bundle="${locale}" key="local.noOrders" var="mNoOrders"/>
+    <fmt:message bundle="${locale}" key="local.orders" var="mOrders"/>
+    <fmt:message bundle="${locale}" key="local.mLastName" var="mLastName"/>
+    <fmt:message bundle="${locale}" key="local.mFirstName" var="mFirstName"/>
+    <fmt:message bundle="${locale}" key="local.mMiddleName" var="mMiddleName"/>
+    <fmt:message bundle="${locale}" key="local.mark" var="mMark"/>
+    <fmt:message bundle="${locale}" key="local.model" var="mModel"/>
+    <fmt:message bundle="${locale}" key="local.mGovNumber" var="mGovNumber"/>
+    <fmt:message bundle="${locale}" key="local.mStatus" var="mStatus"/>
+    <fmt:message bundle="${locale}" key="local.price" var="price"/>
+    <fmt:message bundle="${locale}" key="local.mDamagePrice" var="mDmgPrice"/>
+    <fmt:message bundle="${locale}" key="local.mOrderNumber" var="mOrderNumber"/>
+    <fmt:message bundle="${locale}" key="local.orders" var="myOrders"/>
+    <fmt:message bundle="${locale}" key="local.viewOrders" var="viewAllOrders"/>
 </head>
 <body>
 <header>
@@ -33,14 +57,14 @@
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="en">
-                    <input type="submit" value="${en_button}" class="button">
+                    <input type="submit" value="${en_button}" class="buttonLocalReg">
                 </form>
             </div>
             <div>
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="ru">
-                    <input type="submit" value="${ru_button}" class="button">
+                    <input type="submit" value="${ru_button}" class="buttonLocalReg">
                 </form>
             </div>
         </div>
@@ -49,7 +73,7 @@
         <form action="Controller" method="post">
             <input type="hidden" name="command" value="log-out-user">
 
-            <div><input type="submit" value="${logOut}" class="reg"></div>
+            <div><input type="submit" value="${logOut}" class="buttonLogOut"></div>
         </form>
     </div>
     <p>
@@ -114,6 +138,97 @@
         <c:out value="${sessionScope.user.firstName}"/>
         <c:out value="${sessionScope.user.middleName}"/>,
         ${welcomeAdmin}.</p>
+
+    <br/>
+    <hr/>
+    <h2>${myOrders}</h2>
+    <br/>
+
+    <c:if test="${requestScope.noOrders == true }">
+        <p>${mNoOrders}</p>
+    </c:if>
+
+    <article class="articleForTables">
+        <c:forEach var="order" items="${orders}">
+            <article>
+                <div class="divOrders">
+
+                    <table border="1" width="100%">
+                        <thead>
+                        <tr>
+                            <th>${mOrderNumber}</th>
+                            <th>${mLastName}</th>
+                            <th>${mFirstName}</th>
+                            <th>${mMiddleName}</th>
+                            <th>${mMark}</th>
+                            <th>${mModel}</th>
+                            <th>${mGovNumber}</th>
+                            <th>${mStatus}</th>
+                            <th>${price}</th>
+                            <th>${mDmgPrice}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><c:out value="${order.id}"/></td>
+                            <td><c:out value="${order.user.lastName}"/></td>
+                            <td><c:out value="${order.user.firstName}"/></td>
+                            <td><c:out value="${order.user.middleName}"/></td>
+                            <td><c:out value="${order.car.mark}"/></td>
+                            <td><c:out value="${order.car.model}"/></td>
+                            <td><c:out value="${order.car.govNumber}"/></td>
+                            <td>
+                                <c:if test="${order.status.equals('new')}">
+                                    ${sNew}
+                                </c:if>
+                                <c:if test="${order.status.equals('canceled')}">
+                                    ${sCanceld}
+                                </c:if>
+                                <c:if test="${order.status.equals('rejected')}">
+                                    ${sRejected}
+                                </c:if>
+                                <c:if test="${order.status.equals('payed')}">
+                                    ${Paid}
+                                </c:if>
+                                <c:if test="${order.status.equals('accepted')}">
+                                    ${Accepted}
+                                </c:if>
+                                <c:if test="${order.status.equals('delivered')}">
+                                    ${Delivered}
+                                </c:if>
+                                <c:if test="${order.status.equals('returned')}">
+                                    ${Returned}
+                                </c:if>
+                                <c:if test="${order.status.equals('expectsComp')}">
+                                    ${ExpectsComp}
+                                </c:if>
+                                <c:if test="${order.status.equals('closed')}">
+                                    ${Closed}
+                                </c:if>
+                            </td>
+                            <td><c:out value="${order.orderPrice}"/></td>
+                            <td><c:out value="${order.damagePrice}"/></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+
+                    <div class="divSubMenu">
+                        <form action="Controller" method="get">
+                            <input type="hidden" name="selectedOrderId" value="${order.id}">
+                            <input type="hidden" name="command" value="view-order-admin">
+                            <input type="submit" value="${mDetails}" class="buttonSubMenu"/>
+                        </form>
+                    </div>
+                </div>
+            </article>
+            <br/>
+        </c:forEach>
+        <form action="Controller" method="get">
+            <input type="hidden" name="command" value="view-orders-admin">
+            <input type="submit" value="${viewAllOrders}>>" class="buttonSubMenu"/>
+        </form>
+    </article>
 </section>
 <footer>
     <p>&copy; 2016 Car rental. All rights reserved.</p>

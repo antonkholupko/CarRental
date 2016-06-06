@@ -37,6 +37,7 @@
     <fmt:message bundle="${locale}" key="local.minibus" var="minibus"/>
     <fmt:message bundle="${locale}" key="local.premium" var="premium"/>
     <fmt:message bundle="${locale}" key="local.vintage" var="vintage"/>
+    <fmt:message bundle="${locale}" key="local.mSuccessfulRegister" var="mSuccessfulRegister"/>
 </head>
 
 <body>
@@ -52,14 +53,14 @@
                     <form action="Controller" method="post">
                         <input type="hidden" name="command" value="change-locale"/>
                         <input type="hidden" name="language" value="en">
-                        <input type="submit" value="${en_button}" class="button">
+                        <input type="submit" value="${en_button}" class="buttonLocalReg">
                     </form>
                 </div>
                 <div>
                     <form action="Controller" method="post">
                         <input type="hidden" name="command" value="change-locale"/>
                         <input type="hidden" name="language" value="ru">
-                        <input type="submit" value="${ru_button}" class="button">
+                        <input type="submit" value="${ru_button}" class="buttonLocalReg">
                     </form>
                 </div>
             </div>
@@ -71,7 +72,7 @@
                             <input type="hidden" name="command" value="log-out-user">
 
                             <div>
-                                <input type="submit" value="${logOut}" class="reg">
+                                <input type="submit" value="${logOut}" class="buttonLogOut">
                             </div>
                         </form>
                     </div>
@@ -87,7 +88,7 @@
                         <div>
                             <input type="hidden" name="command" value="login-user"/>
                             <input type="hidden" name="page-name" value="index"/>
-                            <input type="submit" value="${signIn}" class="button"/>
+                            <input type="submit" value="${signIn}" class="buttonSignIn"/>
                         </div>
                     </form>
                 </c:if>
@@ -102,7 +103,7 @@
                         <input type="hidden" name="command" value="to-registration"/>
 
                         <div>
-                            <input type="submit" value="${registration}" class="reg"/>
+                            <input type="submit" value="${registration}" class="buttonLocalReg"/>
                         </div>
                     </form>
                 </c:if>
@@ -135,12 +136,6 @@
                         <input type="submit" value="${privateOffice}" class="buttonMenu"/>
                     </form>
                 </div>
-                <div class="divMenu">
-                    <form action="Controller" method="get">
-                        <input type="hidden" name="command" value="view-orders-user">
-                        <input type="submit" value="${orders}" class="buttonMenu"/>
-                    </form>
-                </div>
             </c:if>
             <c:if test="${sessionScope.user.type.equals('admin')}">
                 <div class="divMenu">
@@ -164,11 +159,15 @@
 
 <section>
 
+    <c:if test="${requestScope.successfulRegister == true}">
+        <p class="rightMessage">${mSuccessfulRegister}</p>
+    </c:if>
+
     <article class="divMsgWelcome">
         <h3 class="message"> ${messageWelcome} </h3>
     </article>
 
-    <article>
+    <article class="articleForTables">
         <div class="div1">
             <div class="div4">
                 <form action="Controller" method="get">

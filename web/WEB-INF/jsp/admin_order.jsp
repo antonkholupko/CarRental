@@ -82,6 +82,7 @@
     <fmt:message bundle="${locale}" key="local.diesel" var="diesel"/>
     <fmt:message bundle="${locale}" key="local.electricity" var="electricity"/>
     <fmt:message bundle="${locale}" key="local.mToAllOrders" var="mToAllOrders" />
+    <fmt:message bundle="${locale}" key="local.mUpdate" var="mUpdate"/>
 </head>
 <body>
 <header>
@@ -92,14 +93,14 @@
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="en">
-                    <input type="submit" value="${en_button}" class="button">
+                    <input type="submit" value="${en_button}" class="buttonLocalReg">
                 </form>
             </div>
             <div>
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="ru">
-                    <input type="submit" value="${ru_button}" class="button">
+                    <input type="submit" value="${ru_button}" class="buttonLocalReg">
                 </form>
             </div>
         </div>
@@ -108,7 +109,7 @@
         <form action="Controller" method="post">
             <input type="hidden" name="command" value="log-out-user">
 
-            <div><input type="submit" value="${logOut}" class="reg"></div>
+            <div><input type="submit" value="${logOut}" class="buttonLogOut"></div>
         </form>
     </div>
     <p>
@@ -153,6 +154,13 @@
         </form>
     </div>
 
+    <div class="divSubMenu">
+        <form action="Controller" method="get">
+            <input type="hidden" name="command" value="view-order-admin">
+            <input type="submit" value="${mUpdate}" class="buttonSubMenu">
+        </form>
+    </div>
+
     <hr/>
     <article>
         <div class="divOrders">
@@ -166,7 +174,7 @@
                 <c:out value="${selectTo}"/>
             </c:if>
             <c:if test="${sessionScope.invalidInfo == true}">
-                <p>${invalidReason}</p>
+                <p class="invalidMessage">${invalidReason}</p>
             </c:if>
             <p> ${mStatus}:
                 <c:if test="${sessionScope.selectedOrder.status.equals('new')}">
@@ -247,7 +255,7 @@
 
             <c:if test="${sessionScope.selectedOrder.status.equals('delivered')}">
                 <c:if test="${requestScope.invalidDateFrom == true}">
-                    <p>${mInvalidDate}</p>
+                    <p class="invalidMessage">${mInvalidDate}</p>
                 </c:if>
                 <p>${mRealDateFrom}</p>
 
@@ -261,7 +269,7 @@
             <c:if test="${sessionScope.selectedOrder.realDateFrom != null &&
                                 sessionScope.selectedOrder.status.equals('returned')}">
                 <c:if test="${requestScope.invalidDateTo == true}">
-                    <p>${mInvalidDate}</p>
+                    <p class="invalidMessage">${mInvalidDate}</p>
                 </c:if>
                 <p>${mRealDateTo}</p>
 
@@ -275,7 +283,7 @@
             <p> ${mDmgPrice}: <c:out value="${sessionScope.selectedOrder.damagePrice}"/></p>
             <c:if test="${sessionScope.selectedOrder.status.equals('returned')}">
                 <c:if test="${requestScope.invalidDamagePrice == true}">
-                    <p>${invalidDmgPrice}</p>
+                    <p class="invalidMessage">${invalidDmgPrice}</p>
                 </c:if>
                 <form action="Controller" method="post">
                     <input type="text" name="damage-price" min="" pattern="(^[0-9]+\.([0-9][0-9]|[0-9])$)|(^[0-9]+$)">

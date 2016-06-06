@@ -37,14 +37,14 @@
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="en">
-                    <input type="submit" value="${en_button}" class="button">
+                    <input type="submit" value="${en_button}" class="buttonLocalReg">
                 </form>
             </div>
             <div>
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="ru">
-                    <input type="submit" value="${ru_button}" class="button">
+                    <input type="submit" value="${ru_button}" class="buttonLocalReg">
                 </form>
             </div>
         </div>
@@ -53,7 +53,7 @@
         <form action="Controller" method="post">
             <input type="hidden" name="command" value="log-out-user">
 
-            <div><input type="submit" value="${logOut}" class="reg"></div>
+            <div><input type="submit" value="${logOut}" class="buttonLogOut"></div>
         </form>
     </div>
     <p>
@@ -77,12 +77,6 @@
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="to-priv-office-user">
                 <input type="submit" value="${privateOffice}" class="buttonMenu"/>
-            </form>
-        </div>
-        <div class="divMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="view-orders-user">
-                <input type="submit" value="${myOrders}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">

@@ -36,7 +36,7 @@ public class OrderDAOdb implements OrderDAO {
             "orders.shippingPlace, orders.returnPlace, orders.orderPrice, orders.damagePrice, orders.status " +
             "FROM orders INNER JOIN cars ON cars.carID = orders.carID " +
             "INNER JOIN models ON models.model = cars.model " +
-            "WHERE orders.userID=? ORDER BY orders.orderID DESC;";
+            "WHERE orders.userID=? ORDER BY orders.orderID DESC LIMIT ?,?;";
     private static final String FIND_BY_ORDER_ID_QUERY = "SELECT models.mark, cars.model, cars.year,  cars.type, " +
             "cars.fuel, cars.transmission, cars.govNumber, cars.info, cars.image, " +
             "orders.orderID, orders.supposedFromDate, orders.supposedToDate, orders.realFromDate, " +
@@ -49,7 +49,7 @@ public class OrderDAOdb implements OrderDAO {
             "users.middleName, models.mark, cars.model, cars.govNumber, orders.status, orders.orderPrice, orders.damagePrice " +
             "FROM orders INNER JOIN cars ON orders.carID = cars.carID " +
             "INNER JOIN users ON orders.userID = users.userID " +
-            "INNER JOIN models ON models.model = cars.model ORDER BY orders.orderID DESC;";
+            "INNER JOIN models ON models.model = cars.model ORDER BY orders.orderID DESC LIMIT ?,?;";
     private static final String TAKE_ADMIN_ORDER_BY_ORDER_ID_QUERY = "SELECT orders.orderID, users.login, " +
             "users.lastName, users.firstName, users.middleName, users.email, users.phone, " +
             "users.passport, users.address, models.mark, cars.model, cars.govNumber, cars.year, " +
@@ -60,6 +60,9 @@ public class OrderDAOdb implements OrderDAO {
             "INNER JOIN users ON orders.userID = users.userID " +
             "INNER JOIN models ON models.model = cars.model " +
             "WHERE orders.orderID=?;";
+    private static final String COUNT_ALL_ORDERS = "SELECT COUNT(orderID) FROM orders;";
+    private static final String COUNT_USER_ORDERS_QUERY = "SELECT COUNT(orderID) FROM orders WHERE userID=?";
+
     private static final String UPDATE_STATUS_BY_ORDER_ID = "UPDATE orders SET status=? WHERE orderID=?;";
     private static final String UPDATE_STATUS_INFO_BY_ORDER_ID = "UPDATE orders SET status=?, info=? WHERE orderID=?;";
     private static final String UPDATE_REAL_DATE_BY_ORDER_ID = "UPDATE orders SET realFromDate=?, realToDate=? " +
@@ -80,6 +83,7 @@ public class OrderDAOdb implements OrderDAO {
     private static final String FIND_ORDERS = "OrderDAOdb : findOrdersByUserId";
     private static final String FIND_ORDER = "OrderDAOdb : findOrderByOrderId";
     private static final String TAKE_ALL_ORDERS = "OrderDAOdb : takeAllOrders";
+    private static final String COUNT_ALL_ORDERS_MSG = "OrderDAOdb : countAllOrders";
 
 
     @Override
@@ -148,7 +152,7 @@ public class OrderDAOdb implements OrderDAO {
         }
     }
 
-    public List<Order> findOrdersByUserId(int userId) throws DAOException{
+    public List<Order> findOrdersByUserId(int userId, int toStartPage, int ordersOnPage) throws DAOException {
         LOG.debug(FIND_ORDERS);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -160,6 +164,8 @@ public class OrderDAOdb implements OrderDAO {
             connection = connectionPooldb.takeConnection();
             ps = connection.prepareStatement(FIND_BY_USER_ID_QUERY);
             ps.setInt(1, userId);
+            ps.setInt(2, toStartPage);
+            ps.setInt(3, ordersOnPage);
             rs = ps.executeQuery();
             while (rs.next()) {
                 Order order = new Order();
@@ -241,7 +247,7 @@ public class OrderDAOdb implements OrderDAO {
         }
     }
 
-    public List<Order> takeAllOrders() throws DAOException {
+    public List<Order> takeAllOrders(int toStartPage, int ordersOnPage) throws DAOException {
         LOG.debug(TAKE_ALL_ORDERS);
         List<Order> orders = new ArrayList<>();
         Connection connection = null;
@@ -251,8 +257,10 @@ public class OrderDAOdb implements OrderDAO {
         try {
             connectionPooldb = ConnectionPooldb.getInstance();
             connection = connectionPooldb.takeConnection();
-            st = connection.createStatement();
-            rs = st.executeQuery(TAKE_ALL_ORDERS_QUERY);
+            PreparedStatement ps = connection.prepareStatement(TAKE_ALL_ORDERS_QUERY);
+            ps.setInt(1, toStartPage);
+            ps.setInt(2, ordersOnPage);
+            rs = ps.executeQuery();
             while (rs.next()) {
                 Order order = new Order();
                 Car car = new Car();
@@ -476,6 +484,62 @@ public class OrderDAOdb implements OrderDAO {
         } finally {
             try {
                 connectionPooldb.closeConnection(connection, ps);
+            } catch (ConnectionPoolException ex) {
+                throw new DAOException(ex);
+            }
+        }
+    }
+
+    public int countUserOrders(int userId) throws DAOException {
+        LOG.debug("OrderDAOdb : countUserOrders");
+        int amountOrders = 0;
+        Connection connection = null;
+        ConnectionPooldb connectionPooldb = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            connectionPooldb = ConnectionPooldb.getInstance();
+            connection = connectionPooldb.takeConnection();
+            ps = connection.prepareStatement(COUNT_USER_ORDERS_QUERY);
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                amountOrders = rs.getInt(1);
+            }
+            return amountOrders;
+        } catch (SQLException | ConnectionPoolException ex) {
+            throw new DAOException(ex);
+        } finally {
+            try {
+                connectionPooldb.closeConnection(connection, ps, rs);
+            } catch (ConnectionPoolException ex) {
+                throw new DAOException(ex);
+            }
+        }
+
+    }
+
+    public int countAllOrders() throws DAOException {
+        LOG.debug(COUNT_ALL_ORDERS_MSG);
+        int ordersAmount = 0;
+        Connection connection = null;
+        ConnectionPooldb connectionPooldb = null;
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            connectionPooldb = ConnectionPooldb.getInstance();
+            connection = connectionPooldb.takeConnection();
+            st = connection.createStatement();
+            rs = st.executeQuery(COUNT_ALL_ORDERS);
+            while (rs.next()) {
+                ordersAmount = rs.getInt(1);
+            }
+            return ordersAmount;
+        } catch (SQLException | ConnectionPoolException ex) {
+            throw new DAOException(ex);
+        } finally {
+            try {
+                connectionPooldb.closeConnection(connection, st, rs);
             } catch (ConnectionPoolException ex) {
                 throw new DAOException(ex);
             }

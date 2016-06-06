@@ -5,8 +5,8 @@ import by.epam.carrental.command.PageName;
 import by.epam.carrental.command.exception.CommandException;
 import by.epam.carrental.entity.Car;
 import by.epam.carrental.entity.User;
-import by.epam.carrental.service.Validator;
 import by.epam.carrental.service.CarService;
+import by.epam.carrental.service.Validator;
 import by.epam.carrental.service.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +29,6 @@ public class ViewTypeByDateCommand implements Command {
     private static final String INVALID_DATE_PARAM = "invalidDate";
     private static final String ALL_CARS_PARAM = "allCars";
     private static final String USER_PARAM = "user";
-
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {

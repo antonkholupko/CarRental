@@ -44,8 +44,9 @@
     <fmt:message bundle="${locale}" key="local.Automobiles" var="autos"/>
     <fmt:message bundle="${locale}" key="local.searchForFreeCars" var="searchForFree"/>
     <fmt:message bundle="${locale}" key="local.selectType" var="selectType"/>
-    <fmt:message bundle="${locale}" key="local.noCars" var="mNoCars" />
+    <fmt:message bundle="${locale}" key="local.noCars" var="mNoCars"/>
     <fmt:message bundle="${locale}" key="local.mPage" var="mPage"/>
+    <fmt:message bundle="${locale}" key="local.mForMakingOrderTakeCar" var="mForMakingOrder"/>
 </head>
 <body>
 <header>
@@ -56,14 +57,14 @@
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="en">
-                    <input type="submit" value="${en_button}" class="button">
+                    <input type="submit" value="${en_button}" class="buttonLocalReg">
                 </form>
             </div>
             <div>
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="ru">
-                    <input type="submit" value="${ru_button}" class="button">
+                    <input type="submit" value="${ru_button}" class="buttonLocalReg">
                 </form>
             </div>
         </div>
@@ -72,7 +73,7 @@
                 <form action="Controller" method="post">
                     <input type="hidden" name="command" value="log-out-user">
 
-                    <div><input type="submit" value="${logOut}" class="reg"></div>
+                    <div><input type="submit" value="${logOut}" class="buttonLogOut"></div>
                 </form>
             </div>
         </c:if>
@@ -84,7 +85,7 @@
                     <div>
                         <input type="hidden" name="command" value="login-user"/>
                         <input type="hidden" name="page-name" value="all-cars"/>
-                        <input type="submit" value="${signIn}" class="button"/>
+                        <input type="submit" value="${signIn}" class="buttonSignIn"/>
                     </div>
                 </form>
                 <p>
@@ -97,7 +98,7 @@
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="to-registration">
 
-                    <div><input type="submit" value="${registration}" class="reg"/></div>
+                    <div><input type="submit" value="${registration}" class="buttonLocalReg"/></div>
                 </form>
             </div>
         </c:if>
@@ -127,12 +128,6 @@
                     <input type="submit" value="${privateOffice}" class="buttonMenu"/>
                 </form>
             </div>
-            <div class="divMenu">
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="view-orders-user">
-                    <input type="submit" value="${orders}" class="buttonMenu"/>
-                </form>
-            </div>
         </c:if>
         <c:if test="${sessionScope.user.type.equals('admin')}">
             <div class="divMenu">
@@ -156,12 +151,16 @@
 <section>
     <h2>${autos}</h2>
 
+    <c:if test="${!user.type.equals('admin')}">
+        <p class="helpMessage">${mForMakingOrder}</p>
+    </c:if>
+
     <c:if test="${requestScope.carSuccessfulAdded == true}">
-        <c:out value="${carAdded}"/>
+        <p class="rightMessage">${carAdded}</p>
     </c:if>
 
     <c:if test="${requestScope.carSuccessfulDeleted == true}">
-        <c:out value="${carDeleted}"/>
+        <p class="rightMessage">${carDeleted}</p>
     </c:if>
 
 
@@ -201,16 +200,17 @@
                     <br/>
                 </div>
             </c:forEach>
-
+            <hr/>
             <c:if test="${requestScope.invalidType == true}">
-                <p>
+                <p class="invalidMessage">
                     <c:out value="${selectType}"/>
                 </p>
             </c:if>
-
-            <p>${chooseTripDate}</p>
+            <c:if test="${!user.type.equals('admin')}">
+                <p class="helpMessage">${chooseTripDate}</p>
+            </c:if>
             <c:if test="${requestScope.invalidDate == true}">
-                <p>${mInvalidDate}</p>
+                <p class="invalidMessage">${mInvalidDate}</p>
             </c:if>
             <p>${mSupFromDate}</p>
             <input type="date" value="${sessionScope.supposedDateFrom}" name="supposedDateFrom" required/>
@@ -302,11 +302,10 @@
 
     </h2>
 
-    <c:if test="${requestScope.noCars == true}">
-        <p>${mNoCars}</p>
-    </c:if>
-
-    <article>
+    <article class="articleForTables">
+        <c:if test="${requestScope.noCars == true}">
+            <p>${mNoCars}</p>
+        </c:if>
         <div class="div1">
             <c:forEach var="car" items="${allCars}">
                 <div class="div4">

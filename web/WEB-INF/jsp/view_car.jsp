@@ -58,14 +58,14 @@
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="en">
-                    <input type="submit" value="${en_button}" class="button">
+                    <input type="submit" value="${en_button}" class="buttonLocalReg">
                 </form>
             </div>
             <div>
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="ru">
-                    <input type="submit" value="${ru_button}" class="button">
+                    <input type="submit" value="${ru_button}" class="buttonLocalReg">
                 </form>
             </div>
         </div>
@@ -74,7 +74,7 @@
                 <form action="Controller" method="post">
                     <input type="hidden" name="command" value="log-out-user">
 
-                    <div><input type="submit" value="${logOut}" class="reg"></div>
+                    <div><input type="submit" value="${logOut}" class="buttonLogOut"></div>
                 </form>
             </div>
         </c:if>
@@ -86,7 +86,7 @@
                     <div>
                         <input type="hidden" name="command" value="login-user"/>
                         <input type="hidden" name="page-name" value="view-car"/>
-                        <input type="submit" value="${signIn}" class="button"/>
+                        <input type="submit" value="${signIn}" class="buttonSignIn"/>
                     </div>
                 </form>
                 <p>
@@ -99,7 +99,7 @@
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="to-registration">
 
-                    <div><input type="submit" value="${registration}" class="reg"/></div>
+                    <div><input type="submit" value="${registration}" class="buttonLocalReg"/></div>
                 </form>
             </div>
         </c:if>
@@ -129,12 +129,6 @@
                     <input type="submit" value="${privateOffice}" class="buttonMenu"/>
                 </form>
             </div>
-            <div class="divMenu">
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="view-orders-user">
-                    <input type="submit" value="${orders}" class="buttonMenu"/>
-                </form>
-            </div>
         </c:if>
         <c:if test="${sessionScope.user.type.equals('admin')}">
             <div class="divMenu">
@@ -155,13 +149,13 @@
 </header>
 <section>
     <h2><c:out value="${sessionScope.selectedCar.mark}"/> <c:out value="${sessionScope.selectedCar.model}"/></h2>
-    <article>
-        <div class="div1">
-            <div class="divBig">
+    <article class="articleForTables">
+        <span>
+            <div class="divBigForPhoto">
                 <img class="imgBig" src="data:image/jpg;base64,${sessionScope.selectedCar.image}"/>
             </div>
 
-            <div class="divBig">
+            <div class="divBigForDescription">
                 <p>${price}: <c:out value="${sessionScope.selectedCar.price}"/></p>
 
                 <p>${mark}: <c:out value="${sessionScope.selectedCar.mark}"/></p>
@@ -222,7 +216,6 @@
                 </p>
 
                 <p>${carInfo}: <c:out value="${sessionScope.selectedCar.info}"/></p>
-
                 <c:if test="${sessionScope.user.type.equals('user')}">
                 <div>
                     <br/>
@@ -247,7 +240,7 @@
             <c:if test="${sessionScope.user == null}">
                 <p>${forMakeOrderMessage}</p>
             </c:if>
-        </div>
+        </span>
     </article>
 </section>
 <footer>

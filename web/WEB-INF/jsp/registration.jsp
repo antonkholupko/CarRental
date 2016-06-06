@@ -56,14 +56,14 @@
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="en">
-                    <input type="submit" value="${en_button}" class="button">
+                    <input type="submit" value="${en_button}" class="buttonLocalReg">
                 </form>
             </div>
             <div>
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="ru">
-                    <input type="submit" value="${ru_button}" class="button">
+                    <input type="submit" value="${ru_button}" class="buttonLocalReg">
                 </form>
             </div>
         </div>
@@ -109,7 +109,7 @@
         </c:if>
     </p>
 
-    <p style="color: red">
+    <p class="invalidMessage">
         <c:if test="${requestScope.validLogin == false}">
             ${invalidLogin}
         </c:if>
@@ -195,7 +195,7 @@
             <input type="text" name="address" value="" maxlength="70"/> <br/>
             <br/>
             <input type="hidden" name="command" value="register"/>
-            <input type="submit" value="${register}" class="button2"/>
+            <input type="submit" value="${register}" class="buttonSubMenu"/>
         </form>
     </div>
 </section>

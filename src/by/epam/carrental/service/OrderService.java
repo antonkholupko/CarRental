@@ -32,6 +32,9 @@ public class OrderService {
     private static final String UPDATE_DAMAGE_PRICE_BY_ID = "OrderService : updateDamagePriceByOrderId";
     private static final String UPDATE_REAL_TIME_FROM = "OrderService : updateRealTimeFrom";
     private static final String UPDATE_REAL_TIME_TO = "OrderService : updateRealTimeTo";
+    private static final String ORDER_TO_START_PAGE = "OrderService : orderToStartPage";
+    private static final String COUNT_PAGE_AMOUNT_USER_ORDERS = "OrderService : countPageAmountUserOrders";
+    private static final String COUNT_PAGE_AMOUNT_ALL_ORDERS_MSG = "OrderService : countPageAmountAllCars";
 
 
     private OrderService() {
@@ -90,13 +93,14 @@ public class OrderService {
      * @return список закзов, оформленных определенным пользователем
      * @throws ServiceException ошибка при поиске заказов
      */
-    public List<Order> findOrdersByUserId(int userId) throws ServiceException {
+    public List<Order> findOrdersByUserId(int userId, int pageNumber, int ordersOnPage) throws ServiceException {
         LOG.debug(FIND_ORSERS_BY_USER_MSG);
         List<Order> orders = null;
         DAOFactory daoFactory = DAOFactory.getInstance();
         OrderDAO orderDAO = daoFactory.getOrderDAO();
+        int startPage = orderToStartPage(pageNumber, ordersOnPage);
         try {
-            orders = orderDAO.findOrdersByUserId(userId);
+            orders = orderDAO.findOrdersByUserId(userId, startPage, ordersOnPage);
             return orders;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -127,13 +131,14 @@ public class OrderService {
      * @return список всех заказов
      * @throws ServiceException ошибка при получении списков всех заказов
      */
-    public List<Order> takeAllOrders() throws ServiceException {
+    public List<Order> takeAllOrders(int pageNumber, int ordersOnPage) throws ServiceException {
         LOG.debug(TAKE_ALL_ORDERS);
         List<Order> orders = null;
         DAOFactory daoFactory = DAOFactory.getInstance();
         OrderDAO orderDAO = daoFactory.getOrderDAO();
+        int startPage = orderToStartPage(pageNumber, ordersOnPage);
         try {
-            orders = orderDAO.takeAllOrders();
+            orders = orderDAO.takeAllOrders(startPage, ordersOnPage);
             return orders;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -246,5 +251,48 @@ public class OrderService {
         } catch (DAOException ex) {
             throw new ServiceException(ex);
         }
+    }
+
+    public int countPageAmountUserOrders(int userId, int amountOrdersOnPage) throws ServiceException {
+        LOG.debug(COUNT_PAGE_AMOUNT_USER_ORDERS);
+        int pageAmount = 0;
+        int ordersAmount = 0;
+        DAOFactory factory = DAOFactory.getInstance();
+        OrderDAO dao = factory.getOrderDAO();
+        try {
+            ordersAmount = dao.countUserOrders(userId);
+            if (ordersAmount % amountOrdersOnPage != 0) {
+                pageAmount = (ordersAmount / amountOrdersOnPage) + 1;
+            } else {
+                pageAmount = (ordersAmount / amountOrdersOnPage);
+            }
+            return pageAmount;
+        } catch (DAOException ex) {
+            throw new ServiceException(ex);
+        }
+    }
+
+    public int countPageAmountAllOrders(int amountOrdersOnPage) throws ServiceException {
+        LOG.debug(COUNT_PAGE_AMOUNT_ALL_ORDERS_MSG);
+        int pageAmount = 0;
+        int ordersAmount = 0;
+        DAOFactory factory = DAOFactory.getInstance();
+        OrderDAO dao = factory.getOrderDAO();
+        try {
+            ordersAmount = dao.countAllOrders();
+            if (ordersAmount % amountOrdersOnPage != 0) {
+                pageAmount = (ordersAmount / amountOrdersOnPage) + 1;
+            } else {
+                pageAmount = (ordersAmount / amountOrdersOnPage);
+            }
+            return pageAmount;
+        } catch (DAOException ex) {
+            throw new ServiceException(ex);
+        }
+    }
+
+    private int orderToStartPage(int pageNumber, int ordersOnPage) {
+        LOG.debug(ORDER_TO_START_PAGE);
+        return ((pageNumber * ordersOnPage) - ordersOnPage);
     }
 }

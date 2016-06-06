@@ -41,6 +41,10 @@
     <fmt:message bundle="${locale}" key="local.statusClosed" var="Closed" />
     <fmt:message bundle="${locale}" key="local.mDetails" var="mDetails" />
     <fmt:message bundle="${locale}" key="local.noOrders" var="mNoOrders" />
+    <fmt:message bundle="${locale}" key="local.mPage" var="mPage"/>
+    <fmt:message bundle="${locale}" key="local.mOrderAdded" var="orderAded"/>
+    <fmt:message bundle="${locale}" key="local.mOrderCanceled" var="orderCanceled"/>
+    <fmt:message bundle="${locale}" key="local.mSuccessfulPaymentForOrder" var="successfulPayment"/>
 </head>
 <body>
 <header>
@@ -51,14 +55,14 @@
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="en">
-                    <input type="submit" value="${en_button}" class="button">
+                    <input type="submit" value="${en_button}" class="buttonLocalReg">
                 </form>
             </div>
             <div>
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="change-locale">
                     <input type="hidden" name="language" value="ru">
-                    <input type="submit" value="${ru_button}" class="button">
+                    <input type="submit" value="${ru_button}" class="buttonLocalReg">
                 </form>
             </div>
         </div>
@@ -67,7 +71,7 @@
         <form action="Controller" method="post">
             <input type="hidden" name="command" value="log-out-user">
 
-            <div><input type="submit" value="${logOut}" class="reg"></div>
+            <div><input type="submit" value="${logOut}" class="buttonLogOut"></div>
         </form>
     </div>
     <p>
@@ -95,12 +99,6 @@
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
-                <input type="hidden" name="command" value="view-orders-user">
-                <input type="submit" value="${myOrders}" class="buttonMenu"/>
-            </form>
-        </div>
-        <div class="divMenu">
-            <form action="Controller" method="get">
                 <input type="hidden" name="command" value="to-about">
                 <input type="submit" value="${info}" class="buttonMenu"/>
             </form>
@@ -120,6 +118,19 @@
     </div>
 
     <hr/>
+
+    <c:if test="${requestScope.orderSuccessfulMade == true}">
+        <p class="rightMessage">${orderAded}</p>
+    </c:if>
+
+    <c:if test="${requestScope.successfulCanceled == true}">
+        <p class="rightMessage">${orderCanceled}</p>
+    </c:if>
+
+    <c:if test="${requestScope.successfulPayment == true}">
+        <p class="rightMessage">${successfulPayment}</p>
+    </c:if>
+
 
     <c:if test="${requestScope.noOrders == true }">
         <p>${mNoOrders}</p>
@@ -194,6 +205,21 @@
         </article>
         <br/>
     </c:forEach>
+
+    <p>
+        <c:out value="${mPage}: ${requestScope.pageNumber}"/>
+    </p>
+    <br/>
+    <c:forEach var="i" begin="1" end="${amountPages}">
+        <div class="divSubMenu">
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="view-orders-user">
+                <input type="hidden" name="pageNumber" value="${i}"/>
+                <input type="submit" value="${i}" class="button2"/>
+            </form>
+        </div>
+    </c:forEach>
+
 </section>
 <footer>
     <p>&copy; 2016 Car rental. All rights reserved.</p>

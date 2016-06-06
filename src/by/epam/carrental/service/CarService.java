@@ -37,6 +37,7 @@ public class CarService {
     private static final String COUNT_PAGE_AMOUNT_UNUSED_CARS_MSG_START = "CarService : countPageAmountUnusedTypeCars : starts";
     private static final String COUNT_PAGE_AMOUNT_UNUSED_CARS_MSG_END = "CarService : countPageAmountUnusedTypeCars : ends";
     private static final String CAR_TO_START_PAGE = "CarService : carToStartPage";
+    private static final String TAKE_CAR_BY_ID_MSG = "CarService : takeCarById";
 
     private CarService() {
 
@@ -272,6 +273,19 @@ public class CarService {
             }
             LOG.debug(COUNT_PAGE_AMOUNT_UNUSED_CARS_MSG_END);
             return pageAmount;
+        } catch (DAOException ex) {
+            throw new ServiceException(ex);
+        }
+    }
+
+    public Car takeCarById(int id) throws ServiceException {
+        LOG.debug(TAKE_CAR_BY_ID_MSG);
+        DAOFactory factory = DAOFactory.getInstance();
+        CarDAO dao = factory.getCarDAO();
+        Car car = null;
+        try {
+            car = dao.takeCarById(id);
+            return car;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
         }

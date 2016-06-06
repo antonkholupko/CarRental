@@ -3,7 +3,6 @@ package by.epam.carrental.dao;
 import by.epam.carrental.dao.exception.DAOException;
 import by.epam.carrental.entity.Car;
 import by.epam.carrental.entity.CarType;
-import by.epam.carrental.entity.Order;
 
 import java.util.List;
 
@@ -101,5 +100,7 @@ public interface CarDAO {
     public int countAllTypeCars(String type) throws DAOException;
 
     public int countUnusedTypeCars(String type, String dateFrom, String dateTo) throws DAOException;
+
+    public Car takeCarById(int id) throws DAOException;
 
 }

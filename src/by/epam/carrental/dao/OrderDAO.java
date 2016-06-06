@@ -33,7 +33,7 @@ public interface OrderDAO {
      * @return список заказов
      * @throws DAOException ошибка при получении списка заказов
      */
-    public List<Order> findOrdersByUserId(int userId) throws DAOException;
+    public List<Order> findOrdersByUserId(int userId, int toStartPage, int ordersOnPage) throws DAOException;
 
     /**
      * Поиск заказов по id заказа
@@ -48,7 +48,7 @@ public interface OrderDAO {
      * @return список всех заказов
      * @throws DAOException ошибка при получении списка заказов
      */
-    public List<Order> takeAllOrders() throws DAOException;
+    public List<Order> takeAllOrders(int toStartPage, int carsOnPage) throws DAOException;
 
     /**
      * Получение заказа по id заказа, для представления его админу
@@ -100,4 +100,8 @@ public interface OrderDAO {
      * возврата автомобиля пользователю
      */
     public void updateRealTimeTo(int orderId, String date) throws DAOException;
+
+    public int countUserOrders(int userId) throws DAOException;
+
+    public int countAllOrders() throws DAOException;
 }

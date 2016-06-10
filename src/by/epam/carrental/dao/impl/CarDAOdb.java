@@ -88,24 +88,68 @@ public class CarDAOdb implements CarDAO {
             "WHERE carID=?;";
 
     private static final String CAR_FREE_STATUS = "unused";
-    private static final String TAKE_MARKS_MSG = "CarDAOdb : takeMarks";
-    private static final String TAKE_MODELS_MSG = "CarDAOdb : takeModels";
-    private static final String TAKE_CAR_TYPES_MSG = "CarDAOdb : takeCarTypes";
-    private static final String TAKE_CARS_BY_TYPE_MSG = "CarDAOdb : takeCarsByType";
-    private static final String TAKE_UNUSED_CARS_MSG = "CarDAOdb : takeUnusedCars";
-    private static final String TAKE_UNUSED_CARS_BY_TYPE_MSG = "CarDAOdb : takeUnusedCarsByType";
-    private static final String TAKE_ALL_CARS_MSG = "CarDAOdb : takeAllCars";
-    private static final String INSERT_CAR_MSG = "CarDAOdb : insertCar";
-    private static final String FIND_CAR_BY_VIN_NUMBER_MSG = "CarDAOdb : findCarByGovNumberVin";
-    private static final String DELETE_CAR_BY_ID_MSG = "CarDAOdb : deleteCarById";
-    private static final String COUNT_ALL_CARS_MSG = "CarDAOdb : countAllCars";
-    private static final String COUNT_ALL_TYPE_CARS_MSG = "CarDAOdb : countAllCars";
-    private static final String COUNT_UNUSED_TYPE_CARS_MSG = "CarDAOdb : countUnusedTypeCars";
-    private static final String TAKE_CAR_BY_ID = "CarDAOdb : takeCarById";
+
+    private static final String TAKE_MARKS_STARTS_MSG = "CarDAOdb : takeMarks : starts";
+    private static final String TAKE_MODELS_STARTS_MSG = "CarDAOdb : takeModels : starts";
+    private static final String TAKE_CAR_TYPES_STARTS_MSG = "CarDAOdb : takeCarTypes : starts";
+    private static final String TAKE_CARS_BY_TYPE_STARTS_MSG = "CarDAOdb : takeCarsByType : starts";
+    private static final String TAKE_UNUSED_CARS_STARTS_MSG = "CarDAOdb : takeUnusedCars : starts";
+    private static final String TAKE_UNUSED_CARS_BY_TYPE_STARTS_MSG = "CarDAOdb : takeUnusedCarsByType : starts";
+    private static final String TAKE_ALL_CARS_STARTS_MSG = "CarDAOdb : takeAllCars : starts";
+    private static final String INSERT_CAR_STARTS_MSG = "CarDAOdb : insertCar : starts";
+    private static final String FIND_CAR_BY_VIN_NUMBER_STARTS_MSG = "CarDAOdb : findCarByGovNumberVin : starts";
+    private static final String DELETE_CAR_BY_ID_STARTS_MSG = "CarDAOdb : deleteCarById : starts";
+    private static final String COUNT_ALL_CARS_STARTS_MSG = "CarDAOdb : countAllCars : starts";
+    private static final String COUNT_ALL_TYPE_CARS_STARTS_MSG = "CarDAOdb : countAllCars : starts";
+    private static final String COUNT_UNUSED_TYPE_CARS_STARTS_MSG = "CarDAOdb : countUnusedTypeCars : starts";
+    private static final String TAKE_CAR_BY_ID_STARTS_MSG = "CarDAOdb : takeCarById : starts";
+    private static final String TAKE_MARKS_ENDS_MSG = "CarDAOdb : takeMarks : ends";
+    private static final String TAKE_MODELS_ENDS_MSG = "CarDAOdb : takeModels : ends";
+    private static final String TAKE_CAR_TYPES_ENDS_MSG = "CarDAOdb : takeCarTypes : ends";
+    private static final String TAKE_CARS_BY_TYPE_ENDS_MSG = "CarDAOdb : takeCarsByType : ends";
+    private static final String TAKE_UNUSED_CARS_ENDS_MSG = "CarDAOdb : takeUnusedCars : ends";
+    private static final String TAKE_UNUSED_CARS_BY_TYPE_ENDS_MSG = "CarDAOdb : takeUnusedCarsByType : ends";
+    private static final String TAKE_ALL_CARS_ENDS_MSG = "CarDAOdb : takeAllCars : ends";
+    private static final String INSERT_CAR_ENDS_MSG = "CarDAOdb : insertCar : ends";
+    private static final String FIND_CAR_BY_VIN_NUMBER_ENDS_MSG = "CarDAOdb : findCarByGovNumberVin : ends";
+    private static final String DELETE_CAR_BY_ID_ENDS_MSG = "CarDAOdb : deleteCarById : ends";
+    private static final String COUNT_ALL_CARS_ENDS_MSG = "CarDAOdb : countAllCars : ends";
+    private static final String COUNT_ALL_TYPE_CARS_ENDS_MSG = "CarDAOdb : countAllCars : ends";
+    private static final String COUNT_UNUSED_TYPE_CARS_ENDS_MSG = "CarDAOdb : countUnusedTypeCars : ends";
+    private static final String TAKE_CAR_BY_ID_ENDS_MSG = "CarDAOdb : takeCarById : ends";
+
+    private static final String TAKE_MARKS_ERROR_MSG = "CarDAOdb : takeMarks : ERROR";
+    private static final String TAKE_MARKS_CLOSE_CON_ERROR_MSG = "CarDAOdb : takeMarks : close connection error";
+    private static final String TAKE_MODELS_ERROR_MSG = "CarDAOdb : takeModels : ERROR";
+    private static final String TAKE_MODELS_CLOSE_CON_ERROR_MSG = "CarDAOdb : takeModels : close connection error";
+    private static final String TAKE_CAR_TYPES_ERROR_MSG = "CarDAOdb : takeCarTypes : ERROR";
+    private static final String TAKE_CAR_TYPES_CLOSE_CON_ERROR_MSG = "CarDAOdb : takeCarTypes : close connection error";
+    private static final String TAKE_CARS_BY_TYPE_ERROR_MSG = "CarDAOdb : takeCarsByType : ERROR";
+    private static final String TAKE_CARS_BY_TYPE_CLOSE_CON_ERROR_MSG = "CarDAOdb : takeCarsByType : close connection error";
+    private static final String TAKE_UNUSED_CARS_ERROR_MSG = "CarDAOdb : takeUnusedCars : ERROR";
+    private static final String TAKE_UNUSED_CARS_CLOSE_CON_ERROR_MSG = "CarDAOdb : takeUnusedCars : close connection error";
+    private static final String TAKE_UNUSED_CARS_BY_TYPE_ERROR_MSG = "CarDAOdb : takeUnusedCarsByType : ERROR";
+    private static final String TAKE_UNUSED_CARS_BY_TYPE_CLOSE_CON_ERROR_MSG = "CarDAOdb : takeUnusedCarsByType : close connection error";
+    private static final String TAKE_ALL_CARS_ERROR_MSG = "CarDAOdb : takeAllCars : ERROR";
+    private static final String TAKE_ALL_CARS_CLOSE_CON_ERROR_MSG = "CarDAOdb : takeAllCars : close connection error";
+    private static final String INSERT_CAR_ERROR_MSG = "CarDAOdb : insertCar : ERROR";
+    private static final String INSERT_CAR_CLOSE_CON_ERROR_MSG = "CarDAOdb : insertCar : close connection error";
+    private static final String FIND_CAR_BY_GOV_NUMBER_VIN_ERROR_MSG = "CarDAOdb : findCarByGovNumberVin : ERROR";
+    private static final String FIND_CAR_BY_GOV_NUMBER_VIN_CLOSE_CON_ERROR_MSG = "CarDAOdb : findCarByGovNumberVin : close connection error";
+    private static final String DELETE_CAR_BY_ID_ERROR_MSG = "CarDAOdb : deleteCarById : ERROR";
+    private static final String DELETE_CAR_BY_ID_CLOSE_CON_ERROR_MSG = "CarDAOdb : deleteCarById : close connection error";
+    private static final String COUNT_ALL_CARS_ERROR_MSG = "CarDAOdb : countAllCars : ERROR";
+    private static final String COUNT_ALL_CARS_CLOSE_CON_ERROR_MSG = "CarDAOdb : countAllCars : close connection error";
+    private static final String COUNT_ALL_TYPE_CARS_ERROR_MSG = "CarDAOdb : countAllTypeCars : ERROR";
+    private static final String COUNT_ALL_TYPE_CARS_CLOSE_CON_ERROR_MSG = "CarDAOdb : countAllTypeCars : close connection error";
+    private static final String COUNT_UNUSED_TYPE_CARS_ERROR_MSG = "carDAOdb : countUnusedTypeCars : ERROR";
+    private static final String COUNT_UNUSED_TYPE_CARS_CLOSE_CON_ERROR_MSG = "carDAOdb : countUnusedTypeCars : close connection error";
+    private static final String TAKE_CAR_BY_ID_ERROR_MSG = "CarDAOdb : TakeCarById : ERROR";
+    private static final String TAKE_CAR_BY_ID_CLOSE_CON_ERROR_MSG = "CarDAOdb : TakeCarById : close connection error";
 
     @Override
     public List<String> takeMarks() throws DAOException {
-        LOG.debug(TAKE_MARKS_MSG);
+        LOG.debug(TAKE_MARKS_STARTS_MSG);
         List<String> marks = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -121,19 +165,22 @@ public class CarDAOdb implements CarDAO {
             }
             return marks;
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(TAKE_MARKS_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, st, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, st, rs);
+                }
+                LOG.debug(TAKE_MARKS_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(TAKE_MARKS_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     @Override
     public List<String> takeModels(String mark) throws DAOException {
-        LOG.debug(TAKE_MODELS_MSG);
+        LOG.debug(TAKE_MODELS_STARTS_MSG);
         List<String> models = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -150,12 +197,15 @@ public class CarDAOdb implements CarDAO {
             }
             return models;
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(TAKE_MODELS_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(TAKE_MODELS_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(TAKE_MODELS_CLOSE_CON_ERROR_MSG, ex);
             }
         }
 
@@ -163,7 +213,7 @@ public class CarDAOdb implements CarDAO {
 
     @Override
     public List<CarType> takeCarTypes() throws DAOException {
-        LOG.debug(TAKE_CAR_TYPES_MSG);
+        LOG.debug(TAKE_CAR_TYPES_STARTS_MSG);
         List<CarType> carTypes = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -182,19 +232,22 @@ public class CarDAOdb implements CarDAO {
             }
             return carTypes;
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(TAKE_CAR_TYPES_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, st, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, st, rs);
+                }
+                LOG.debug(TAKE_CAR_TYPES_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(TAKE_CAR_TYPES_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     @Override
     public List<Car> takeCarsByType(String type, int toStartPage, int carsOnPage) throws DAOException {
-        LOG.debug(TAKE_CARS_BY_TYPE_MSG);
+        LOG.debug(TAKE_CARS_BY_TYPE_STARTS_MSG);
         List<Car> cars = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -224,12 +277,15 @@ public class CarDAOdb implements CarDAO {
             }
             return cars;
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(TAKE_CARS_BY_TYPE_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(TAKE_CARS_BY_TYPE_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(TAKE_CARS_BY_TYPE_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
@@ -237,7 +293,7 @@ public class CarDAOdb implements CarDAO {
     @Override
     public List<Car> takeUnusedCars(String supposedDateFrom, String supposedDateTo,
                                     int startPage, int carsOnPage) throws DAOException {
-        LOG.debug(TAKE_UNUSED_CARS_MSG);
+        LOG.debug(TAKE_UNUSED_CARS_STARTS_MSG);
         List<Car> cars = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -275,12 +331,15 @@ public class CarDAOdb implements CarDAO {
             }
             return cars;
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(TAKE_UNUSED_CARS_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(TAKE_UNUSED_CARS_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(TAKE_UNUSED_CARS_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
@@ -288,7 +347,7 @@ public class CarDAOdb implements CarDAO {
     @Override
     public List<Car> takeUnusedCarsByType(String type, String supposedDateFrom, String supposedDateTo,
                                           int startPage, int carsOnPage) throws DAOException {
-        LOG.debug(TAKE_UNUSED_CARS_BY_TYPE_MSG);
+        LOG.debug(TAKE_UNUSED_CARS_BY_TYPE_STARTS_MSG);
         List<Car> cars = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -327,19 +386,22 @@ public class CarDAOdb implements CarDAO {
             }
             return cars;
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(TAKE_UNUSED_CARS_BY_TYPE_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(TAKE_UNUSED_CARS_BY_TYPE_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(TAKE_UNUSED_CARS_BY_TYPE_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     @Override
     public List<Car> takeAllCars(int toStartPage, int carsOnPage) throws DAOException {
-        LOG.debug(TAKE_ALL_CARS_MSG);
+        LOG.debug(TAKE_ALL_CARS_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -369,12 +431,15 @@ public class CarDAOdb implements CarDAO {
             return cars;
 
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(TAKE_ALL_CARS_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(TAKE_ALL_CARS_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(TAKE_ALL_CARS_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
@@ -382,7 +447,7 @@ public class CarDAOdb implements CarDAO {
     @Override
     public void insertCar(Car car) throws DAOException {
 
-        LOG.debug(INSERT_CAR_MSG);
+        LOG.debug(INSERT_CAR_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -402,19 +467,22 @@ public class CarDAOdb implements CarDAO {
             ps.setBlob(10, new ByteArrayInputStream(Base64.decode(car.getImage())));
             ps.executeUpdate();
         } catch (Base64DecodingException | SQLException | ConnectionPoolException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(INSERT_CAR_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps);
+                }
+                LOG.debug(INSERT_CAR_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(INSERT_CAR_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     @Override
     public String findCarByGovNumberVin(String govNumber, String vin) throws DAOException {
-        LOG.debug(FIND_CAR_BY_VIN_NUMBER_MSG);
+        LOG.debug(FIND_CAR_BY_VIN_NUMBER_STARTS_MSG);
         String model = null;
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -432,19 +500,22 @@ public class CarDAOdb implements CarDAO {
             }
             return model;
         } catch (SQLException | ConnectionPoolException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(FIND_CAR_BY_GOV_NUMBER_VIN_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(FIND_CAR_BY_VIN_NUMBER_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(FIND_CAR_BY_GOV_NUMBER_VIN_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     @Override
     public void deleteCarById(int carId) throws DAOException {
-        LOG.debug(DELETE_CAR_BY_ID_MSG);
+        LOG.debug(DELETE_CAR_BY_ID_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -455,18 +526,21 @@ public class CarDAOdb implements CarDAO {
             ps.setInt(1, carId);
             ps.executeUpdate();
         } catch (SQLException | ConnectionPoolException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(DELETE_CAR_BY_ID_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps);
+                }
+                LOG.debug(DELETE_CAR_BY_ID_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(DELETE_CAR_BY_ID_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     public int countAllCars() throws DAOException {
-        LOG.debug(COUNT_ALL_CARS_MSG);
+        LOG.debug(COUNT_ALL_CARS_STARTS_MSG);
         int carsAmount = 0;
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -482,18 +556,21 @@ public class CarDAOdb implements CarDAO {
             }
             return carsAmount;
         } catch (SQLException | ConnectionPoolException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(COUNT_ALL_CARS_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, st, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, st, rs);
+                }
+                LOG.debug(COUNT_ALL_CARS_STARTS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(COUNT_ALL_CARS_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     public int countAllTypeCars(String type) throws DAOException {
-        LOG.debug(COUNT_ALL_TYPE_CARS_MSG);
+        LOG.debug(COUNT_ALL_TYPE_CARS_STARTS_MSG);
         int carsAmount = 0;
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -510,18 +587,21 @@ public class CarDAOdb implements CarDAO {
             }
             return carsAmount;
         } catch (SQLException | ConnectionPoolException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(COUNT_ALL_TYPE_CARS_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(COUNT_ALL_TYPE_CARS_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(COUNT_ALL_TYPE_CARS_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     public int countUnusedTypeCars(String type, String dateFrom, String dateTo) throws DAOException {
-        LOG.debug(COUNT_UNUSED_TYPE_CARS_MSG);
+        LOG.debug(COUNT_UNUSED_TYPE_CARS_STARTS_MSG);
         int carsAmount = 0;
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -547,18 +627,21 @@ public class CarDAOdb implements CarDAO {
             }
             return carsAmount;
         } catch (SQLException | ConnectionPoolException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(COUNT_UNUSED_TYPE_CARS_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(COUNT_UNUSED_TYPE_CARS_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(COUNT_UNUSED_TYPE_CARS_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     public Car takeCarById(int id) throws DAOException {
-        LOG.debug(TAKE_CAR_BY_ID);
+        LOG.debug(TAKE_CAR_BY_ID_STARTS_MSG);
         Car car = new Car();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -585,7 +668,16 @@ public class CarDAOdb implements CarDAO {
             }
             return car;
         } catch (SQLException | ConnectionPoolException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(TAKE_CAR_BY_ID_ERROR_MSG, ex);
+        } finally {
+            try {
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(TAKE_CAR_BY_ID_ENDS_MSG);
+            } catch (ConnectionPoolException ex) {
+                throw new DAOException(TAKE_CAR_BY_ID_CLOSE_CON_ERROR_MSG, ex);
+            }
         }
     }
 

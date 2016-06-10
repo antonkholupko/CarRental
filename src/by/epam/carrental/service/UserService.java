@@ -93,12 +93,13 @@ public class UserService {
      * @return список всех пользователей
      * @throws ServiceException ошибка при получении всех пользователей
      */
-    public List<User> takeAllUsers() throws ServiceException{
+    public List<User> takeAllUsers(int pageNumber, int amountUsersOnPage) throws ServiceException {
         LOG.debug(TAKE_ALL_USERS_START_MSG);
         DAOFactory factory = DAOFactory.getInstance();
         UserDAO dao = factory.getUserDAO();
+        int startPage = userToStartPage(pageNumber, amountUsersOnPage);
         try {
-            List<User> users = dao.takeAllUsers();
+            List<User> users = dao.takeAllUsers(startPage, amountUsersOnPage);
             return users;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -117,4 +118,27 @@ public class UserService {
         }
     }
 
+    public int countPageAmountAllUsers(int amountUsersOnPage) throws ServiceException {
+        LOG.debug("UserService : countPageAmountAllUsers : starts");
+        int pageAmount = 0;
+        int usersAmount = 0;
+        DAOFactory factory = DAOFactory.getInstance();
+        UserDAO dao = factory.getUserDAO();
+        try {
+            usersAmount = dao.countAllUsers();
+            if (usersAmount % amountUsersOnPage != 0) {
+                pageAmount = (usersAmount / amountUsersOnPage) + 1;
+            } else {
+                pageAmount = (usersAmount / amountUsersOnPage);
+            }
+            return pageAmount;
+        } catch (DAOException ex) {
+            throw new ServiceException(ex);
+        }
+    }
+
+    private int userToStartPage(int pageNumber, int usersOnPage) {
+        LOG.debug("");
+        return ((pageNumber * usersOnPage) - usersOnPage);
+    }
 }

@@ -2,8 +2,8 @@ package by.epam.carrental.dao.impl;
 
 import by.epam.carrental.dao.IConnectionPool;
 import by.epam.carrental.dao.connectionpoolhelper.exception.ConnectionPoolException;
-import by.epam.carrental.dao.connectionpoolhelper.resource.DBParameter;
-import by.epam.carrental.dao.connectionpoolhelper.service.DBResourceManager;
+import by.epam.carrental.dao.connectionpoolhelper.util.DBResourceManager;
+import by.epam.carrental.resource.DBParameter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,6 +17,7 @@ import java.util.concurrent.Executor;
 public class ConnectionPooldb implements IConnectionPool {
 
     private static final Logger LOG = LogManager.getLogger(ConnectionPooldb.class.getName());
+
     private static final String CLOSE_CON_EXC = "SQL Exception in closeConnection. ConnectionPool";
     private static final String CLEAR_CON_EXC = "SQL Exception in clearConnectionQueue. ConnectionPool";
     private static final String TAKE_CON_EXC = "Error connection to the data source. ConnectionPool";
@@ -24,14 +25,20 @@ public class ConnectionPooldb implements IConnectionPool {
     private static final String IS_CLOSED_EXC = "Attempting to close closed connection. ConnectionPool";
     private static final String REMOVE_EXC = "Error deleting connection from the given away connections pool. ConnectionPool";
     private static final String OFFER_EXC = "Error allocation connection in the pool. ConnectionPool";
-    private static final String NUMB_FORM_EXC = "NumberFormatException in ConnectionPool, poolSize=20";
+    private static final String NUMB_FORM_EXC = "NumberFormatException in ConnectionPool, poolSize=50";
     private static final String CON_POOL_EXC = "Error in connection pool. ConnectionPoolException";
-    private static final String INIT_MSG = "ConnectionPooldb : initPoolData";
-    private static final String DISPOSE_MSG = "ConnectionPool : dispose";
-    private static final String CLEAR_MSG = "ConnectionPool : clearConnectionQueue";
-    private static final String TAKE_CONNECTION_MSG = "ConnectionPooldb : takeConnection";
+
+    private static final String INIT_STARTS_MSG = "ConnectionPooldb : initPoolData : starts";
+    private static final String DISPOSE_STARTS_MSG = "ConnectionPool : dispose : starts";
+    private static final String CLEAR_STARTS_MSG = "ConnectionPool : clearConnectionQueue : starts";
+    private static final String TAKE_CONNECTION_STARTS_MSG = "ConnectionPooldb : takeConnection : starts";
     private static final String CLOSE_CONNECTION_MSG = "ConnectionPooldb : closeConnection";
-    private static final String CLOSE_CONNECTION_QUERY_MSG = "ConnectionPooldb : closeConnectionsQueue";
+    private static final String CLOSE_CONNECTION_QUERY_STARTS_MSG = "ConnectionPooldb : closeConnectionsQueue : starts";
+    private static final String INIT_ENDS_MSG = "ConnectionPooldb : initPoolData : ends";
+    private static final String DISPOSE_ENDS_MSG = "ConnectionPool : dispose : ends";
+    private static final String CLEAR_ENDS_MSG = "ConnectionPool : clearConnectionQueue : ends";
+    private static final String TAKE_CONNECTION_ENDS_MSG = "ConnectionPooldb : takeConnection : ends";
+    private static final String CLOSE_CONNECTION_QUERY_ENDS_MSG = "ConnectionPooldb : closeConnectionsQueue : ends";
 
     private BlockingQueue<Connection> connectionQueue;
     private BlockingQueue<Connection> givenAwayConQueue;
@@ -53,7 +60,7 @@ public class ConnectionPooldb implements IConnectionPool {
             this.poolSize = Integer.parseInt(dbResourceManager.getValue(DBParameter.DB_POOL_SIZE));
         } catch (NumberFormatException ex) {
             LOG.warn(NUMB_FORM_EXC);
-            poolSize = 20;
+            poolSize = 50;
         }
     }
 
@@ -62,7 +69,7 @@ public class ConnectionPooldb implements IConnectionPool {
     }
 
     public void initPoolData() throws ConnectionPoolException {
-        LOG.debug(INIT_MSG);
+        LOG.debug(INIT_STARTS_MSG);
         try {
             Class.forName(driverName);
             givenAwayConQueue = new ArrayBlockingQueue<Connection>(poolSize);
@@ -71,6 +78,7 @@ public class ConnectionPooldb implements IConnectionPool {
                 Connection connection = DriverManager.getConnection(url, user, password);
                 PooledConnection pooledConnection = new PooledConnection(connection);
                 connectionQueue.add(pooledConnection);
+                LOG.debug(INIT_ENDS_MSG);
             }
         } catch (SQLException ex) {
             LOG.error(CON_POOL_EXC);
@@ -82,15 +90,17 @@ public class ConnectionPooldb implements IConnectionPool {
     }
 
     public void dispose() throws ConnectionPoolException {
-        LOG.debug(DISPOSE_MSG);
+        LOG.debug(DISPOSE_STARTS_MSG);
         clearConnectionQueue();
+        LOG.debug(DISPOSE_ENDS_MSG);
     }
 
     private void clearConnectionQueue() throws ConnectionPoolException {
-        LOG.debug(CLEAR_MSG);
+        LOG.debug(CLEAR_STARTS_MSG);
         try {
             closeConnectionsQueue(givenAwayConQueue);
             closeConnectionsQueue(connectionQueue);
+            LOG.debug(CLEAR_ENDS_MSG);
         } catch (SQLException ex) {
             LOG.error(CLEAR_CON_EXC);
             throw new ConnectionPoolException(CLEAR_CON_EXC, ex);
@@ -98,11 +108,12 @@ public class ConnectionPooldb implements IConnectionPool {
     }
 
     public Connection takeConnection() throws ConnectionPoolException {
-        LOG.debug(TAKE_CONNECTION_MSG);
+        LOG.debug(TAKE_CONNECTION_STARTS_MSG);
         Connection connection = null;
         try {
             connection = connectionQueue.take();
             givenAwayConQueue.add(connection);
+            LOG.debug(TAKE_CONNECTION_ENDS_MSG);
         } catch (InterruptedException ex) {
             LOG.error(TAKE_CON_EXC);
             throw new ConnectionPoolException(TAKE_CON_EXC, ex);
@@ -136,31 +147,6 @@ public class ConnectionPooldb implements IConnectionPool {
 
     }
 
-    public void closeConnection(Connection con, PreparedStatement ps, ResultSet rs) throws ConnectionPoolException {
-        LOG.debug(CLOSE_CONNECTION_MSG);
-        try {
-            if (rs != null)
-                rs.close();
-        } catch (SQLException ex) {
-            LOG.error(CLOSE_CON_EXC);
-            throw new ConnectionPoolException(CLOSE_CON_EXC, ex);
-        }
-        try {
-            if (ps != null)
-                ps.close();
-        } catch (SQLException ex) {
-            LOG.error(CLOSE_CON_EXC);
-            throw new ConnectionPoolException(CLOSE_CON_EXC, ex);
-        }
-        try {
-            if (con != null)
-                con.close();
-        } catch (SQLException ex) {
-            LOG.error(CLOSE_CON_EXC);
-            throw new ConnectionPoolException(CLOSE_CON_EXC, ex);
-        }
-
-    }
 
     public void closeConnection(Connection con, Statement st) throws ConnectionPoolException {
         LOG.debug(CLOSE_CONNECTION_MSG);
@@ -178,30 +164,15 @@ public class ConnectionPooldb implements IConnectionPool {
         }
     }
 
-    public void closeConnection(Connection con, PreparedStatement ps) throws ConnectionPoolException {
-        LOG.debug(CLOSE_CONNECTION_MSG);
-        try {
-            con.close();
-        } catch (SQLException ex) {
-            LOG.error(CLOSE_CON_EXC);
-            throw new ConnectionPoolException(CLOSE_CON_EXC, ex);
-        }
-        try {
-            ps.close();
-        } catch (SQLException ex) {
-            LOG.error(CLOSE_CON_EXC);
-            throw new ConnectionPoolException(CLOSE_CON_EXC, ex);
-        }
-    }
-
     private void closeConnectionsQueue(BlockingQueue<Connection> queue) throws SQLException {
-        LOG.debug(CLOSE_CONNECTION_QUERY_MSG);
+        LOG.debug(CLOSE_CONNECTION_QUERY_STARTS_MSG);
         Connection connection;
         while ((connection = queue.poll()) != null) {
             if (!connection.getAutoCommit()) {
                 connection.commit();
             }
             ((PooledConnection) connection).reallyClose();
+            LOG.debug(CLOSE_CONNECTION_QUERY_ENDS_MSG);
         }
     }
 

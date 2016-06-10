@@ -31,6 +31,8 @@
     <fmt:message bundle="${locale}" key="local.mAdminType" var="mAdminType"/>
     <fmt:message bundle="${locale}" key="local.mDetails" var="mDetails"/>
     <fmt:message bundle="${locale}" key="local.toPrivOffice" var="toPrivOffice"/>
+    <fmt:message bundle="${locale}" key="local.mPage" var="mPage"/>
+    <fmt:message bundle="${locale}" key="local.mNoUsers" var="mNoUsers"/>
 </head>
 <body>
 <header>
@@ -105,6 +107,9 @@
 
     <hr/>
 
+    <c:if test="${requestScope.noOrders == true }">
+        <p>${mNoUsers}</p>
+    </c:if>
 
     <c:forEach var="user" items="${allUsers}">
         <article>
@@ -152,6 +157,21 @@
             </div>
         </article>
         <br/>
+    </c:forEach>
+
+    <p>
+        <c:out value="${mPage}: ${requestScope.pageNumber}"/>
+    </p>
+
+    <br/>
+    <c:forEach var="i" begin="1" end="${amountPages}">
+        <div class="divSubMenu">
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="view-all-users">
+                <input type="hidden" name="pageNumber" value="${i}"/>
+                <input type="submit" value="${i}" class="button2"/>
+            </form>
+        </div>
     </c:forEach>
 
 </section>

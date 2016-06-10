@@ -102,5 +102,4 @@ public interface CarDAO {
     public int countUnusedTypeCars(String type, String dateFrom, String dateTo) throws DAOException;
 
     public Car takeCarById(int id) throws DAOException;
-
 }

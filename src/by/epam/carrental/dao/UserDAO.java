@@ -45,7 +45,7 @@ public interface UserDAO {
      * @return список всех пользователей
      * @throws DAOException ошибка при получении всех пользователей
      */
-    public List<User> takeAllUsers() throws DAOException;
+    public List<User> takeAllUsers(int startPage, int amountUsersOnPage) throws DAOException;
 
     /**
      * Поиск пользователя по его id
@@ -54,5 +54,7 @@ public interface UserDAO {
      * @throws DAOException ошибка при поиске пользователя
      */
     public User findUserById(int userId) throws DAOException;
+
+    public int countAllUsers() throws DAOException;
 
 }

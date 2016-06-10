@@ -1,10 +1,10 @@
-package by.epam.carrental.dao.connectionpoolhelper.service;
+package by.epam.carrental.dao.connectionpoolhelper.util;
 
 import java.util.ResourceBundle;
 
 public class DBResourceManager {
 
-    private static final String BUNDLE = "by.epam.carrental.dao.connectionpoolhelper.resource.db";
+    private static final String BUNDLE = "by.epam.carrental.resource.db";
     private final static DBResourceManager instance = new DBResourceManager();
     private ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE);
 

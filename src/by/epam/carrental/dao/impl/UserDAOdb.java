@@ -24,14 +24,36 @@ public class UserDAOdb implements UserDAO {
     private static final String FIND_USER_BY_EMAIL_QUERY = "SELECT login FROM users WHERE email=?";
     private static final String ADD_USER_QUERY = "INSERT INTO users (login, password, type, lastName," +
             " firstName, middleName, email, phone, passport, address) VALUES (?,?,?,?,?,?,?,?,?,?);";
-    private static final String TAKE_ALL_USERS_QUERY = "SELECT userID, login, type, lastName, firstName, email, phone FROM users;";
+    private static final String TAKE_ALL_USERS_QUERY = "SELECT userID, login, type, lastName, firstName, " +
+            "email, phone FROM users GROUP BY (userID) DESC LIMIT ?,?;";
     private static final String FIND_USER_BY_ID_QUERY = "SELECT * FROM users WHERE userID=?;";
+    private static final String COUNT_ALL_USERS_QUERY = "SELECT COUNT(userID) FROM users;";
+
     private static final Logger LOG = LogManager.getLogger(UserDAOdb.class.getName());
 
+    private static final String FIND_USER_ERROR_MSG = "UserDAOdb : findUser : ERROR";
+    private static final String FIND_USER_CLOSE_CON_ERROR_MSG = "UserDAPdb : findUser : close connection error";
+    private static final String ADD_USER_ERROR_MSG = "UserDAOdb : addUser : ERROR";
+    private static final String ADD_USER_CLOSE_CON_ERROR_MSG = "UserDAOdb : addUser : close connection error";
+    private static final String TAKE_ALL_USERS_ERROR = "UserDAOdb : takeAllUsers : ERROR";
+    private static final String TAKE_ALL_USERS_CLOSE_CON_ERROR_MSG = "UserDAOdb : takeAllUsers : close connection error";
+    private static final String FIND_USER_BY_ID_ERROR = "UserDAOdb : findUserById : ERROR";
+    private static final String FIND_USER_BY_ID_CLOSE_CON_ERROR = "UserDAOdb : findUserById : close connection error";
+
+    private static final String FIND_USER_STARTS_MSG = "UserDAOdb : findUser : starts";
+    private static final String FIND_USER_ENDS_MSG = "UserDAOdb : findUser : ends";
+    private static final String ADD_USER_STARTS_MSG = "UserDAO : create user : starts";
+    private static final String ADD_USER_ENDS_MSG = "UserDAO : create user : ends";
+    private static final String TAKE_ALL_USERS_STARTS_MSG = "UserDAOdb : takeAllUsers : starts";
+    private static final String TAKE_ALL_USERS_ENDS_MSG = "UserDAOdb : takeAllUsers : ends";
+    private static final String FIND_USER_BY_ID_STARTS_MSG = "UserDAOdb : findUserById : starts";
+    private static final String FIND_USER_BY_ID_ENDS_MSG = "UserDAOdb : findUserById : ends";
+    private static final String COUNT_ALL_USERS_STARTS_MSG = "UserDAOdb : countAllUsers : starts";
+    private static final String COUNT_ALL_USERS_ENDS_MSG = "UserDAOdb : countAllUsers : ends";
 
     @Override
     public User findUser(String login, int hashPassword) throws DAOException{
-        LOG.debug("UserDAOdb : findUser");
+        LOG.debug(FIND_USER_STARTS_MSG);
         User user = null;
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -60,19 +82,22 @@ public class UserDAOdb implements UserDAO {
             }
             return user;
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(FIND_USER_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(FIND_USER_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(FIND_USER_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     @Override
     public ValidatorUniqueUser findUser(String login, String email, String passport) throws DAOException{
-        LOG.debug("UserDAOdb : findUser");
+        LOG.debug(FIND_USER_STARTS_MSG);
         ValidatorUniqueUser validatorUniqueUser = new ValidatorUniqueUser();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -106,12 +131,15 @@ public class UserDAOdb implements UserDAO {
                 validatorUniqueUser.setUniquePassport(true);
             }
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(FIND_USER_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(FIND_USER_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(FIND_USER_CLOSE_CON_ERROR_MSG, ex);
             }
         }
         return validatorUniqueUser;
@@ -119,13 +147,13 @@ public class UserDAOdb implements UserDAO {
 
     @Override
     public void addUser(User user) throws DAOException{
-        LOG.debug("UserDAO : create user");
+        LOG.debug(ADD_USER_STARTS_MSG);
         Connection connection = null;
-        ConnectionPooldb connectionPool = null;
+        ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
         try {
-            connectionPool = ConnectionPooldb.getInstance();
-            connection = connectionPool.takeConnection();
+            connectionPooldb = ConnectionPooldb.getInstance();
+            connection = connectionPooldb.takeConnection();
             ps = connection.prepareStatement(ADD_USER_QUERY);
             ps.setString(1, user.getLogin());
             ps.setInt(2, user.getHashPassword());
@@ -139,29 +167,34 @@ public class UserDAOdb implements UserDAO {
             ps.setString(10, user.getAddress());
             ps.executeUpdate();
         } catch(ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(ADD_USER_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPool.closeConnection(connection, ps);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps);
+                }
+                LOG.debug(ADD_USER_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(ADD_USER_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     @Override
-    public List<User> takeAllUsers() throws DAOException {
-        LOG.debug("UserDAOdb : takeAllUsers");
+    public List<User> takeAllUsers(int startPage, int amountUsersOnPage) throws DAOException {
+        LOG.debug(TAKE_ALL_USERS_STARTS_MSG);
         List<User> users = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
-        Statement st = null;
+        PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             connectionPooldb = ConnectionPooldb.getInstance();
             connection = connectionPooldb.takeConnection();
-            st = connection.createStatement();
-            rs = st.executeQuery(TAKE_ALL_USERS_QUERY);
+            ps = connection.prepareStatement(TAKE_ALL_USERS_QUERY);
+            ps.setInt(1, startPage);
+            ps.setInt(2, amountUsersOnPage);
+            rs = ps.executeQuery();
             while (rs.next()) {
                 User user = new User();
                 user.setId(rs.getInt(1));
@@ -175,19 +208,22 @@ public class UserDAOdb implements UserDAO {
             }
             return users;
         } catch (SQLException | ConnectionPoolException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(TAKE_ALL_USERS_ERROR, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, st, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(TAKE_ALL_USERS_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(TAKE_ALL_USERS_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     @Override
     public User findUserById(int userId) throws DAOException {
-        LOG.debug("UserDAOdb : findUserByLogin");
+        LOG.debug(FIND_USER_BY_ID_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         ResultSet rs = null;
@@ -214,14 +250,47 @@ public class UserDAOdb implements UserDAO {
             }
             return user;
         } catch (SQLException | ConnectionPoolException ex) {
+            throw new DAOException(FIND_USER_BY_ID_ERROR, ex);
+        } finally {
+            try {
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(FIND_USER_BY_ID_ENDS_MSG);
+            } catch (ConnectionPoolException ex) {
+                throw new DAOException(FIND_USER_BY_ID_CLOSE_CON_ERROR, ex);
+            }
+        }
+    }
+
+    public int countAllUsers() throws DAOException {
+        LOG.debug(COUNT_ALL_USERS_STARTS_MSG);
+        int ordersAmount = 0;
+        Connection connection = null;
+        ConnectionPooldb connectionPooldb = null;
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            connectionPooldb = ConnectionPooldb.getInstance();
+            connection = connectionPooldb.takeConnection();
+            st = connection.createStatement();
+            rs = st.executeQuery(COUNT_ALL_USERS_QUERY);
+            while (rs.next()) {
+                ordersAmount = rs.getInt(1);
+            }
+            return ordersAmount;
+        } catch (SQLException | ConnectionPoolException ex) {
             throw new DAOException(ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, st, rs);
+                }
+                LOG.debug(COUNT_ALL_USERS_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
                 throw new DAOException(ex);
             }
         }
-        }
+    }
 }
 

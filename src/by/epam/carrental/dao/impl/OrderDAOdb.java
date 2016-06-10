@@ -65,30 +65,66 @@ public class OrderDAOdb implements OrderDAO {
 
     private static final String UPDATE_STATUS_BY_ORDER_ID = "UPDATE orders SET status=? WHERE orderID=?;";
     private static final String UPDATE_STATUS_INFO_BY_ORDER_ID = "UPDATE orders SET status=?, info=? WHERE orderID=?;";
-    private static final String UPDATE_REAL_DATE_BY_ORDER_ID = "UPDATE orders SET realFromDate=?, realToDate=? " +
-            "WHERE orderID=?;";
     private static final String UPDATE_DAMAGE_PRICE_BY_ORDER_ID = "UPDATE orders SET damagePrice=? WHERE orderID=?;";
     private static final String UPDATE_REAL_TIME_FROM_QUERY = "UPDATE orders SET realFromDate=? WHERE orderID=?;";
     private static final String UPDATE_REAL_TIME_TO_QUERY = "UPDATE orders SET realToDate=? WHERE orderID=?;";
 
-    private static final String UPDATE_REAL_TIME_FROM_MSG = "OrderDAOdb : updateRealTimeFrom";
-    private static final String UPDATE_REAL_TIME_TO_MSG = "OrderDAOdb : updateRealTimeTo";
-    private static final String UPDATE_DAMAGE_PRICE_BY_ID_MSG = "OrderDAOdb : updateDamagePriceByOrderId";
-    private static final String UPDATE_REAL_DATE_MSG = "OrderDAOdb : updateRealDateByOrderId";
-    private static final String UPDATE_STATUS_MSG = "OrderDAOdb : updateStatusById";
-    private static final String TAKE_ADMIN_ORDER_MSG = "OrderDAOdb : takeAdminOrderByOrderId";
-    private static final String ADD_ORDER_MSG = "OrderDAOdb : addOrder";
     private static final String STATUS_NEW = "new";
-    private static final String TAKE_ORDER = "OrderDAOdb : takeOrderByOrderId";
-    private static final String FIND_ORDERS = "OrderDAOdb : findOrdersByUserId";
-    private static final String FIND_ORDER = "OrderDAOdb : findOrderByOrderId";
-    private static final String TAKE_ALL_ORDERS = "OrderDAOdb : takeAllOrders";
-    private static final String COUNT_ALL_ORDERS_MSG = "OrderDAOdb : countAllOrders";
+
+    private static final String ADD_ORDER_STARTS_MSG = "OrderDAOdb : addOrder : starts";
+    private static final String ADD_ORDER_ENDS_MSG = "OrderDAOdb : addOrder : ends";
+    private static final String TAKE_ORDER_BY_ORDER_STARTS_MSG = "OrderDAOdb : takeOrderByOrder : starts";
+    private static final String TAKE_ORDER_BY_ORDER_ENDS_MSG = "OrderDAOdb : takeOrderByOrder : ends";
+    private static final String FIND_ORDERS_BY_USER_ID_STARTS_MSG = "OrderDAOdb : findOrdersByUserId : starts";
+    private static final String FIND_ORDERS_BY_USER_ID_ENDS_MSG = "OrderDAOdb : findOrdersByUserId : ends";
+    private static final String FIND_ORDER_BY_ID_STARTS_MSG = "OrderDAOdb : findOrderByOrderId : starts";
+    private static final String FIND_ORDER_BY_ID_ENDS_MSG = "OrderDAOdb : findOrderByOrderId : ends";
+    private static final String TAKE_ALL_ORDERS_STARTS_MSG = "OrderDAOdb : takeAllOrders : starts";
+    private static final String TAKE_ALL_ORDERS_ENDS_MSG = "OrderDAOdb : takeAllOrders : ends";
+    private static final String TAKE_ADMIN_ORDER_BY_ORDER_ID_STARTS_MSG = "OrderDAOdb : takeAdminOrderByOrderId : starts";
+    private static final String TAKE_ADMIN_ORDER_BY_ORDER_ID_ENDS_MSG = "OrderDAOdb : takeAdminOrderByOrderId  : ends";
+    private static final String UPDATE_STATUS_INFO_STARTS_MSG = "OrderDAOdb : updateStatusInfo : starts";
+    private static final String UPDATE_STATUS_INFO_ENDS_MSG = "OrderDAOdb : updateStatusInfo : ends";
+    private static final String UPDATE_DAMAGE_PRICE_STARTS_MSG = "OrderDAOdb : updateDamagePriceByOrderId : starts";
+    private static final String UPDATE_DAMAGE_PRICE_ENDS_MSG = "OrderDAOdb : updateDamagePriceByOrderId : ends";
+    private static final String UPDATE_REAL_TIME_FROM_STARTS_MSG = "OrderDAOdb : updateRealTimeFrom : starts";
+    private static final String UPDATE_REAL_TIME_FROM_ENDS_MSG = "OrderDAOdb : updateRealTimeFrom : ends";
+    private static final String UPDATE_REAL_TIME_TO_STARTS_MSG = "OrderDAOdb : updateRealTimeTo : starts";
+    private static final String UPDATE_REAL_TIME_TO_ENDS_MSG = "OrderDAOdb : updateRealTimeTo : ends";
+    private static final String COUNT_USER_ORDERS_STARTS_MSG = "OrderDAOdb : countUserOrders : starts";
+    private static final String COUNT_USER_ORDERS_ENDS_MSG = "OrderDAOdb : countUserOrders : ends";
+    private static final String COUNT_ALL_ORDERS_STARTS_MSG = "OrderDAOdb : countAllOrders : stats";
+    private static final String COUNT_ALL_ORDERS_ENDS_MSG = "OrderDAOdb : countAllOrders : ends";
+
+    private static final String ADD_ORDER_ERROR_MSG = "OrderDAOdb : addOrder : ERROR";
+    private static final String ADD_ORDER_CLOSE_CON_ERROR_MSG = "OrderDAOdb : addOrder : close connection error";
+    private static final String TAKE_ORDER_BY_ORDER_ERROR_MSG = "OrderDAOdb : takeOrderByOrder : ERROR";
+    private static final String TAKE_ORDER_BY_ORDER_CLOSE_CON_ERROR_MSG = "OrderDAOdb : takeOrderByOrder : close connection error";
+    private static final String FIND_ORDERS_BY_USER_ID_ERROR_MSG = "OrderDAOdb : findOrdersByUserId : ERROR";
+    private static final String FIND_ORDERS_BY_USER_ID_CLOSE_CON_ERROR_MSG = "OrderDAOdb : findOrdersByUserId : close connection error";
+    private static final String FIND_ORDER_BY_ID_ERROR_MSG = "OrderDAOdb : findOrderByOrderId : ERROR";
+    private static final String FIND_ORDER_BY_ID_CLOE_CON_ERROR_MSG = "OrderDAOdb : findOrderByOrderId : close connection error";
+    private static final String TAKE_ALL_ORDERS_ERROR_MSG = "OrderDAOdb : takeAllOrders : ERROR";
+    private static final String TAKE_ALL_ORDERS_CLOSE_CON_ERROR_MSG = "OrderDAOdb : takeAllOrders : close connection error";
+    private static final String TAKE_ADMIN_ORDER_BY_ORDER_ID_ERROR_MSG = "OrderDAOdb : takeAdminOrderByOrderId : ERROR";
+    private static final String TAKE_ADMIN_ORDER_BY_ORDER_ID_CLOSE_CON_ERROR_MSG = "OrderDAOdb : takeAdminOrderByOrderId  : close connection error";
+    private static final String UPDATE_STATUS_INFO_ERROR_MSG = "OrderDAOdb : updateStatusInfo : ERROR";
+    private static final String UPDATE_STATUS_INFO_CLOSE_CON_ERROR_MSG = "OrderDAOdb : updateStatusInfo : close connection error";
+    private static final String UPDATE_DAMAGE_PRICE_ERROR_MSG = "OrderDAOdb : updateDamagePriceByOrderId : ERROR";
+    private static final String UPDATE_DAMAGE_PRICE_CLOSE_CON_ERROR_MSG = "OrderDAOdb : updateDamagePriceByOrderId : close connection error";
+    private static final String UPDATE_REAL_TIME_FROM_ERROR_MSG = "OrderDAOdb : updateRealTimeFrom : ERROR";
+    private static final String UPDATE_REAL_TIME_FROM_CLOSE_CON_ERROR_MSG = "OrderDAOdb : updateRealTimeFrom : close connection error";
+    private static final String UPDATE_REAL_TIME_TO_ERROR_MSG = "OrderDAOdb : updateRealTimeTo : ERROR";
+    private static final String UPDATE_REAL_TIME_TO_CLOSE_CON_ERROR_MSG = "OrderDAOdb : updateRealTimeTo : close connection error";
+    private static final String COUNT_USER_ORDERS_ERROR_MSG = "OrderDAOdb : countUserOrders : ERROR";
+    private static final String COUNT_USER_ORDERS_CLOSE_CON_ERROR_MSG = "OrderDAOdb : countUserOrders : close connection error";
+    private static final String COUNT_ALL_ORDERS_ERROR_MSG = "OrderDAOdb : countAllOrders : ERROR";
+    private static final String COUNT_ALL_ORDERS_CLOSE_CON_ERROR_MSG = "OrderDAOdb : countAllOrders : close connection error";
 
 
     @Override
     public void addOrder(Order order) throws DAOException {
-        LOG.debug(ADD_ORDER_MSG);
+        LOG.debug(ADD_ORDER_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -105,18 +141,21 @@ public class OrderDAOdb implements OrderDAO {
             ps.setString(7, STATUS_NEW);
             ps.executeUpdate();
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(ADD_ORDER_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps);
+                }
+                LOG.debug(ADD_ORDER_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(ADD_ORDER_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     public List<Integer> takeOrderByOrder(Order order) throws DAOException {
-        LOG.debug(TAKE_ORDER);
+        LOG.debug(TAKE_ORDER_BY_ORDER_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -142,18 +181,21 @@ public class OrderDAOdb implements OrderDAO {
             }
             return carIds;
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(TAKE_ORDER_BY_ORDER_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(TAKE_ORDER_BY_ORDER_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(TAKE_ORDER_BY_ORDER_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     public List<Order> findOrdersByUserId(int userId, int toStartPage, int ordersOnPage) throws DAOException {
-        LOG.debug(FIND_ORDERS);
+        LOG.debug(FIND_ORDERS_BY_USER_ID_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -188,18 +230,21 @@ public class OrderDAOdb implements OrderDAO {
             }
             return orders;
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(FIND_ORDERS_BY_USER_ID_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(FIND_ORDERS_BY_USER_ID_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(FIND_ORDERS_BY_USER_ID_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     public Order findOrderByOrderId(int orderId) throws DAOException {
-        LOG.debug(FIND_ORDER);
+        LOG.debug(FIND_ORDER_BY_ID_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -237,18 +282,21 @@ public class OrderDAOdb implements OrderDAO {
             }
             return order;
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(FIND_ORDER_BY_ID_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(FIND_ORDER_BY_ID_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(FIND_ORDER_BY_ID_CLOE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     public List<Order> takeAllOrders(int toStartPage, int ordersOnPage) throws DAOException {
-        LOG.debug(TAKE_ALL_ORDERS);
+        LOG.debug(TAKE_ALL_ORDERS_STARTS_MSG);
         List<Order> orders = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -281,18 +329,21 @@ public class OrderDAOdb implements OrderDAO {
             }
             return orders;
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(TAKE_ALL_ORDERS_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, st, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, st, rs);
+                }
+                LOG.debug(TAKE_ALL_ORDERS_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(TAKE_ALL_ORDERS_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     public Order takeAdminOrderByOrderId(int orderId) throws DAOException {
-        LOG.debug(TAKE_ADMIN_ORDER_MSG);
+        LOG.debug(TAKE_ADMIN_ORDER_BY_ORDER_ID_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -340,18 +391,21 @@ public class OrderDAOdb implements OrderDAO {
             }
             return order;
         } catch(ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(TAKE_ADMIN_ORDER_BY_ORDER_ID_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(TAKE_ADMIN_ORDER_BY_ORDER_ID_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(TAKE_ADMIN_ORDER_BY_ORDER_ID_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     public void updateStatusById(String status, int orderId) throws DAOException{
-        LOG.debug(UPDATE_STATUS_MSG);
+        LOG.debug(UPDATE_STATUS_INFO_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -363,18 +417,21 @@ public class OrderDAOdb implements OrderDAO {
             ps.setInt(2, orderId);
             ps.executeUpdate();
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(UPDATE_STATUS_INFO_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps);
+                }
+                LOG.debug(UPDATE_STATUS_INFO_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(UPDATE_STATUS_INFO_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     public void updateStatusById(String status, int orderId, String orderInfo) throws DAOException{
-        LOG.debug(UPDATE_STATUS_MSG);
+        LOG.debug(UPDATE_STATUS_INFO_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -387,42 +444,21 @@ public class OrderDAOdb implements OrderDAO {
             ps.setInt(3, orderId);
             ps.executeUpdate();
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(UPDATE_STATUS_INFO_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps);
+                }
+                LOG.debug(UPDATE_STATUS_INFO_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
-            }
-        }
-    }
-
-    public void updateRealDateByOrderId(String realDateFrom, String realDateTo, int orderId) throws DAOException {
-        LOG.debug(UPDATE_REAL_DATE_MSG);
-        Connection connection = null;
-        ConnectionPooldb connectionPooldb = null;
-        PreparedStatement ps = null;
-        try {
-            connectionPooldb = ConnectionPooldb.getInstance();
-            connection = connectionPooldb.takeConnection();
-            ps = connection.prepareStatement(UPDATE_REAL_DATE_BY_ORDER_ID);
-            ps.setString(1, realDateFrom);
-            ps.setString(2, realDateTo);
-            ps.setInt(3, orderId);
-            ps.executeUpdate();
-        } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
-        } finally {
-            try {
-                connectionPooldb.closeConnection(connection, ps);
-            } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(UPDATE_STATUS_INFO_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     public void updateDamagePriceByOrderId(int orderId, double damagePrice) throws DAOException{
-        LOG.debug(UPDATE_DAMAGE_PRICE_BY_ID_MSG);
+        LOG.debug(UPDATE_DAMAGE_PRICE_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -434,18 +470,21 @@ public class OrderDAOdb implements OrderDAO {
             ps.setInt(2, orderId);
             ps.executeUpdate();
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(UPDATE_DAMAGE_PRICE_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps);
+                }
+                LOG.debug(UPDATE_DAMAGE_PRICE_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(UPDATE_DAMAGE_PRICE_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     public void updateRealTimeFrom(int orderId, String date) throws DAOException{
-        LOG.debug(UPDATE_REAL_TIME_FROM_MSG);
+        LOG.debug(UPDATE_REAL_TIME_FROM_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -457,18 +496,21 @@ public class OrderDAOdb implements OrderDAO {
             ps.setInt(2, orderId);
             ps.executeUpdate();
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(UPDATE_REAL_TIME_FROM_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps);
+                }
+                LOG.debug(UPDATE_REAL_TIME_FROM_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(UPDATE_REAL_TIME_FROM_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     public void updateRealTimeTo(int orderId, String date) throws DAOException{
-        LOG.debug(UPDATE_REAL_TIME_TO_MSG);
+        LOG.debug(UPDATE_REAL_TIME_TO_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -480,18 +522,21 @@ public class OrderDAOdb implements OrderDAO {
             ps.setInt(2, orderId);
             ps.executeUpdate();
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(UPDATE_REAL_TIME_TO_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps);
+                }
+                LOG.debug(UPDATE_REAL_TIME_TO_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(UPDATE_REAL_TIME_TO_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     public int countUserOrders(int userId) throws DAOException {
-        LOG.debug("OrderDAOdb : countUserOrders");
+        LOG.debug(COUNT_USER_ORDERS_STARTS_MSG);
         int amountOrders = 0;
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -508,19 +553,22 @@ public class OrderDAOdb implements OrderDAO {
             }
             return amountOrders;
         } catch (SQLException | ConnectionPoolException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(COUNT_USER_ORDERS_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, ps, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(COUNT_USER_ORDERS_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(COUNT_USER_ORDERS_CLOSE_CON_ERROR_MSG, ex);
             }
         }
 
     }
 
     public int countAllOrders() throws DAOException {
-        LOG.debug(COUNT_ALL_ORDERS_MSG);
+        LOG.debug(COUNT_ALL_ORDERS_STARTS_MSG);
         int ordersAmount = 0;
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -536,12 +584,15 @@ public class OrderDAOdb implements OrderDAO {
             }
             return ordersAmount;
         } catch (SQLException | ConnectionPoolException ex) {
-            throw new DAOException(ex);
+            throw new DAOException(COUNT_ALL_ORDERS_ERROR_MSG, ex);
         } finally {
             try {
-                connectionPooldb.closeConnection(connection, st, rs);
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, st, rs);
+                }
+                LOG.debug(COUNT_ALL_ORDERS_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ex);
+                throw new DAOException(COUNT_ALL_ORDERS_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }

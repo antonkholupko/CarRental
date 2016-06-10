@@ -1,4 +1,4 @@
-package by.epam.carrental.dao.connectionpoolhelper.resource;
+package by.epam.carrental.resource;
 
 public final class DBParameter {
     private DBParameter() {

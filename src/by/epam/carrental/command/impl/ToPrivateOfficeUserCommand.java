@@ -38,14 +38,16 @@ public class ToPrivateOfficeUserCommand implements Command {
         OrderService service = OrderService.getInstance();
         List<Order> orders = null;
         try {
-            orders = service.findOrdersByUserId(user.getId(), pageNumber, AMOUNT_ORDERS_ON_PAGE);
-            if (orders.size() == 0) {
-                request.setAttribute(NO_ORDERS_PARAM, true);
+            if (user != null) {
+                orders = service.findOrdersByUserId(user.getId(), pageNumber, AMOUNT_ORDERS_ON_PAGE);
+                if (orders.size() == 0) {
+                    request.setAttribute(NO_ORDERS_PARAM, true);
+                }
+                amountPages = service.countPageAmountUserOrders(user.getId(), AMOUNT_ORDERS_ON_PAGE);
+                request.getSession().setAttribute(ORDERS_PARAM, orders);
+                request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
+                request.setAttribute(PAGE_NUMBER_PARAM, pageNumber);
             }
-            amountPages = service.countPageAmountUserOrders(user.getId(), AMOUNT_ORDERS_ON_PAGE);
-            request.getSession().setAttribute(ORDERS_PARAM, orders);
-            request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
-            request.setAttribute(PAGE_NUMBER_PARAM, pageNumber);
             return PageName.PRIV_OFF_USER;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

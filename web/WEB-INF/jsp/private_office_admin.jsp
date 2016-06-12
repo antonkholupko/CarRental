@@ -47,188 +47,220 @@
     <fmt:message bundle="${locale}" key="local.mOrderNumber" var="mOrderNumber"/>
     <fmt:message bundle="${locale}" key="local.orders" var="myOrders"/>
     <fmt:message bundle="${locale}" key="local.viewOrders" var="viewAllOrders"/>
+    <fmt:message bundle="${locale}" key="local.login" var="mLogin"/>
+    <fmt:message bundle="${locale}" key="local.password" var="mPassword"/>
+    <fmt:message bundle="${locale}" key="local.signIn" var="mSignIn"/>
 </head>
 <body>
 <header>
-    <div>
-        <div class="div1"><h1>${carRental}</h1></div>
-        <div class="div2">
-            <div>
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="change-locale">
-                    <input type="hidden" name="language" value="en">
-                    <input type="submit" value="${en_button}" class="buttonLocalReg">
-                </form>
-            </div>
-            <div>
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="change-locale">
-                    <input type="hidden" name="language" value="ru">
-                    <input type="submit" value="${ru_button}" class="buttonLocalReg">
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="div5">
-        <form action="Controller" method="post">
-            <input type="hidden" name="command" value="log-out-user">
 
-            <div><input type="submit" value="${logOut}" class="buttonLogOut"></div>
-        </form>
-    </div>
-    <p>
-        <c:out value="${sessionScope.user.lastName}"/> <c:out value="${sessionScope.user.firstName}"/>
-    </p>
+    <div class="divHeader">
 
-    <div class="divMenu">
-        <div class="divMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="to-home-page">
-                <input type="submit" value="${home}" class="buttonMenu"/>
-            </form>
+        <div class="div3">
+            <div class="div1"><h1>${carRental}</h1></div>
+
+            <div class="div2">
+                <div>
+                    <form action="Controller" method="post">
+                        <input type="hidden" name="command" value="change-locale"/>
+                        <input type="hidden" name="language" value="en">
+                        <input type="submit" value="${en_button}" class="buttonLocalReg">
+                    </form>
+                </div>
+                <div>
+                    <form action="Controller" method="post">
+                        <input type="hidden" name="command" value="change-locale"/>
+                        <input type="hidden" name="language" value="ru">
+                        <input type="submit" value="${ru_button}" class="buttonLocalReg">
+                    </form>
+                </div>
+            </div>
+
+            <div class="div5">
+                <c:if test="${sessionScope.user.type.equals('admin')}">
+                    <div class="div5">
+                        <form action="Controller" method="post">
+                            <input type="hidden" name="command" value="log-out-user">
+
+                            <div>
+                                <input type="submit" value="${logOut}" class="buttonLogOut">
+                            </div>
+                        </form>
+                    </div>
+                </c:if>
+                <p>
+                    <c:if test="${sessionScope.user.type.equals('admin')}">
+                        <c:out value="${sessionScope.user.lastName}"/> <c:out value="${sessionScope.user.firstName}"/>
+                    </c:if>
+                </p>
+            </div>
+
         </div>
-        <div class="divMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="view-all-cars">
-                <input type="submit" value="${cars}" class="buttonMenu"/>
-            </form>
-        </div>
-        <div class="divMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="to-priv-office-admin">
-                <input type="submit" value="${privateOffice}" class="buttonMenu"/>
-            </form>
-        </div>
-        <div class="divMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="to-about">
-                <input type="submit" value="${info}" class="buttonMenu"/>
-            </form>
-        </div>
+        <c:if test="${sessionScope.user.type.equals('admin')}">
+            <div class="divMenu">
+                <div class="divMenu">
+                    <form action="Controller" method="post">
+                        <input type="hidden" name="command" value="to-home-page">
+                        <input type="submit" value=${home} class="buttonMenu"/>
+                    </form>
+                </div>
+                <div class="divMenu">
+                    <form action="Controller" method="get">
+                        <input type="hidden" name="command" value="view-all-cars">
+                        <input type="submit" value="${cars}" class="buttonMenu"/>
+                    </form>
+                </div>
+                <c:if test="${sessionScope.user.type.equals('admin')}">
+                    <div class="divMenu">
+                        <form action="Controller" method="get">
+                            <input type="hidden" name="command" value="to-priv-office-admin">
+                            <input type="submit" value="${privateOffice}" class="buttonMenu"/>
+                        </form>
+                    </div>
+                </c:if>
+                <div class="divMenu">
+                    <form action="Controller" method="get">
+                        <input type="hidden" name="command" value="to-about">
+                        <input type="submit" value="${info}" class="buttonMenu"/>
+                    </form>
+                </div>
+            </div>
+        </c:if>
     </div>
+
 </header>
 <section>
 
-    <h2>${adminPrivateOffice}</h2>
+    <c:if test="${sessionScope.user.type.equals('admin')}">
+        <h2>${adminPrivateOffice}</h2>
 
-    <hr/>
+        <hr/>
 
-    <div class="divSubMenu">
-        <form action="Controller" method="get">
-            <input type="hidden" name="command" value="view-orders-admin">
-            <input type="submit" value="${viewOrders}" class="buttonSubMenu">
-        </form>
-    </div>
-    <div class="divSubMenu">
-        <form action="Controller" method="get">
-            <input type="hidden" name="command" value="view-all-users">
-            <input type="submit" value="${viewUsers}" class="buttonSubMenu">
-        </form>
-    </div>
-    <div class="divSubMenu">
-        <form action="Controller" method="get">
-            <input type="hidden" name="command" value="to-add-car">
-            <input type="submit" value="${addCar}" class="buttonSubMenu">
-        </form>
-    </div>
+        <div class="divSubMenu">
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="view-orders-admin">
+                <input type="submit" value="${viewOrders}" class="buttonSubMenu">
+            </form>
+        </div>
+        <div class="divSubMenu">
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="view-all-users">
+                <input type="submit" value="${viewUsers}" class="buttonSubMenu">
+            </form>
+        </div>
+        <div class="divSubMenu">
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="to-add-car">
+                <input type="submit" value="${addCar}" class="buttonSubMenu">
+            </form>
+        </div>
 
-    <hr/>
+        <hr/>
 
-    <p><c:out value="${sessionScope.user.lastName}"/>
-        <c:out value="${sessionScope.user.firstName}"/>
-        <c:out value="${sessionScope.user.middleName}"/>,
-        ${welcomeAdmin}.</p>
+        <p><c:out value="${sessionScope.user.lastName}"/>
+            <c:out value="${sessionScope.user.firstName}"/>
+            <c:out value="${sessionScope.user.middleName}"/>,
+                ${welcomeAdmin}.</p>
 
-    <br/>
-    <hr/>
-    <h2>${myOrders}</h2>
-    <br/>
+        <br/>
+        <hr/>
+        <h2>${myOrders}</h2>
+        <br/>
 
-    <c:if test="${requestScope.noOrders == true }">
-        <p>${mNoOrders}</p>
-    </c:if>
+        <c:if test="${requestScope.noOrders == true }">
+            <p>${mNoOrders}</p>
+        </c:if>
 
-    <article class="articleForTables">
-        <c:forEach var="order" items="${orders}">
-            <article>
-                <div class="divOrders">
+        <article class="articleForTables">
+            <c:forEach var="order" items="${orders}">
+                <article>
+                    <div class="divOrders">
 
-                    <table border="1" width="100%">
-                        <thead>
-                        <tr>
-                            <th>${mOrderNumber}</th>
-                            <th>${mLastName}</th>
-                            <th>${mFirstName}</th>
-                            <th>${mMiddleName}</th>
-                            <th>${mMark}</th>
-                            <th>${mModel}</th>
-                            <th>${mGovNumber}</th>
-                            <th>${mStatus}</th>
-                            <th>${price}</th>
-                            <th>${mDmgPrice}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td><c:out value="${order.id}"/></td>
-                            <td><c:out value="${order.user.lastName}"/></td>
-                            <td><c:out value="${order.user.firstName}"/></td>
-                            <td><c:out value="${order.user.middleName}"/></td>
-                            <td><c:out value="${order.car.mark}"/></td>
-                            <td><c:out value="${order.car.model}"/></td>
-                            <td><c:out value="${order.car.govNumber}"/></td>
-                            <td>
-                                <c:if test="${order.status.equals('new')}">
-                                    ${sNew}
-                                </c:if>
-                                <c:if test="${order.status.equals('canceled')}">
-                                    ${sCanceld}
-                                </c:if>
-                                <c:if test="${order.status.equals('rejected')}">
-                                    ${sRejected}
-                                </c:if>
-                                <c:if test="${order.status.equals('payed')}">
-                                    ${Paid}
-                                </c:if>
-                                <c:if test="${order.status.equals('accepted')}">
-                                    ${Accepted}
-                                </c:if>
-                                <c:if test="${order.status.equals('delivered')}">
-                                    ${Delivered}
-                                </c:if>
-                                <c:if test="${order.status.equals('returned')}">
-                                    ${Returned}
-                                </c:if>
-                                <c:if test="${order.status.equals('expectsComp')}">
-                                    ${ExpectsComp}
-                                </c:if>
-                                <c:if test="${order.status.equals('closed')}">
-                                    ${Closed}
-                                </c:if>
-                            </td>
-                            <td><c:out value="${order.orderPrice}"/></td>
-                            <td><c:out value="${order.damagePrice}"/></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <br/>
+                        <table border="1" width="100%">
+                            <thead>
+                            <tr>
+                                <th>${mOrderNumber}</th>
+                                <th>${mLastName}</th>
+                                <th>${mFirstName}</th>
+                                <th>${mMiddleName}</th>
+                                <th>${mMark}</th>
+                                <th>${mModel}</th>
+                                <th>${mGovNumber}</th>
+                                <th>${mStatus}</th>
+                                <th>${price}</th>
+                                <th>${mDmgPrice}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><c:out value="${order.id}"/></td>
+                                <td><c:out value="${order.user.lastName}"/></td>
+                                <td><c:out value="${order.user.firstName}"/></td>
+                                <td><c:out value="${order.user.middleName}"/></td>
+                                <td><c:out value="${order.car.mark}"/></td>
+                                <td><c:out value="${order.car.model}"/></td>
+                                <td><c:out value="${order.car.govNumber}"/></td>
+                                <td>
+                                    <c:if test="${order.status.equals('new')}">
+                                        ${sNew}
+                                    </c:if>
+                                    <c:if test="${order.status.equals('canceled')}">
+                                        ${sCanceld}
+                                    </c:if>
+                                    <c:if test="${order.status.equals('rejected')}">
+                                        ${sRejected}
+                                    </c:if>
+                                    <c:if test="${order.status.equals('payed')}">
+                                        ${Paid}
+                                    </c:if>
+                                    <c:if test="${order.status.equals('accepted')}">
+                                        ${Accepted}
+                                    </c:if>
+                                    <c:if test="${order.status.equals('delivered')}">
+                                        ${Delivered}
+                                    </c:if>
+                                    <c:if test="${order.status.equals('returned')}">
+                                        ${Returned}
+                                    </c:if>
+                                    <c:if test="${order.status.equals('expectsComp')}">
+                                        ${ExpectsComp}
+                                    </c:if>
+                                    <c:if test="${order.status.equals('closed')}">
+                                        ${Closed}
+                                    </c:if>
+                                </td>
+                                <td><c:out value="${order.orderPrice}"/></td>
+                                <td><c:out value="${order.damagePrice}"/></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <br/>
 
-                    <div class="divSubMenu">
-                        <form action="Controller" method="get">
-                            <input type="hidden" name="selectedOrderId" value="${order.id}">
-                            <input type="hidden" name="command" value="view-order-admin">
-                            <input type="submit" value="${mDetails}" class="buttonSubMenu"/>
-                        </form>
+                        <div class="divSubMenu">
+                            <form action="Controller" method="get">
+                                <input type="hidden" name="selectedOrderId" value="${order.id}">
+                                <input type="hidden" name="command" value="view-order-admin">
+                                <input type="submit" value="${mDetails}" class="buttonSubMenu"/>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            </article>
-            <br/>
-        </c:forEach>
-        <form action="Controller" method="get">
-            <input type="hidden" name="command" value="view-orders-admin">
-            <input type="submit" value="${viewAllOrders}>>" class="buttonSubMenu"/>
-        </form>
-    </article>
+                </article>
+                <br/>
+            </c:forEach>
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="view-orders-admin">
+                <input type="submit" value="${viewAllOrders}>>" class="buttonSubMenu"/>
+            </form>
+        </article>
+    </c:if>
+    <c:if test="${!sessionScope.user.type.equals('admin')}">
+        <div class="divSubMenu">
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="to-home-page">
+                <input type="submit" value="${home}" class="buttonSubMenu">
+            </form>
+        </div>
+    </c:if>
 </section>
 <footer>
     <p>&copy; 2016 Car rental. All rights reserved.</p>

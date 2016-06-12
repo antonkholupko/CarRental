@@ -25,6 +25,7 @@ public class Validator {
     private static final int PASSPORT_LENGTH = 15;
     private static final int ADDRESS_LENGTH = 70;
     private static final int PLACE_LENGTH = 45;
+    private static final int DATE_LENGTH = 16;
 
     private static final String PATTERN_LOGIN = "[A-Za-z0-9_]+";
     private static final String PATTERN_PASSWORD = "\\S+";
@@ -218,6 +219,12 @@ public class Validator {
         if (firstDate.isEmpty() || secondDate.isEmpty()) {
             return false;
         }
+        if (firstDate.length() != DATE_LENGTH) {
+            return false;
+        }
+        if (secondDate.length() != DATE_LENGTH) {
+            return false;
+        }
         String tFirstDate = firstDate.replace(" ", "T");
         String tSecondDate = secondDate.replace(" ", "T");
         LocalDateTime date1 = LocalDateTime.parse(tFirstDate);
@@ -236,6 +243,9 @@ public class Validator {
      * @return true - дата и время не предшествуют реальному времени, false - наоборот
      */
     public boolean validateRealDateFrom(String date) {
+        if (date.length() != DATE_LENGTH) {
+            return false;
+        }
         String tDate = date.replace(" ", "T");
         LocalDateTime parsedDate = LocalDateTime.parse(tDate);
         LocalDateTime dateNow = LocalDateTime.now();
@@ -374,7 +384,9 @@ public class Validator {
      * @return true - модель корректна, false - не корректна
      */
     public boolean validateModel(String model) {
-        if (model.isEmpty()) {
+        if (model == null) {
+            return false;
+        } else if (model.isEmpty()) {
             return false;
         } else {
             return true;

@@ -6,7 +6,7 @@
 <html>
 <title>Car</title>
 <meta charset="utf-8">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="../../css/style.css">
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="localization.local" var="locale"/>
 <fmt:message bundle="${locale}" key="local.carRental" var="carRental"/>
@@ -220,7 +220,7 @@
                 <div>
                     <br/>
 
-                    <form action="Controller" method="post">
+                    <form action="Controller" method="get">
                         <input type="hidden" name="command" value="to-make-order">
                         <input type="submit" value="${makeOrder}" class="buttonPurchase"/>
                     </form>
@@ -233,12 +233,13 @@
 
                     <form action="Controller" method="post">
                         <input type="hidden" name="command" value="delete-car">
+                        <input type="hidden" name="processRequest" value="redirect">
                         <input type="submit" value="${deleteCar}" class="buttonDelete">
                     </form>
                 </div>
             </c:if>
             <c:if test="${sessionScope.user == null}">
-                <p>${forMakeOrderMessage}</p>
+                <p class="helpMessage">${forMakeOrderMessage}</p>
             </c:if>
         </span>
     </article>

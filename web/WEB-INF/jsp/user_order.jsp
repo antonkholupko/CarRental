@@ -55,201 +55,236 @@
     <fmt:message bundle="${locale}" key="local.petrol" var="mPetrol"/>
     <fmt:message bundle="${locale}" key="local.diesel" var="mDiesel"/>
     <fmt:message bundle="${locale}" key="local.electricity" var="mElectricity"/>
-    <fmt:message bundle="${locale}" key="local.mToAllOrders" var="mToAllOrders" />
+    <fmt:message bundle="${locale}" key="local.mToAllOrders" var="mToAllOrders"/>
     <fmt:message bundle="${locale}" key="local.mOrder" var="mOrder"/>
+    <fmt:message bundle="${locale}" key="local.viewOrders" var="mViewAllOrders"/>
+    <fmt:message bundle="${locale}" key="local.mMakeOrder" var="mMakeOrder"/>
 </head>
 <body>
 <header>
-    <div>
-        <div class="div1"><h1>${carRental}</h1></div>
-        <div class="div2">
-            <div>
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="change-locale">
-                    <input type="hidden" name="language" value="en">
-                    <input type="submit" value="${en_button}" class="buttonLocalReg">
-                </form>
-            </div>
-            <div>
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="change-locale">
-                    <input type="hidden" name="language" value="ru">
-                    <input type="submit" value="${ru_button}" class="buttonLocalReg">
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="div5">
-        <form action="Controller" method="post">
-            <input type="hidden" name="command" value="log-out-user">
+    <div class="divHeader">
 
-            <div><input type="submit" value="${logOut}" class="buttonLogOut"></div>
-        </form>
-    </div>
-    <p>
-        <c:out value="${sessionScope.user.lastName}"/> <c:out value="${sessionScope.user.firstName}"/>
-    </p>
+        <div class="div3">
+            <div class="div1"><h1>${carRental}</h1></div>
 
-    <div class="divMenu">
-        <div class="divMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="to-home-page">
-                <input type="submit" value="${home}" class="buttonMenu"/>
-            </form>
+            <div class="div2">
+                <div>
+                    <form action="Controller" method="post">
+                        <input type="hidden" name="command" value="change-locale"/>
+                        <input type="hidden" name="language" value="en">
+                        <input type="submit" value="${en_button}" class="buttonLocalReg">
+                    </form>
+                </div>
+                <div>
+                    <form action="Controller" method="post">
+                        <input type="hidden" name="command" value="change-locale"/>
+                        <input type="hidden" name="language" value="ru">
+                        <input type="submit" value="${ru_button}" class="buttonLocalReg">
+                    </form>
+                </div>
+            </div>
+
+            <div class="div5">
+                <c:if test="${sessionScope.user.type.equals('user')}">
+                    <div class="div5">
+                        <form action="Controller" method="post">
+                            <input type="hidden" name="command" value="log-out-user">
+
+                            <div>
+                                <input type="submit" value="${logOut}" class="buttonLogOut">
+                            </div>
+                        </form>
+                    </div>
+                </c:if>
+                <p>
+                    <c:if test="${sessionScope.user.type.equals('user')}">
+                        <c:out value="${sessionScope.user.lastName}"/> <c:out value="${sessionScope.user.firstName}"/>
+                    </c:if>
+                </p>
+            </div>
+
         </div>
-        <div class="divMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="view-all-cars">
-                <input type="submit" value="${cars}" class="buttonMenu"/>
-            </form>
-        </div>
-        <div class="divMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="to-priv-office-user">
-                <input type="submit" value="${privateOffice}" class="buttonMenu"/>
-            </form>
-        </div>
-        <div class="divMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="view-orders-user">
-                <input type="submit" value="${myOrders}" class="buttonMenu"/>
-            </form>
-        </div>
-        <div class="divMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="to-about">
-                <input type="submit" value="${info}" class="buttonMenu"/>
-            </form>
-        </div>
+        <c:if test="${sessionScope.user.type.equals('user')}">
+            <div class="divMenu">
+                <div class="divMenu">
+                    <form action="Controller" method="post">
+                        <input type="hidden" name="command" value="to-home-page">
+                        <input type="submit" value=${home} class="buttonMenu"/>
+                    </form>
+                </div>
+                <div class="divMenu">
+                    <form action="Controller" method="get">
+                        <input type="hidden" name="command" value="view-all-cars">
+                        <input type="submit" value="${cars}" class="buttonMenu"/>
+                    </form>
+                </div>
+                <c:if test="${sessionScope.user.type.equals('user')}">
+                    <div class="divMenu">
+                        <form action="Controller" method="get">
+                            <input type="hidden" name="command" value="to-priv-office-user">
+                            <input type="submit" value="${privateOffice}" class="buttonMenu"/>
+                        </form>
+                    </div>
+                </c:if>
+                <div class="divMenu">
+                    <form action="Controller" method="get">
+                        <input type="hidden" name="command" value="to-about">
+                        <input type="submit" value="${info}" class="buttonMenu"/>
+                    </form>
+                </div>
+            </div>
+        </c:if>
     </div>
 </header>
 <section>
+    <c:if test="${sessionScope.user.type.equals('user')}">
+        <h2>${mOrder}</h2>
 
-    <h2>${mOrder}</h2>
+        <hr/>
 
-    <hr/>
-
-    <div class="divSubMenu">
-        <form action="Controller" method="get">
-            <input type="hidden" name="selectedOrderId" value="${sessionScope.selectedOrder.id}">
-            <input type="hidden" name="command" value="view-orders-user">
-            <input type="submit" value="${mToAllOrders}" class="buttonSubMenu"/>
-        </form>
-    </div>
-
-    <div class="divSubMenu">
-        <form action="Controller" method="get">
-            <input type="hidden" name="selectedOrderId" value="${sessionScope.selectedOrder.id}">
-            <input type="hidden" name="command" value="view-order-user">
-            <input type="submit" value="${mUpdate}" class="buttonSubMenu"/>
-        </form>
-    </div>
-
-    <c:if test="${sessionScope.selectedOrder.status.equals('new')}">
-        <div class="divSubMenu">
-            <form action="Controller" method="post">
-                <input type="hidden" name="command" value="cancel-order"/>
-                <input type="submit" value="${mCancelOrder}" class="buttonSubMenu"/>
-            </form>
-        </div>
-    </c:if>
-    <c:if test="${sessionScope.selectedOrder.status.equals('accepted')}">
         <div class="divSubMenu">
             <form action="Controller" method="get">
-                <input type="hidden" name="payment-type" value="order"/>
-                <input type="hidden" name="command" value="to-payment-page"/>
-                <input type="submit" value="${mPayForOrder}" class="buttonSubMenu"/>
+                <input type="hidden" name="selectedOrderId" value="${sessionScope.selectedOrder.id}">
+                <input type="hidden" name="command" value="view-orders-user">
+                <input type="submit" value="${mToAllOrders}" class="buttonSubMenu"/>
             </form>
         </div>
-    </c:if>
 
-    <c:if test="${sessionScope.selectedOrder.damagePrice != 0 && sessionScope.selectedOrder.status.equals('expectsComp')}">
         <div class="divSubMenu">
             <form action="Controller" method="get">
-                <input type="hidden" name="payment-type" value="damage"/>
-                <input type="hidden" name="command" value="to-payment-page"/>
-                <input type="submit" value="${mPayForDmg}" class="buttonSubMenu"/>
+                <input type="hidden" name="selectedOrderId" value="${sessionScope.selectedOrder.id}">
+                <input type="hidden" name="command" value="view-order-user">
+                <input type="submit" value="${mUpdate}" class="buttonSubMenu"/>
             </form>
         </div>
-    </c:if>
 
-    <hr/>
+        <c:if test="${sessionScope.selectedOrder.status.equals('new')}">
+            <div class="divSubMenu">
+                <form action="Controller" method="post">
+                    <input type="hidden" name="command" value="cancel-order"/>
+                    <input type="hidden" name="processRequest" value="redirect">
+                    <input type="submit" value="${mCancelOrder}" class="buttonSubMenu"/>
+                </form>
+            </div>
+        </c:if>
+        <c:if test="${sessionScope.selectedOrder.status.equals('accepted')}">
+            <div class="divSubMenu">
+                <form action="Controller" method="get">
+                    <input type="hidden" name="payment-type" value="order"/>
+                    <input type="hidden" name="command" value="to-payment-page"/>
+                    <input type="submit" value="${mPayForOrder}" class="buttonSubMenu"/>
+                </form>
+            </div>
+        </c:if>
 
-    <h2>${mOrderNumber}: <c:out value="${sessionScope.selectedOrder.id}"/></h2>
+        <c:if test="${sessionScope.selectedOrder.damagePrice != 0 && sessionScope.selectedOrder.status.equals('expectsComp')}">
+            <div class="divSubMenu">
+                <form action="Controller" method="get">
+                    <input type="hidden" name="payment-type" value="damage"/>
+                    <input type="hidden" name="command" value="to-payment-page"/>
+                    <input type="submit" value="${mPayForDmg}" class="buttonSubMenu"/>
+                </form>
+            </div>
+        </c:if>
 
-    <p>
-        ${mStatus}:
+        <div class="divSubMenu">
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="view-orders-user">
+                <input type="submit" value="${mViewAllOrders}" class="buttonSubMenu">
+            </form>
+        </div>
+        <div class="divSubMenu">
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="view-all-cars">
+                <input type="submit" value="${mMakeOrder}" class="buttonSubMenu">
+            </form>
+        </div>
+
+        <hr/>
+
+        <h2>${mOrderNumber}: <c:out value="${sessionScope.selectedOrder.id}"/></h2>
+
+        <p>
+                ${mStatus}:
             <c:if test="${sessionScope.selectedOrder.status.equals('new')}">
-            ${sNew}
-        </c:if>
+                ${sNew}
+            </c:if>
             <c:if test="${sessionScope.selectedOrder.status.equals('canceled')}">
-            ${sCanceld}
-        </c:if>
+                ${sCanceld}
+            </c:if>
             <c:if test="${sessionScope.selectedOrder.status.equals('rejected')}">
-            ${sRejected}
-        </c:if>
+                ${sRejected}
+            </c:if>
             <c:if test="${sessionScope.selectedOrder.status.equals('accepted')}">
-            ${Accepted}
-        </c:if>
+                ${Accepted}
+            </c:if>
             <c:if test="${sessionScope.selectedOrder.status.equals('payed')}">
-            ${Paid}
-        </c:if>
+                ${Paid}
+            </c:if>
             <c:if test="${sessionScope.selectedOrder.status.equals('delivered')}">
-            ${Delivered}
-        </c:if>
+                ${Delivered}
+            </c:if>
             <c:if test="${sessionScope.selectedOrder.status.equals('returned')}">
-            ${Returned}
-        </c:if>
+                ${Returned}
+            </c:if>
             <c:if test="${sessionScope.selectedOrder.status.equals('expectsComp')}">
-            ${ExpectsComp}
-        </c:if>
+                ${ExpectsComp}
+            </c:if>
             <c:if test="${sessionScope.selectedOrder.status.equals('closed')}">
-            ${Closed}
-        </c:if>
-    </p>
+                ${Closed}
+            </c:if>
+        </p>
 
-    <p>${mInformation}: <c:out value="${sessionScope.selectedOrder.info}"/></p>
+        <p>${mInformation}: <c:out value="${sessionScope.selectedOrder.info}"/></p>
 
-    <p>${mPrice}: <c:out value="${sessionScope.selectedOrder.orderPrice}"/></p>
+        <p>${mPrice}: <c:out value="${sessionScope.selectedOrder.orderPrice}"/></p>
 
-    <p>${mDamagePrice}: <c:out value="${sessionScope.selectedOrder.damagePrice}"/></p>
-    <img class="imgSmall" src="data:image/jpg;base64,${sessionScope.selectedOrder.car.image}"/>
+        <p>${mDamagePrice}: <c:out value="${sessionScope.selectedOrder.damagePrice}"/></p>
+        <img class="imgSmall" src="data:image/jpg;base64,${sessionScope.selectedOrder.car.image}"/>
 
-    <p>${mMark}: <c:out value="${sessionScope.selectedOrder.car.mark}"/></p>
+        <p>${mMark}: <c:out value="${sessionScope.selectedOrder.car.mark}"/></p>
 
-    <p>${mModel}: <c:out value="${sessionScope.selectedOrder.car.model}"/></p>
+        <p>${mModel}: <c:out value="${sessionScope.selectedOrder.car.model}"/></p>
 
-    <p>${mFuel}:
-        <c:if test="${sessionScope.selectedOrder.car.fuel.equals('petrol')}">
-            ${mPetrol}
-        </c:if>
-        <c:if test="${sessionScope.selectedOrder.car.fuel.equals('diesel')}">
-            ${mDiesel}
-        </c:if>
-        <c:if test="${sessionScope.selectedOrder.car.fuel.equals('electricity')}">
-            ${mElectricity}
-        </c:if>
-    </p>
+        <p>${mFuel}:
+            <c:if test="${sessionScope.selectedOrder.car.fuel.equals('petrol')}">
+                ${mPetrol}
+            </c:if>
+            <c:if test="${sessionScope.selectedOrder.car.fuel.equals('diesel')}">
+                ${mDiesel}
+            </c:if>
+            <c:if test="${sessionScope.selectedOrder.car.fuel.equals('electricity')}">
+                ${mElectricity}
+            </c:if>
+        </p>
 
-    <p>${mTransmission}:
-        <c:if test="${sessionScope.selectedOrder.car.transmission.equals('automatic')}">
-            ${mAutomatic}
-        </c:if>
-        <c:if test="${sessionScope.selectedOrder.car.transmission.equals('mechanic')}">
-            ${mMechanic}
-        </c:if>
-    </p>
+        <p>${mTransmission}:
+            <c:if test="${sessionScope.selectedOrder.car.transmission.equals('automatic')}">
+                ${mAutomatic}
+            </c:if>
+            <c:if test="${sessionScope.selectedOrder.car.transmission.equals('mechanic')}">
+                ${mMechanic}
+            </c:if>
+        </p>
 
-    <p>${mGovNumber}: <c:out value="${sessionScope.selectedOrder.car.govNumber}"/></p>
+        <p>${mGovNumber}: <c:out value="${sessionScope.selectedOrder.car.govNumber}"/></p>
 
-    <p>${mSupposedDateFrom} <c:out value="${sessionScope.selectedOrder.supposedDateFrom}"/></p>
+        <p>${mSupposedDateFrom} <c:out value="${sessionScope.selectedOrder.supposedDateFrom}"/></p>
 
-    <p>${mSupposedDateTo} <c:out value="${sessionScope.selectedOrder.supposedDateTo}"/></p>
+        <p>${mSupposedDateTo} <c:out value="${sessionScope.selectedOrder.supposedDateTo}"/></p>
 
-    <p>${mShippingPlace} <c:out value="${sessionScope.selectedOrder.shippingPlace}"/></p>
+        <p>${mShippingPlace} <c:out value="${sessionScope.selectedOrder.shippingPlace}"/></p>
 
-    <p>${mReturnPlace} <c:out value="${sessionScope.selectedOrder.returnPlace}"/></p>
-
+        <p>${mReturnPlace} <c:out value="${sessionScope.selectedOrder.returnPlace}"/></p>
+    </c:if>
+    <c:if test="${!sessionScope.user.type.equals('user')}">
+        <div class="divSubMenu">
+            <form action="Controller" method="get">
+                <input type="hidden" name="command" value="to-home-page">
+                <input type="submit" value="${home}" class="buttonSubMenu">
+            </form>
+        </div>
+    </c:if>
 </section>
 <footer>
     <p>&copy; 2016 Car rental. All rights reserved.</p>

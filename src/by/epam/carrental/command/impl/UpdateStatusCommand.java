@@ -11,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * Команда для изменения статуса заказа
@@ -21,38 +20,32 @@ public class UpdateStatusCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(UpdateStatusCommand.class.getName());
     private static final String EXECUTE_STARTS = "UpdateStatusCommand : execute";
     private static final String ORDER_ID_PARAM = "orderId";
+    private static final String SELECTED_ORDER_PARAM = "selectedOrder";
     private static final String ORDER_STATUS_PARAM = "statusOrder";
     private static final String ORDER_INFO_PARAM = "order-info";
-    private static final String ORDERS_PARAM = "orders";
     private static final String INVALID_INFO = "invalidInfo";
-    private static final String PAGE_NUMBER_PARAM = "pageNumber";
-    private static final String AMOUNT_PAGES_PARAM = "amountPages";
-
-    private static final int AMOUNT_ORDERS_ON_PAGE = 4;
+    private static final String SUCCESSFUL_UPDATED_STATUS_PARAM = "successfulUpdatedStatus";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug(EXECUTE_STARTS);
-        int amountPages = 0;
-        int pageNumber = 1;
-        int orderId = (Integer) request.getSession(true).getAttribute(ORDER_ID_PARAM);
+        int orderId = Integer.parseInt(request.getParameter(ORDER_ID_PARAM));
         String status = request.getParameter(ORDER_STATUS_PARAM);
         String orderInfo = request.getParameter(ORDER_INFO_PARAM);
         OrderService service = OrderService.getInstance();
-        Order order = null;
-        List<Order> orders = null;
         Validator validator = Validator.getInstance();
         try {
             if (validator.validateOrderInfo(orderInfo)) {
                 service.updateStatusById(status, orderId, orderInfo);
-                orders = service.takeAllOrders(pageNumber, AMOUNT_ORDERS_ON_PAGE);
-                amountPages = service.countPageAmountAllOrders(AMOUNT_ORDERS_ON_PAGE);
-                request.getSession().setAttribute(ORDERS_PARAM, orders);
-                request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
-                request.setAttribute(PAGE_NUMBER_PARAM, pageNumber);
+                request.setAttribute("processRequest", "redirect");
                 request.setAttribute(INVALID_INFO, false);
-                return PageName.ADMIN_ORDERS;
+                request.getSession().setAttribute(SUCCESSFUL_UPDATED_STATUS_PARAM, true);
+                return PageName.ADMIN_SUCCESS;
             } else {
+                request.setAttribute(ORDER_ID_PARAM, orderId);
+                Order order = service.takeAdminOrderByOrderId(orderId);
+                request.setAttribute(SELECTED_ORDER_PARAM, order);
+                request.setAttribute("processRequest", null);
                 request.setAttribute(INVALID_INFO, true);
                 return PageName.ADMIN_ORDER;
             }

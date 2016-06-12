@@ -11,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * Команда для вставки времени и даты, когда поьзователь вернул автомобиль
@@ -20,40 +19,34 @@ public class UpdateRealDateToCommand implements Command{
 
     private static final Logger LOG = LogManager.getLogger(UpdateRealDateFromCommand.class.getName());
     private static final String EXECUTE_STARTS = "UpdateRealDateFromCommand : execute";
-    private static final String ORDER_ID_PARAM = "orderId";
+    private static final String ORDER_ID_PARAM = "selectedOrderId";
     private static final String SELECTED_ORDER_PARAM = "selectedOrder";
     private static final String REAL_DATE_TO = "real-date-to";
     private static final String REAL_TIME_TO = "real-time-to";
-    private static final String ORDERS_PARAM = "orders";
     private static final String INVALID_DATE_TO = "invalidDateTo";
-    private static final String PAGE_NUMBER_PARAM = "pageNumber";
-    private static final String AMOUNT_PAGES_PARAM = "amountPages";
-
-    private static final int AMOUNT_ORDERS_ON_PAGE = 4;
+    private static final String DATE_TO_UPDATED_PARAM = "dateToUpdated";
+    private static final String PROCESS_REQUEST_PARAM = "processRequest";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug(EXECUTE_STARTS);
-        int amountPages = 0;
-        int pageNumber = 1;
-        int orderId = (Integer) request.getSession(true).getAttribute(ORDER_ID_PARAM);
-        Order order = (Order) request.getSession().getAttribute(SELECTED_ORDER_PARAM);
-        String realDateFrom = order.getRealDateFrom();
+        int orderId = Integer.parseInt(request.getParameter(ORDER_ID_PARAM));
         String realDateTo = request.getParameter(REAL_DATE_TO) + " " + request.getParameter(REAL_TIME_TO);
         OrderService service = OrderService.getInstance();
         Validator validator = Validator.getInstance();
-        order = null;
-        List<Order> orders = null;
         try {
+            Order order = service.takeAdminOrderByOrderId(orderId);
+            String realDateFrom = order.getRealDateFrom();
             if (validator.validateDate(realDateFrom, realDateTo)) {
-                service.updateRealTimeTo(orderId,realDateTo);
-                orders = service.takeAllOrders(pageNumber, AMOUNT_ORDERS_ON_PAGE);
-                amountPages = service.countPageAmountAllOrders(AMOUNT_ORDERS_ON_PAGE);
-                request.getSession().setAttribute(ORDERS_PARAM, orders);
-                request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
-                request.setAttribute(PAGE_NUMBER_PARAM, pageNumber);
-                return PageName.ADMIN_ORDERS;
+                service.updateRealTimeTo(orderId, realDateTo);
+                request.setAttribute(PROCESS_REQUEST_PARAM, "redirect");
+                request.getSession().setAttribute(DATE_TO_UPDATED_PARAM, true);
+                return PageName.ADMIN_SUCCESS;
             } else {
+                request.setAttribute(ORDER_ID_PARAM, orderId);
+                order = service.takeAdminOrderByOrderId(orderId);
+                request.setAttribute(SELECTED_ORDER_PARAM, order);
+                request.setAttribute(PROCESS_REQUEST_PARAM, null);
                 request.setAttribute(INVALID_DATE_TO, true);
                 return PageName.ADMIN_ORDER;
             }

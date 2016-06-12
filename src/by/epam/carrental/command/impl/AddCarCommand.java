@@ -4,7 +4,6 @@ import by.epam.carrental.command.Command;
 import by.epam.carrental.command.PageName;
 import by.epam.carrental.command.exception.CommandException;
 import by.epam.carrental.entity.Car;
-import by.epam.carrental.entity.CarType;
 import by.epam.carrental.service.CarService;
 import by.epam.carrental.service.Validator;
 import by.epam.carrental.service.ValidatorUniqueCar;
@@ -19,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 /**
  * Команда добавления автомобиля
@@ -30,8 +28,6 @@ import java.util.List;
 public class AddCarCommand implements Command {
 
     private static final Logger LOG = LogManager.getLogger(AddCarCommand.class.getName());
-
-    private static final int AMOUNT_CARS_ON_PAGE = 9;
 
     private static final String EXECUTE_STARTS_MSG = "AddCarCommand : execute : starts";
     private static final String VALID_PARAMETERS_STARTS_MSG = "AddCarCommand : validParameters : starts";
@@ -46,9 +42,6 @@ public class AddCarCommand implements Command {
     private static final String VIN_PARAM = "vin";
     private static final String CAR_INFO_PARAM = "car-info";
     private static final String IMAGE_PARAM = "image";
-    private static final String AMOUNT_PAGES_PARAM = "amountPages";
-    private static final String ALL_CARS_PARAM = "allCars";
-    private static final String ALL_TYPES_PARAM = "allTypes";
     private static final String CAR_SUCCESSFUL_ADDED_PARAM = "carSuccessfulAdded";
     private static final String INVALID_MODEL_PARAM = "invalidModel";
     private static final String INVALID_YEAR_PARAM = "invalidYear";
@@ -59,13 +52,6 @@ public class AddCarCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug(EXECUTE_STARTS_MSG);
-        int amountPages = 0;
-        int pageNumber = 1;
-        List<Car> cars = null;
-        List<CarType> carTypes = null;
-        if (request.getParameter(PAGE_NUMBER_PARAM) != null) {
-            pageNumber = Integer.parseInt(request.getParameter(PAGE_NUMBER_PARAM));
-        }
         CarService service = CarService.getInstance();
         try {
             String model = request.getParameter(CAR_MODEL_PARAM);
@@ -91,16 +77,11 @@ public class AddCarCommand implements Command {
                 car.setImage(Base64.encode(IOUtils.readFully(inputStream, -1, true)));
                 service.insertCar(car);
 
-                cars = service.takeAllCars(pageNumber, AMOUNT_CARS_ON_PAGE);
-                amountPages = service.countPageAmountAllCars(AMOUNT_CARS_ON_PAGE);
-
-                carTypes = service.takeCarTypes();
-                request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
-                request.getSession().setAttribute(ALL_CARS_PARAM, cars);
-                request.getSession().setAttribute(ALL_TYPES_PARAM, carTypes);
-                request.setAttribute(CAR_SUCCESSFUL_ADDED_PARAM, true);
-                return PageName.ALL_CARS;
+                request.getSession().setAttribute(CAR_SUCCESSFUL_ADDED_PARAM, true);
+                request.setAttribute("processRequest", "redirect");
+                return PageName.ADMIN_SUCCESS;
             } else {
+                request.setAttribute("processRequest", null);
                 return PageName.ADD_CAR;
             }
 

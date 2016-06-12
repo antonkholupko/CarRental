@@ -3,7 +3,6 @@ package by.epam.carrental.command.impl;
 import by.epam.carrental.command.Command;
 import by.epam.carrental.command.PageName;
 import by.epam.carrental.command.exception.CommandException;
-import by.epam.carrental.entity.Order;
 import by.epam.carrental.entity.User;
 import by.epam.carrental.service.OrderService;
 import by.epam.carrental.service.Validator;
@@ -12,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * Команда для оформления заказа пользователем
@@ -44,8 +42,6 @@ public class MakeOrderCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug(EXECUTE_STARTS);
-        int amountPages = 0;
-        int pageNumber = 1;
         User user = (User) request.getSession(true).getAttribute(USER_PARAM);
         int userId = user.getId();
         int carId = (Integer) request.getSession(true).getAttribute(SELECTED_CAR_PARAM_ID);
@@ -55,7 +51,6 @@ public class MakeOrderCommand implements Command {
         String returnPlace = request.getParameter(RETURN_PLASE_PARAM);
         OrderService service = OrderService.getInstance();
         Validator validator = Validator.getInstance();
-        List<Order> orders = null;
         try {
             if (!validator.validateDate(supposedDateFrom, supposedDateTo)) {
                 request.setAttribute(INV_DATE_PARAM, true);
@@ -64,20 +59,18 @@ public class MakeOrderCommand implements Command {
 
             if (!validator.validatePlace(shippingPlace) && !validator.validatePlace(returnPlace)) {
                 request.setAttribute(INV_PLACES_PARAM, true);
+                request.setAttribute("processRequest", null);
                 return PageName.MAKE_ORDER;
             }
             boolean add = service.addOrder(userId, carId, supposedDateFrom, supposedDateTo, shippingPlace, returnPlace);
             if (!add) {
                 request.setAttribute(ADD_ORDER_FAILED_PARAM, true);
+                request.setAttribute("processRequest", null);
                 return PageName.MAKE_ORDER;
             }
-            amountPages = service.countPageAmountUserOrders(user.getId(), AMOUNT_ORDERS_ON_PAGE);
-            orders = service.findOrdersByUserId(user.getId(), pageNumber, AMOUNT_ORDERS_ON_PAGE);
-            request.getSession().setAttribute(ORDERS_PARAM, orders);
-            request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
-            request.setAttribute(PAGE_NUMBER_PARAM, pageNumber);
-            request.setAttribute(ORDER_SUCCESSFUL_MADE, true);
-            return PageName.USER_ORDERS;
+            request.getSession().setAttribute(ORDER_SUCCESSFUL_MADE, true);
+            request.setAttribute("processRequest", "redirect");
+            return PageName.USER_SUCCESS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);
         }

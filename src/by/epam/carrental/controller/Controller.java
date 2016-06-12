@@ -1,25 +1,19 @@
 package by.epam.carrental.controller;
 
 import by.epam.carrental.command.Command;
-import by.epam.carrental.command.CommandName;
 import by.epam.carrental.command.PageName;
 import by.epam.carrental.command.exception.CommandException;
 import by.epam.carrental.controller.helper.CommandHelper;
-import by.epam.carrental.entity.Car;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.List;
 
 @MultipartConfig
 public class Controller extends HttpServlet {
@@ -58,9 +52,15 @@ public class Controller extends HttpServlet {
                 page = command.execute(request);
             }
 
+/*            if ((request.getParameter("processRequest") != null) & (request.getParameter("processRequest").equals("redirect"))) {
+                response.sendRedirect(page);
+            }
+*/
             RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-            if (dispatcher != null) {
+            if (dispatcher != null & request.getAttribute("processRequest") == null) {
                 dispatcher.forward(request, response);
+            } else if (request.getAttribute("processRequest").equals("redirect")) {
+                response.sendRedirect(page);
             } else {
                 page = PageName.ERROR_PAGE;
                 dispatcher = request.getRequestDispatcher(page);

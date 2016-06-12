@@ -17,5 +17,7 @@ public final class PageName {
     public static final String ALL_USERS = "WEB-INF/jsp/all_users.jsp";
     public static final String USER = "WEB-INF/jsp/user.jsp";
     public static final String ADD_CAR = "WEB-INF/jsp/add_car.jsp";
-    public static final String ABOUT = "WEB-INF/jsp/about.jsp";
+    public static final String ABOUT = "about.jsp";
+    public static final String ADMIN_SUCCESS = "admin_success.jsp";
+    public static final String USER_SUCCESS = "user_success.jsp";
 }

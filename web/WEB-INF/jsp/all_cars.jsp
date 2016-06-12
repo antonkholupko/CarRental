@@ -7,7 +7,7 @@
 <head>
     <title>All cars</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="locale"/>
     <fmt:message bundle="${locale}" key="local.carRental" var="carRental"/>
@@ -154,15 +154,6 @@
     <c:if test="${!user.type.equals('admin')}">
         <p class="helpMessage">${mForMakingOrder}</p>
     </c:if>
-
-    <c:if test="${requestScope.carSuccessfulAdded == true}">
-        <p class="rightMessage">${carAdded}</p>
-    </c:if>
-
-    <c:if test="${requestScope.carSuccessfulDeleted == true}">
-        <p class="rightMessage">${carDeleted}</p>
-    </c:if>
-
 
     <div class="divDateTime">
         <form action="Controller" method="get">

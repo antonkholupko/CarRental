@@ -45,6 +45,9 @@
     <fmt:message bundle="${locale}" key="local.invalidPassport" var="invalidPassport"/>
     <fmt:message bundle="${locale}" key="local.invalidAddress" var="invalidAddress"/>
     <fmt:message bundle="${locale}" key="local.messageConfirmationPassword" var="notConfirmedPassword"/>
+    <fmt:message bundle="${locale}" key="local.home" var="home"/>
+    <fmt:message bundle="${locale}" key="local.cars" var="cars"/>
+    <fmt:message bundle="${locale}" key="local.info" var="info"/>
 </head>
 <body>
 
@@ -72,19 +75,19 @@
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="to-home-page">
-                <input type="submit" value="Home" class="buttonMenu"/>
+                <input type="submit" value="${home}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="view-all-cars">
-                <input type="submit" value="Cars" class="buttonMenu"/>
+                <input type="submit" value="${cars}" class="buttonMenu"/>
             </form>
         </div>
         <div class="divMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="to-about">
-                <input type="submit" value="Info" class="buttonMenu"/>
+                <input type="submit" value="${info}" class="buttonMenu"/>
             </form>
         </div>
     </div>
@@ -97,7 +100,7 @@
 
     <p>${messageReg}</p>
 
-    <p style="color: red">
+    <p class="invalidMessage">
         <c:if test="${requestScope.uniqueLogin == false}">
             ${notUniqueLogin}
         </c:if>
@@ -136,7 +139,7 @@
         </c:if>
     </p>
 
-    <p style="color: red">
+    <p class="invalidMessage">
         <c:if test="${requestScope.confirmationPassword == false}">
             ${notConfirmedPassword}
         </c:if>
@@ -194,7 +197,8 @@
             </p>
             <input type="text" name="address" value="" maxlength="70"/> <br/>
             <br/>
-            <input type="hidden" name="command" value="register"/>
+            <input type="hidden" name="command" value="register">
+            <input type="hidden" name="processRequest" value="redirect">
             <input type="submit" value="${register}" class="buttonSubMenu"/>
         </form>
     </div>

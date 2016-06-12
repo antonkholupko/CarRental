@@ -20,7 +20,11 @@ import java.util.List;
 public class CarService {
 
     private static final Logger LOG = LogManager.getLogger(CarService.class.getName());
+
     private static final CarService instance = new CarService();
+
+    private static final CarDAO carDao = DAOFactory.getInstance().getCarDAO();
+
     private static final String TAKE_MARKS_MSG = "CarService : takeMarks";
     private static final String TAKE_MODELS_MSG = "CarService : takeModels";
     private static final String TAKE_CAR_TYPES_MSG = "CarService : takeCarTypes";

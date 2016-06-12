@@ -26,18 +26,14 @@ public class ViewOrderAdminCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug(EXECUTE_STARTS);
-        int orderId = 0;
-        if (request.getSession().getAttribute(ORDER_ID_PARAM) != null) {
-            orderId = (Integer) request.getSession().getAttribute(ORDER_ID_PARAM);
-        } else {
-            orderId = Integer.parseInt(request.getParameter(SELECTED_ORDER_ID_PARAM));
-        }
-        request.getSession().setAttribute(ORDER_ID_PARAM, orderId);
+        int orderId = Integer.parseInt(request.getParameter("selectedOrderId"));
+        request.setAttribute(ORDER_ID_PARAM, orderId);
         OrderService service = OrderService.getInstance();
         Order order = null;
         try {
             order = service.takeAdminOrderByOrderId(orderId);
-            request.getSession().setAttribute(SELECTED_ORDER_PARAM, order);
+            request.setAttribute(SELECTED_ORDER_PARAM, order);
+            request.setAttribute(SELECTED_ORDER_ID_PARAM, orderId);
             return PageName.ADMIN_ORDER;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

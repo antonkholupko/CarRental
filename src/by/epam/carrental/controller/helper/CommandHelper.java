@@ -53,6 +53,7 @@ public class CommandHelper {
         commands.put(CommandName.VIEW_TYPE, new ViewTypeCommand());
         commands.put(CommandName.VIEW_TYPE_UNUSED, new ViewUnusedTypeCars());
         commands.put(CommandName.TO_ABOUT, new ToAboutCommand());
+        commands.put(CommandName.TO_DATE, new ToDateCommand());
     }
 
     public Command getCommand(String commandName) {

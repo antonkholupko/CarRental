@@ -3,7 +3,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-
 <html>
 <head>
     <title>Orders</title>
@@ -89,7 +88,6 @@
 </head>
 <body>
 <header>
-
     <div class="divHeader">
 
         <div class="div3">
@@ -164,6 +162,7 @@
         </c:if>
     </div>
 </header>
+
 <section>
 
     <c:if test="${sessionScope.user.type.equals('admin')}">
@@ -295,37 +294,33 @@
 
                 <p> ${mRealDateTo} <c:out value="${requestScope.selectedOrder.realDateTo}"/></p>
 
-                <c:if test="${requestScope.selectedOrder.status.equals('delivered')}">
+                <c:if test="${requestScope.selectedOrder.status.equals('delivered') && requestScope.selectedOrder.realDateFrom == null}">
                     <c:if test="${requestScope.invalidDateFrom == true}">
                         <p class="invalidMessage">${mInvalidDate}</p>
                     </c:if>
-                    <p>${mRealDateFrom}</p>
-
-                    <form action="Controller" method="post">
-                        <input type="date" name="real-date-from" required>
-                        <input type="time" name="real-time-from" required>
+                    <form action="Controller" method="get">
+                        <input type="hidden" name="command" value="to-date">
+                        <input type="hidden" name="setDateFrom" value="true">
                         <input type="hidden" name="selectedOrderId" value="${requestScope.selectedOrder.id}">
-                        <input type="hidden" name="command" value="update-real-date-from">
-                        <input type="submit" name="${mSetDate}">
+                        <input type="submit" value="Set date from">
                     </form>
                 </c:if>
                 <c:if test="${requestScope.selectedOrder.realDateFrom != null &&
-                                requestScope.selectedOrder.status.equals('returned')}">
+                                requestScope.selectedOrder.status.equals('returned') && requestScope.selectedOrder.realDateTo == null}">
                     <c:if test="${requestScope.invalidDateTo == true}">
                         <p class="invalidMessage">${mInvalidDate}</p>
                     </c:if>
                     <p>${mRealDateTo}</p>
 
-                    <form action="Controller" method="post">
-                        <input type="date" name="real-date-to" required>
-                        <input type="time" name="real-time-to" required>
+                    <form action="Controller" method="get">
+                        <input type="hidden" name="command" value="to-date">
+                        <input type="hidden" name="setDateTo" value="true">
                         <input type="hidden" name="selectedOrderId" value="${requestScope.selectedOrder.id}">
-                        <input type="hidden" name="command" value="update-real-date-to">
-                        <input type="submit" name="${mSetDate}">
+                        <input type="submit" value="Set date To">
                     </form>
                 </c:if>
                 <p> ${mDmgPrice}: <c:out value="${sessionScope.selectedOrder.damagePrice}"/></p>
-                <c:if test="${requestScope.selectedOrder.status.equals('returned')}">
+                <c:if test="${requestScope.selectedOrder.status.equals('returned') && requestScope.selectedOrder.realDateTo != null}">
                     <c:if test="${requestScope.invalidDamagePrice == true}">
                         <p class="invalidMessage">${invalidDmgPrice}</p>
                     </c:if>
@@ -339,7 +334,10 @@
                 </c:if>
                 <p> ${information}: <c:out value="${requestScope.selectedOrder.info}"/></p>
             </div>
-            <div class="divOrders">
+
+            <br/>
+
+            <div class="divCarAndUser">
                 <h2>${mUser}</h2>
 
                 <p>${mLogin}: <c:out value="${requestScope.selectedOrder.user.login}"/></p>
@@ -358,7 +356,9 @@
 
                 <p>${mAddress}: <c:out value="${requestScope.selectedOrder.user.address}"/></p>
             </div>
-            <div class="divOrders">
+            <br/>
+
+            <div class="divCarAndUser">
                 <h2>${mCar}</h2>
                 <img class="imgSmall" src="data:image/jpg;base64,${requestScope.selectedOrder.car.image}"/>
 

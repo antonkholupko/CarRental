@@ -1,7 +1,7 @@
 package by.epam.carrental.resource;
 
-public final class DBParameter {
-    private DBParameter() {
+public final class DBConfiguration {
+    private DBConfiguration() {
     }
 
     public static final String DB_DRIVER = "db.driver";

@@ -35,7 +35,23 @@ public class UpdateStatusCommand implements Command {
         OrderService service = OrderService.getInstance();
         Validator validator = Validator.getInstance();
         try {
-            if (validator.validateOrderInfo(orderInfo)) {
+            if (validator.validateOrderInfo(orderInfo) & status.equals("delivered")) {
+                service.updateStatusById(status, orderId, orderInfo);
+                request.setAttribute("processRequest", "redirect");
+                request.setAttribute(INVALID_INFO, false);
+                request.getSession().setAttribute(SUCCESSFUL_UPDATED_STATUS_PARAM, true);
+                request.getSession().setAttribute("fromDate", true);
+                request.getSession().setAttribute("orderId", orderId);
+                return PageName.DATE;
+            } else if (validator.validateOrderInfo(orderInfo) & status.equals("returned")) {
+                service.updateStatusById(status, orderId, orderInfo);
+                request.setAttribute("processRequest", "redirect");
+                request.setAttribute(INVALID_INFO, false);
+                request.getSession().setAttribute(SUCCESSFUL_UPDATED_STATUS_PARAM, true);
+                request.getSession().setAttribute("toDate", true);
+                request.getSession().setAttribute("orderId", orderId);
+                return PageName.DATE;
+            } else if (validator.validateOrderInfo(orderInfo)) {
                 service.updateStatusById(status, orderId, orderInfo);
                 request.setAttribute("processRequest", "redirect");
                 request.setAttribute(INVALID_INFO, false);

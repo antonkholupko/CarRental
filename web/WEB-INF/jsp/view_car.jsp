@@ -47,7 +47,7 @@
 <fmt:message bundle="${locale}" key="local.electricity" var="electricity"/>
 <fmt:message bundle="${locale}" key="local.automaticTransmission" var="automatic"/>
 <fmt:message bundle="${locale}" key="local.mechanicTransmission" var="mechanic"/>
-<fmt:message bundle="${locale}" key="local.deleteCar" var="deleteCar" />
+<fmt:message bundle="${locale}" key="local.deleteCar" var="deleteCar"/>
 
 <body>
 <header>
@@ -151,18 +151,17 @@
     <h2><c:out value="${sessionScope.selectedCar.mark}"/> <c:out value="${sessionScope.selectedCar.model}"/></h2>
     <article class="articleForTables">
         <span>
-            <div class="divBigForPhoto">
+            <div class="divBigForCar">
                 <img class="imgBig" src="data:image/jpg;base64,${sessionScope.selectedCar.image}"/>
             </div>
 
-            <div class="divBigForDescription">
-                <p>${price}: <c:out value="${sessionScope.selectedCar.price}"/></p>
+            <div class="divBigForCar">
 
-                <p>${mark}: <c:out value="${sessionScope.selectedCar.mark}"/></p>
+                <p>${mark}: ${sessionScope.selectedCar.mark}</p>
 
-                <p>${model}: <c:out value="${sessionScope.selectedCar.model}"/></p>
+                <p>${model}: ${sessionScope.selectedCar.model}</p>
 
-                <p>${year}: <c:out value="${sessionScope.selectedCar.year}"/></p>
+                <p>${year}: ${sessionScope.selectedCar.year}</p>
 
                 <p>${type}:
                     <c:if test="${sessionScope.selectedCar.type.equals('Cabriolet')}">
@@ -215,32 +214,33 @@
                     </c:if>
                 </p>
 
-                <p>${carInfo}: <c:out value="${sessionScope.selectedCar.info}"/></p>
+                <p>${carInfo}: ${sessionScope.selectedCar.info}</p>
+
+                <p class="price">${price}: ${sessionScope.selectedCar.price}</p>
+
                 <c:if test="${sessionScope.user.type.equals('user')}">
-                <div>
-                    <br/>
+                    <div>
+                        <form action="Controller" method="get">
+                            <input type="hidden" name="command" value="to-make-order">
+                            <input type="submit" value="${makeOrder}" class="buttonPurchase"/>
+                        </form>
+                    </div>
 
-                    <form action="Controller" method="get">
-                        <input type="hidden" name="command" value="to-make-order">
-                        <input type="submit" value="${makeOrder}" class="buttonPurchase"/>
-                    </form>
-                </div>
+                </c:if>
+                <c:if test="${sessionScope.user.type.equals('admin')}">
+                    <div>
+                        <form action="Controller" method="post">
+                            <input type="hidden" name="command" value="delete-car">
+                            <input type="hidden" name="processRequest" value="redirect">
+                            <input type="submit" value="${deleteCar}" class="buttonDelete">
+                        </form>
+                    </div>
+                </c:if>
+                <c:if test="${sessionScope.user == null}">
+                    <p class="helpMessage">${forMakeOrderMessage}</p>
+                </c:if>
+                <br/>
             </div>
-            </c:if>
-            <c:if test="${sessionScope.user.type.equals('admin')}">
-                <div>
-                    <br/>
-
-                    <form action="Controller" method="post">
-                        <input type="hidden" name="command" value="delete-car">
-                        <input type="hidden" name="processRequest" value="redirect">
-                        <input type="submit" value="${deleteCar}" class="buttonDelete">
-                    </form>
-                </div>
-            </c:if>
-            <c:if test="${sessionScope.user == null}">
-                <p class="helpMessage">${forMakeOrderMessage}</p>
-            </c:if>
         </span>
     </article>
 </section>

@@ -50,7 +50,7 @@ input[type=password] {
 }
 
 p {
-    font-size: 15px;
+    font-size: 17px;
 }
 
 table, td, th {
@@ -275,7 +275,8 @@ th, td {
 }
 
 .buttonPurchase {
-    font-size: 25px;
+    margin: 5px;
+    font-size: 26px;
     background-color: yellowgreen;
     color: #444;
     font-weight: 600;
@@ -297,7 +298,8 @@ th, td {
 }
 
 .buttonDelete {
-    font-size: 25px;
+    margin: 5px;
+    font-size: 26px;
     background-color: tomato;
     color: #444;
     font-weight: 600;
@@ -352,16 +354,7 @@ th, td {
     background-color: white;
 }
 
-.divBigForPhoto {
-    text-align: center;
-    width: 600px;
-    height: 400px;
-    display: inline-block;
-    outline: 2px solid grey;
-    margin: 4px;
-}
-
-.divBigForDescription {
+.divBigForCar {
     text-align: center;
     background-color: white;
     width: 600px;
@@ -371,6 +364,11 @@ th, td {
     margin: 4px;
 }
 
+.price {
+    font-size: 19px;
+    color: green;
+    font-weight: bold;
+}
 .reg {
     background-color: #444;
     color: white;
@@ -425,6 +423,10 @@ th, td {
 
 }
 
+.divCarAndUser {
+    border: 2px solid #444;
+
+}
 .divDateTime {
     border: 2px solid #444;
     background-color: aliceblue;

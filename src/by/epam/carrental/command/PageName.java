@@ -20,4 +20,5 @@ public final class PageName {
     public static final String ABOUT = "about.jsp";
     public static final String ADMIN_SUCCESS = "admin_success.jsp";
     public static final String USER_SUCCESS = "user_success.jsp";
+    public static final String DATE = "date.jsp";
 }

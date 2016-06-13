@@ -30,7 +30,7 @@ public class UpdateRealDateToCommand implements Command{
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug(EXECUTE_STARTS);
-        int orderId = Integer.parseInt(request.getParameter(ORDER_ID_PARAM));
+        int orderId = (Integer) request.getSession().getAttribute("orderId");
         String realDateTo = request.getParameter(REAL_DATE_TO) + " " + request.getParameter(REAL_TIME_TO);
         OrderService service = OrderService.getInstance();
         Validator validator = Validator.getInstance();
@@ -41,6 +41,7 @@ public class UpdateRealDateToCommand implements Command{
                 service.updateRealTimeTo(orderId, realDateTo);
                 request.setAttribute(PROCESS_REQUEST_PARAM, "redirect");
                 request.getSession().setAttribute(DATE_TO_UPDATED_PARAM, true);
+                request.getSession().setAttribute("fromDate", false);
                 return PageName.ADMIN_SUCCESS;
             } else {
                 request.setAttribute(ORDER_ID_PARAM, orderId);
@@ -48,7 +49,7 @@ public class UpdateRealDateToCommand implements Command{
                 request.setAttribute(SELECTED_ORDER_PARAM, order);
                 request.setAttribute(PROCESS_REQUEST_PARAM, null);
                 request.setAttribute(INVALID_DATE_TO, true);
-                return PageName.ADMIN_ORDER;
+                return PageName.DATE;
             }
         } catch (ServiceException ex) {
             throw new CommandException(ex);

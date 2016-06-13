@@ -28,7 +28,7 @@ public class CarDAOdb implements CarDAO {
             "FROM carrental.cars " +
             "INNER JOIN models ON models.model = cars.model " +
             "INNER JOIN cartypes ON cars.type = cartypes.type " +
-            "WHERE cars.type=? LIMIT ?,?;";
+            "WHERE cars.type=? GROUP BY carID DESC LIMIT ?,?;";
 
     private static final String TAKE_CARS_UNUSED_QUERY = "SELECT cars.carID, models.mark, cars.model, cars.year, " +
             "cars.transmission, cars.type, cars.fuel, cars.info, cars.image, cartypes.price " +
@@ -562,7 +562,7 @@ public class CarDAOdb implements CarDAO {
                 if (connectionPooldb != null) {
                     connectionPooldb.closeConnection(connection, st, rs);
                 }
-                LOG.debug(COUNT_ALL_CARS_STARTS_MSG);
+                LOG.debug(COUNT_ALL_CARS_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
                 throw new DAOException(COUNT_ALL_CARS_CLOSE_CON_ERROR_MSG, ex);
             }

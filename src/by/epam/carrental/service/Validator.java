@@ -38,6 +38,7 @@ public class Validator {
     private static final String PATTERN_CAR_YEAR = "[1-3][0-9]{3}";
     private static final String PATTERN_CAR_GOV_NUMBER = "[0-9]{4}[A-CEHIKMOPTX]{2}-[0-7]";
     private static final String PATTERN_CAR_VIN_CODE = "[0-9A-Z]{17}";
+    private static final String PATTERN_DATE = "[2][0-9][0-9][0-9]\\-[0-1][0-9]\\-[0-3][0-9].+";
 
     private Validator() {
 
@@ -219,10 +220,15 @@ public class Validator {
         if (firstDate.isEmpty() || secondDate.isEmpty()) {
             return false;
         }
-        if (firstDate.length() != DATE_LENGTH) {
+        Pattern pattern = Pattern.compile(PATTERN_DATE);
+        Matcher matcher1 = pattern.matcher(firstDate);
+        Matcher matcher2 = pattern.matcher(secondDate);
+        boolean match1 = matcher1.matches();
+        boolean match2 = matcher2.matches();
+        if (!match1) {
             return false;
         }
-        if (secondDate.length() != DATE_LENGTH) {
+        if (!match2) {
             return false;
         }
         String tFirstDate = firstDate.replace(" ", "T");

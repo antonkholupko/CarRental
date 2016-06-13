@@ -3,7 +3,7 @@ package by.epam.carrental.dao.impl;
 import by.epam.carrental.dao.IConnectionPool;
 import by.epam.carrental.dao.connectionpoolhelper.exception.ConnectionPoolException;
 import by.epam.carrental.dao.connectionpoolhelper.util.DBResourceManager;
-import by.epam.carrental.resource.DBParameter;
+import by.epam.carrental.resource.DBConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,12 +52,12 @@ public class ConnectionPooldb implements IConnectionPool {
 
     private ConnectionPooldb() {
         DBResourceManager dbResourceManager = DBResourceManager.getInstance();
-        this.driverName = dbResourceManager.getValue(DBParameter.DB_DRIVER);
-        this.url = dbResourceManager.getValue(DBParameter.DB_URL);
-        this.user = dbResourceManager.getValue(DBParameter.DB_USER);
-        this.password = dbResourceManager.getValue(DBParameter.DB_PASSWORD);
+        this.driverName = dbResourceManager.getValue(DBConfiguration.DB_DRIVER);
+        this.url = dbResourceManager.getValue(DBConfiguration.DB_URL);
+        this.user = dbResourceManager.getValue(DBConfiguration.DB_USER);
+        this.password = dbResourceManager.getValue(DBConfiguration.DB_PASSWORD);
         try {
-            this.poolSize = Integer.parseInt(dbResourceManager.getValue(DBParameter.DB_POOL_SIZE));
+            this.poolSize = Integer.parseInt(dbResourceManager.getValue(DBConfiguration.DB_POOL_SIZE));
         } catch (NumberFormatException ex) {
             LOG.warn(NUMB_FORM_EXC);
             poolSize = 50;

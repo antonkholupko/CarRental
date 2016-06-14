@@ -17,6 +17,7 @@ public class ToMakeOrderCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
+        request.setAttribute("processRequest", "forward");
         return PageName.MAKE_ORDER;
     }
 }

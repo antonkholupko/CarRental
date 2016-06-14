@@ -46,7 +46,7 @@ public class UpdateDamagePrice implements Command {
             } else {
                 order = service.takeAdminOrderByOrderId(orderId);
                 request.setAttribute(SELECTED_ORDER_PARAM, order);
-                request.setAttribute(PROCESS_REQUEST_PARAM, null);
+                request.setAttribute(PROCESS_REQUEST_PARAM, "forward");
                 request.setAttribute(INV_PRICE_PARAM, true);
                 return PageName.ADMIN_ORDER;
 

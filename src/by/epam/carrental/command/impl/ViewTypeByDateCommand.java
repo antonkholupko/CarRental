@@ -1,18 +1,12 @@
 package by.epam.carrental.command.impl;
 
 import by.epam.carrental.command.Command;
-import by.epam.carrental.command.PageName;
 import by.epam.carrental.command.exception.CommandException;
-import by.epam.carrental.entity.Car;
 import by.epam.carrental.entity.User;
-import by.epam.carrental.service.CarService;
-import by.epam.carrental.service.Validator;
-import by.epam.carrental.service.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * Команда получает список автомобилей определенного типа
@@ -37,7 +31,7 @@ public class ViewTypeByDateCommand implements Command {
         String type = request.getParameter(CAR_TYPE_PARAM);
         String supposedDateFrom = null;
         String supposedDateTo = null;
-        request.getSession().setAttribute(CAR_TYPE_PARAM, type);
+        /*request.getSession().setAttribute(CAR_TYPE_PARAM, type);
         if (request.getSession().getAttribute(SUPPOSED_DATE_FROM_PARAM) != null && request.getSession().getAttribute(SUPPOSED_TIME_FROM_PARAM) != null
                 && request.getSession().getAttribute(SUPPOSED_DATE_TO_PARAM) != null && request.getSession().getAttribute(SUPPOSED_TIME_TO_PARAM) != null) {
             supposedDateFrom = request.getSession(true).getAttribute(SUPPOSED_DATE_FROM_PARAM) + " " + request.getSession(true).getAttribute(SUPPOSED_TIME_FROM_PARAM);
@@ -49,6 +43,7 @@ public class ViewTypeByDateCommand implements Command {
         try {
             if (supposedDateFrom != null && supposedDateTo != null && !validator.validateDate(supposedDateFrom, supposedDateTo)) {
                 request.setAttribute(INVALID_DATE_PARAM, true);
+                request.setAttribute("processRequest", "forward");
                 return PageName.ALL_CARS;
             } else {
                 request.getSession().setAttribute(ALL_CARS_PARAM, cars);
@@ -57,6 +52,7 @@ public class ViewTypeByDateCommand implements Command {
             }
         } catch (ServiceException ex) {
             throw new CommandException(ex);
-        }
+        }*/
+        return null;
     }
 }

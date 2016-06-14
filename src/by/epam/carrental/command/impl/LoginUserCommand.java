@@ -55,6 +55,7 @@ public class LoginUserCommand implements Command{
             if (user != null) {
                 request.getSession(true).setAttribute(PARAM_USER, user);
                 if (request.getParameter(PARAM_PAGE_NAME).equals(INDEX_VALUE)) {
+                    request.setAttribute("processRequest", "forward");
                     return PageName.INDEX_PAGE;
                 } else if (request.getParameter(PARAM_PAGE_NAME).equals(ALL_CARS_VALUE)) {
                     int amountPages = 0;
@@ -71,21 +72,28 @@ public class LoginUserCommand implements Command{
                     request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
                     request.getSession().setAttribute(ALL_CARS_PARAM, cars);
                     request.getSession().setAttribute(ALL_TYPES_PARAM, carTypes);
+                    request.setAttribute("processRequest", "forward");
                     return PageName.ALL_CARS;
                 } else if (request.getParameter(PARAM_PAGE_NAME).equals(VIEW_CAR_VALUE)) {
+                    request.setAttribute("processRequest", "forward");
                     return PageName.VIEW_CAR;
                 } else {
+                    request.setAttribute("processRequest", "forward");
                     return PageName.ERROR_PAGE;
                 }
             } else {
                 request.setAttribute(PARAM_LOGIN_FAILED, true);
                 if (request.getParameter(PARAM_PAGE_NAME).equals(INDEX_VALUE)) {
+                    request.setAttribute("processRequest", "forward");
                     return PageName.INDEX_PAGE;
                 } else if (request.getParameter(PARAM_PAGE_NAME).equals(ALL_CARS_VALUE)) {
+                    request.setAttribute("processRequest", "forward");
                     return PageName.ALL_CARS;
                 } else if (request.getParameter(PARAM_PAGE_NAME).equals(VIEW_CAR_VALUE)) {
+                    request.setAttribute("processRequest", "forward");
                     return PageName.VIEW_CAR;
                 } else {
+                    request.setAttribute("processRequest", "forward");
                     return PageName.ERROR_PAGE;
                 }
             }

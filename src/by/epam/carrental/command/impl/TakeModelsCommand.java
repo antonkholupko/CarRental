@@ -36,9 +36,11 @@ public class TakeModelsCommand implements Command {
                 models = service.takeModels(mark);
                 request.getSession().setAttribute(CAR_MARK_PARAM, mark);
                 request.getSession().setAttribute(MODELS_PARAM, models);
+                request.setAttribute("processRequest", "forward");
                 return PageName.ADD_CAR;
             } else {
                 request.setAttribute(INVALID_MARK_PARAM, true);
+                request.setAttribute("processRequest", "forward");
                 return PageName.ADD_CAR;
             }
         } catch (ServiceException ex) {

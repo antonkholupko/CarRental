@@ -25,6 +25,7 @@ public class LogOutCommand implements Command {
         if (session != null) {
             session.invalidate();
         }
+        request.setAttribute("processRequest", "forward");
         return PageName.INDEX_PAGE;
     }
 }

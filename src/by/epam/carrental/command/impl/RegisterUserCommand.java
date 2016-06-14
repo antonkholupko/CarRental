@@ -51,9 +51,11 @@ public class RegisterUserCommand implements Command {
 
         LOG.debug(EXECUTE_STARTS);
         if (validParameters(request)) {
-            request.setAttribute(SUCCESSFUL_REGISTER, true);
+            request.getSession(true).setAttribute(SUCCESSFUL_REGISTER, true);
+            request.setAttribute("processRequest", "redirect");
             return PageName.INDEX_PAGE;
         } else {
+            request.setAttribute("processRequest", "forward");
             return PageName.REGISTRATION_PAGE;
         }
     }

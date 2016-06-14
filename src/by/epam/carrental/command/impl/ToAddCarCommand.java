@@ -33,6 +33,7 @@ public class ToAddCarCommand implements Command {
             types = service.takeCarTypes();
             request.getSession().setAttribute(ALL_CAR_MARKS_PARAM, marks);
             request.getSession().setAttribute(ALL_CAR_TYPES_PARAM, types);
+            request.setAttribute("processRequest", "forward");
             return PageName.ADD_CAR;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

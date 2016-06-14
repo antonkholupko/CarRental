@@ -48,6 +48,7 @@ public class ViewOrdersAdminCommand implements Command {
             request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
             request.setAttribute(PAGE_NUMBER_PARAM, pageNumber);
             request.getSession(true).setAttribute(ORDERS_PARAM, orders);
+            request.setAttribute("processRequest", "forward");
             return PageName.ADMIN_ORDERS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

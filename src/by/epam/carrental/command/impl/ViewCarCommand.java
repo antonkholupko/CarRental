@@ -31,9 +31,10 @@ public class ViewCarCommand implements Command{
             car = service.takeCarById(id);
             request.getSession().setAttribute(SELECTED_CAR_ID_PARAM, id);
             request.getSession().setAttribute(SELECTED_CAR_PARAM, car);
+            request.setAttribute("processRequest", "forward");
+            return PageName.VIEW_CAR;
         } catch (ServiceException ex) {
             throw new CommandException(ex);
         }
-        return PageName.VIEW_CAR;
     }
 }

@@ -61,7 +61,7 @@ public class UpdateStatusCommand implements Command {
                 request.setAttribute(ORDER_ID_PARAM, orderId);
                 Order order = service.takeAdminOrderByOrderId(orderId);
                 request.setAttribute(SELECTED_ORDER_PARAM, order);
-                request.setAttribute("processRequest", null);
+                request.setAttribute("processRequest", "forward");
                 request.setAttribute(INVALID_INFO, true);
                 return PageName.ADMIN_ORDER;
             }

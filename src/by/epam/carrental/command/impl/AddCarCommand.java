@@ -81,7 +81,7 @@ public class AddCarCommand implements Command {
                 request.setAttribute("processRequest", "redirect");
                 return PageName.ADMIN_SUCCESS;
             } else {
-                request.setAttribute("processRequest", null);
+                request.setAttribute("processRequest", "forward");
                 return PageName.ADD_CAR;
             }
 

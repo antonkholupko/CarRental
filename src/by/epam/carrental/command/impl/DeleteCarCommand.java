@@ -30,7 +30,6 @@ public class DeleteCarCommand implements Command {
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug(EXECUTE_STARTS);
         int selectedCarId = (Integer) request.getSession().getAttribute(SELECTED_CAR_ID_PARAM);
-
         CarService service = CarService.getInstance();
         try {
             service.deleteCar(selectedCarId);

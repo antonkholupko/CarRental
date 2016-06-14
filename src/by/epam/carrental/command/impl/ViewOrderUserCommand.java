@@ -33,6 +33,7 @@ public class ViewOrderUserCommand implements Command{
         try {
             order = service.findOrderByOrderId(orderId);
             request.getSession().setAttribute(SELECTED_ORDER_PARAM, order);
+            request.setAttribute("processRequest", "forward");
             return PageName.USER_ORDER;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

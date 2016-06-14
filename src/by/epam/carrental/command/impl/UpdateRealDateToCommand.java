@@ -47,7 +47,7 @@ public class UpdateRealDateToCommand implements Command{
                 request.setAttribute(ORDER_ID_PARAM, orderId);
                 order = service.takeAdminOrderByOrderId(orderId);
                 request.setAttribute(SELECTED_ORDER_PARAM, order);
-                request.setAttribute(PROCESS_REQUEST_PARAM, null);
+                request.setAttribute(PROCESS_REQUEST_PARAM, "forward");
                 request.setAttribute(INVALID_DATE_TO, true);
                 return PageName.DATE;
             }

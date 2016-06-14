@@ -34,6 +34,7 @@ public class ViewOrderAdminCommand implements Command {
             order = service.takeAdminOrderByOrderId(orderId);
             request.setAttribute(SELECTED_ORDER_PARAM, order);
             request.setAttribute(SELECTED_ORDER_ID_PARAM, orderId);
+            request.setAttribute("processRequest", "forward");
             return PageName.ADMIN_ORDER;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

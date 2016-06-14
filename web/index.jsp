@@ -159,8 +159,9 @@
 
 <section>
 
-    <c:if test="${requestScope.successfulRegister == true}">
+    <c:if test="${sessionScope.successfulRegister == true}">
         <p class="rightMessage">${mSuccessfulRegister}</p>
+        <c:set var="successfulRegister" value="false" scope="session"/>
     </c:if>
 
     <article class="divMsgWelcome">

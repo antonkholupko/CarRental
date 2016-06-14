@@ -85,6 +85,7 @@ public class ViewUnusedTypeCars implements Command {
 
         if (!validator.validateDate(dateFrom, dateTo)) {
             request.setAttribute(INVALID_DATE_PARAM, true);
+            request.setAttribute("processRequest", "forward");
             return PageName.ALL_CARS;
         }
 
@@ -100,6 +101,7 @@ public class ViewUnusedTypeCars implements Command {
             request.setAttribute(CAR_TYPE_PARAM, carType);
             request.setAttribute(PAGE_NUMBER_PARAM, pageNumber);
             LOG.debug(EXECUTE_ENDS);
+            request.setAttribute("processRequest", "forward");
             return PageName.ALL_CARS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

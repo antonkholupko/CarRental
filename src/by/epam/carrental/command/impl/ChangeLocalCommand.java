@@ -36,13 +36,17 @@ public class ChangeLocalCommand implements Command{
         session.setAttribute(LOCALE_PARAM, language);
         if (session.getAttribute(TYPE_PARAM) != null) {
             if (session.getAttribute(TYPE_PARAM).equals(USER_VALUE)) {
+                request.setAttribute("processRequest", "forward");
                 return PageName.INDEX_PAGE;
             } else if(session.getAttribute(TYPE_PARAM).equals(ADMIN_USER)) {
+                request.setAttribute("processRequest", "forward");
                 return PageName.INDEX_PAGE;
             } else {
+                request.setAttribute("processRequest", "forward");
                 return PageName.INDEX_PAGE;
             }
         } else {
+            request.setAttribute("processRequest", "forward");
             return PageName.INDEX_PAGE;
         }
     }

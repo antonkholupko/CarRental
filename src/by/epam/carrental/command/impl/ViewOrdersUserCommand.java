@@ -53,6 +53,7 @@ public class ViewOrdersUserCommand implements Command {
                 request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
                 request.setAttribute(PAGE_NUMBER_PARAM, pageNumber);
             }
+            request.setAttribute("processRequest", "forward");
             return PageName.USER_ORDERS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

@@ -17,6 +17,7 @@ public class ToPaymentCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         request.getSession().setAttribute(PAYMENT_TYPE_PARAM, request.getParameter(PAYMENT_TYPE));
+        request.setAttribute("processRequest", "forward");
         return PageName.PAYMENT;
     }
 }

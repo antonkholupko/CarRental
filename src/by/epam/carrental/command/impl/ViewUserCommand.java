@@ -29,6 +29,7 @@ public class ViewUserCommand implements Command {
         try {
             User user = service.findUserById(userId);
             request.setAttribute(SELECTED_USER_PARAM, user);
+            request.setAttribute("processRequest", "forward");
             return PageName.USER;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

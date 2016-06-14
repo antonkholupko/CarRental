@@ -52,12 +52,8 @@ public class Controller extends HttpServlet {
                 page = command.execute(request);
             }
 
-/*            if ((request.getParameter("processRequest") != null) & (request.getParameter("processRequest").equals("redirect"))) {
-                response.sendRedirect(page);
-            }
-*/
             RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-            if (dispatcher != null & request.getAttribute("processRequest") == null) {
+            if (dispatcher != null & request.getAttribute("processRequest").equals("forward")) {
                 dispatcher.forward(request, response);
             } else if (request.getAttribute("processRequest").equals("redirect")) {
                 response.sendRedirect(page);

@@ -17,6 +17,7 @@ public class ToAboutCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug(EXECUTE_STARTS_MSG);
+        request.setAttribute("processRequest", "forward");
         return PageName.ABOUT;
     }
 }

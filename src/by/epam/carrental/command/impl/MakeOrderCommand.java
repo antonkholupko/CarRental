@@ -54,6 +54,7 @@ public class MakeOrderCommand implements Command {
         try {
             if (!validator.validateDate(supposedDateFrom, supposedDateTo)) {
                 request.setAttribute(INV_DATE_PARAM, true);
+                request.setAttribute("processRequest", "forward");
                 return PageName.MAKE_ORDER;
             }
 

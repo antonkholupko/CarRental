@@ -50,6 +50,7 @@ public class ViewTypeCommand implements Command {
             request.setAttribute(CAR_TYPE_PARAM, type);
             request.setAttribute(PAGE_NUBMER_PARAM, pageNumber);
             LOG.debug(EXECUTE_ENDS);
+            request.setAttribute("processRequest", "forward");
             return PageName.ALL_CARS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

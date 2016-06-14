@@ -19,6 +19,7 @@ public class ToHomePageCommand implements Command{
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug(EXECUTE_STARTS);
+        request.setAttribute("processRequest", "forward");
         return PageName.INDEX_PAGE;
     }
 }

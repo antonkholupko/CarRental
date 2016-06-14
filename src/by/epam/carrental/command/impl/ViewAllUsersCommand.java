@@ -44,6 +44,7 @@ public class ViewAllUsersCommand implements Command {
             request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
             request.setAttribute(PAGE_NUMBER_PARAM, pageNumber);
             request.getSession().setAttribute(ALL_USERS_PARAM, users);
+            request.setAttribute("processRequest", "forward");
             return PageName.ALL_USERS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

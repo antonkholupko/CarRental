@@ -4,8 +4,8 @@ import by.epam.carrental.command.Command;
 import by.epam.carrental.command.PageName;
 import by.epam.carrental.command.exception.CommandException;
 import by.epam.carrental.entity.Car;
-import by.epam.carrental.service.Validator;
 import by.epam.carrental.service.CarService;
+import by.epam.carrental.service.Validator;
 import by.epam.carrental.service.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,6 +52,7 @@ public class ViewAllUnusedCarsCommand implements Command {
         CarService service = CarService.getInstance();
         if (!validator.validateDate(supposedDateFrom, supposedDateTo)) {
             request.setAttribute(INVALID_DATE_PARAM, true);
+            request.setAttribute("processRequest", "forward");
             return PageName.ALL_CARS;
         }
         try {
@@ -62,6 +63,7 @@ public class ViewAllUnusedCarsCommand implements Command {
             amountPages = service.countPageAmountAllCars(AMOUNT_CARS_ON_PAGE);
             request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
             request.setAttribute(ALL_CARS_PARAM, cars);
+            request.setAttribute("processRequest", "forward");
             return PageName.ALL_CARS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

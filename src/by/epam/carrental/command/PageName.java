@@ -3,8 +3,6 @@ package by.epam.carrental.command;
 public final class PageName {
     public static final String INDEX_PAGE = "index.jsp";
     public static final String REGISTRATION_PAGE = "WEB-INF/jsp/registration.jsp";
-    /*public static final String ERROR_PAGE_404 = "WEB-INF/jsp/error404.jsp";
-    public static final String ERROR_PAGE_500 = "WEB-INF/jsp/error500.jsp";*/
     public static final String ERROR_PAGE = "WEB-INF/jsp/error.jsp";
     public static final String PRIV_OFF_USER = "WEB-INF/jsp/private_office_user.jsp";
     public static final String PRIV_OFF_ADMIN = "WEB-INF/jsp/private_office_admin.jsp";
@@ -14,7 +12,7 @@ public final class PageName {
     public static final String USER_ORDER = "WEB-INF/jsp/user_order.jsp";
     public static final String ADMIN_ORDERS = "WEB-INF/jsp/admin_orders.jsp";
     public static final String ADMIN_ORDER = "WEB-INF/jsp/admin_order.jsp";
-    public static final String ALL_CARS = "EB-INF/jsp/all_cars.jsp";
+    public static final String ALL_CARS = "WEB-INF/jsp/all_cars.jsp";
     public static final String PAYMENT = "WEB-INF/jsp/payment.jsp";
     public static final String ALL_USERS = "WEB-INF/jsp/all_users.jsp";
     public static final String USER = "WEB-INF/jsp/user.jsp";

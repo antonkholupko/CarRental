@@ -18,6 +18,12 @@ import javax.servlet.http.HttpServletRequest;
 public class RegisterUserCommand implements Command {
 
     private static final Logger LOG = LogManager.getLogger(RegisterUserCommand.class.getName());
+
+    private static final String EXECUTE_STARTS_MSG = "RegisterUserCommand : execute : starts";
+    private static final String EXECUTE_ENDS_MSG = "RegisterUserCommand : execute : ends";
+    private static final String VALID_PARAMETERS_STARTS_MSG = "RegisterUserCommand : validParameters : starts";
+    private static final String VALID_PARAMETERS_ENDS_MSG = "RegisterUserCommand : validParameters : ends";
+
     private static final String LOGIN_PARAMETER = "login";
     private static final String PASSWORD_PARAMETER = "password";
     private static final String CONFIRM_PASSWORD_PARAMETER = "confirm-password";
@@ -28,8 +34,6 @@ public class RegisterUserCommand implements Command {
     private static final String PHONE = "phone";
     private static final String PASSPORT = "passport";
     private static final String ADDRESS = "address";
-    private static final String EXECUTE_STARTS = "RegisterUserCommand : execute";
-    private static final String VALID_PARAM_MSG = "RegisterUserCommand : validParameters";
     private static final String LOGIN_VALID = "validLogin";
     private static final String PASSWORD_VALID = "validPassword";
     private static final String CONFIRM_PASSWORD_VALID = "validConfirmPassword";
@@ -45,17 +49,23 @@ public class RegisterUserCommand implements Command {
     private static final String UNIQUE_EMAIL = "uniqueEmail";
     private static final String UNIQUE_PASSPORT = "uniquePassport";
     private static final String SUCCESSFUL_REGISTER = "successfulRegister";
+    private static final String PROCESS_REQUEST_PARAM = "processRequest";
+
+    private static final String FORWARD_VALUE = "forward";
+    private static final String REDIRECT_VALUE = "redirect";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
 
-        LOG.debug(EXECUTE_STARTS);
+        LOG.debug(EXECUTE_STARTS_MSG);
         if (validParameters(request)) {
             request.getSession(true).setAttribute(SUCCESSFUL_REGISTER, true);
-            request.setAttribute("processRequest", "redirect");
+            request.setAttribute(PROCESS_REQUEST_PARAM, REDIRECT_VALUE);
+            LOG.debug(EXECUTE_ENDS_MSG);
             return PageName.INDEX_PAGE;
         } else {
-            request.setAttribute("processRequest", "forward");
+            request.setAttribute(PROCESS_REQUEST_PARAM, FORWARD_VALUE);
+            LOG.debug(EXECUTE_ENDS_MSG);
             return PageName.REGISTRATION_PAGE;
         }
     }
@@ -63,7 +73,7 @@ public class RegisterUserCommand implements Command {
 
 
     private boolean validParameters(HttpServletRequest request) throws CommandException {
-        LOG.debug(VALID_PARAM_MSG);
+        LOG.debug(VALID_PARAMETERS_STARTS_MSG);
         String login = request.getParameter(LOGIN_PARAMETER);
         String password = request.getParameter(PASSWORD_PARAMETER);
         String confirmPassword = request.getParameter(CONFIRM_PASSWORD_PARAMETER);
@@ -141,6 +151,7 @@ public class RegisterUserCommand implements Command {
         }
 
         if (countFailedValidations > 0) {
+            LOG.debug(VALID_PARAMETERS_ENDS_MSG);
             return false;
         } else {
             try {
@@ -154,12 +165,14 @@ public class RegisterUserCommand implements Command {
                 request.setAttribute(UNIQUE_EMAIL, uniqueEmail);
                 request.setAttribute(UNIQUE_PASSPORT, uniquePassport);
                 if (!(uniqueLogin && uniqueEmail && uniquePassport)) {
+                    LOG.debug(VALID_PARAMETERS_ENDS_MSG);
                     return false;
                 }
+                LOG.debug(VALID_PARAMETERS_ENDS_MSG);
+                return true;
             } catch (ServiceException ex) {
                 throw new CommandException(ex);
             }
         }
-        return true;
     }
 }

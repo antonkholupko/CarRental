@@ -27,6 +27,7 @@ public class LoginUserCommand implements Command{
     private static final Logger LOG = LogManager.getLogger(LoginUserCommand.class.getName());
 
     private static final String EXECUTE_STARTS_MSG = "LoginUserCommand : execute : starts";
+    private static final String EXECUTE_ENDS_MSG = "LoginUserCommand : execute : ends";
 
     private static final String PARAM_LOGIN = "login";
     private static final String PARAM_PASSWORD = "password";
@@ -37,12 +38,15 @@ public class LoginUserCommand implements Command{
     private static final String ALL_CARS_PARAM = "allCars";
     private static final String ALL_TYPES_PARAM = "allTypes";
     private static final String AMOUNT_PAGES_PARAM = "amountPages";
+    private static final String PROCESS_REQUEST_PARAM = "processRequest";
 
     private static final String INDEX_VALUE = "index";
     private static final String ALL_CARS_VALUE = "all-cars";
     private static final String VIEW_CAR_VALUE = "view-car";
+    private static final String FORWARD_VALUE = "forward";
 
     private static final int AMOUNT_CARS_ON_PAGE = 9;
+    private static final int DEFAULT_PAGE_NUMBER = 1;
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
@@ -55,11 +59,12 @@ public class LoginUserCommand implements Command{
             if (user != null) {
                 request.getSession(true).setAttribute(PARAM_USER, user);
                 if (request.getParameter(PARAM_PAGE_NAME).equals(INDEX_VALUE)) {
-                    request.setAttribute("processRequest", "forward");
+                    request.setAttribute(PROCESS_REQUEST_PARAM, FORWARD_VALUE);
+                    LOG.debug(EXECUTE_ENDS_MSG);
                     return PageName.INDEX_PAGE;
                 } else if (request.getParameter(PARAM_PAGE_NAME).equals(ALL_CARS_VALUE)) {
                     int amountPages = 0;
-                    int pageNumber = 1;
+                    int pageNumber = DEFAULT_PAGE_NUMBER;
                     if (request.getParameter(PARAM_PAGE_NUMBER) != null) {
                         pageNumber = Integer.parseInt(request.getParameter(PARAM_PAGE_NUMBER));
                     }
@@ -72,28 +77,35 @@ public class LoginUserCommand implements Command{
                     request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
                     request.getSession().setAttribute(ALL_CARS_PARAM, cars);
                     request.getSession().setAttribute(ALL_TYPES_PARAM, carTypes);
-                    request.setAttribute("processRequest", "forward");
+                    request.setAttribute(PROCESS_REQUEST_PARAM, FORWARD_VALUE);
+                    LOG.debug(EXECUTE_ENDS_MSG);
                     return PageName.ALL_CARS;
                 } else if (request.getParameter(PARAM_PAGE_NAME).equals(VIEW_CAR_VALUE)) {
-                    request.setAttribute("processRequest", "forward");
+                    request.setAttribute(PROCESS_REQUEST_PARAM, FORWARD_VALUE);
+                    LOG.debug(EXECUTE_ENDS_MSG);
                     return PageName.VIEW_CAR;
                 } else {
-                    request.setAttribute("processRequest", "forward");
+                    request.setAttribute(PROCESS_REQUEST_PARAM, FORWARD_VALUE);
+                    LOG.debug(EXECUTE_ENDS_MSG);
                     return PageName.ERROR_PAGE;
                 }
             } else {
                 request.setAttribute(PARAM_LOGIN_FAILED, true);
                 if (request.getParameter(PARAM_PAGE_NAME).equals(INDEX_VALUE)) {
-                    request.setAttribute("processRequest", "forward");
+                    request.setAttribute(PROCESS_REQUEST_PARAM, FORWARD_VALUE);
+                    LOG.debug(EXECUTE_ENDS_MSG);
                     return PageName.INDEX_PAGE;
                 } else if (request.getParameter(PARAM_PAGE_NAME).equals(ALL_CARS_VALUE)) {
-                    request.setAttribute("processRequest", "forward");
+                    request.setAttribute(PROCESS_REQUEST_PARAM, FORWARD_VALUE);
+                    LOG.debug(EXECUTE_ENDS_MSG);
                     return PageName.ALL_CARS;
                 } else if (request.getParameter(PARAM_PAGE_NAME).equals(VIEW_CAR_VALUE)) {
-                    request.setAttribute("processRequest", "forward");
+                    request.setAttribute(PROCESS_REQUEST_PARAM, FORWARD_VALUE);
+                    LOG.debug(EXECUTE_ENDS_MSG);
                     return PageName.VIEW_CAR;
                 } else {
-                    request.setAttribute("processRequest", "forward");
+                    request.setAttribute(PROCESS_REQUEST_PARAM, FORWARD_VALUE);
+                    LOG.debug(EXECUTE_ENDS_MSG);
                     return PageName.ERROR_PAGE;
                 }
             }

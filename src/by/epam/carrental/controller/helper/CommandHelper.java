@@ -23,7 +23,6 @@ public class CommandHelper {
         commands.put(CommandName.CHANGE_LOCALE, new ChangeLocalCommand());
         commands.put(CommandName.REGISTER, new RegisterUserCommand());
         commands.put(CommandName.LOG_OUT_USER, new LogOutCommand());
-        commands.put(CommandName.VIEW_TYPE_BY_DATE, new ViewTypeByDateCommand());
         commands.put(CommandName.VIEW_CAR, new ViewCarCommand());
         commands.put(CommandName.TO_MAKE_ORDER, new ToMakeOrderCommand());
         commands.put(CommandName.MAKE_ORDER, new MakeOrderCommand());

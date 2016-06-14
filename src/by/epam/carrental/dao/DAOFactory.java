@@ -12,6 +12,10 @@ public final class DAOFactory {
     private static final DAOFactory instance = new DAOFactory();
     private static final String INIT_DAO_FACTORY_MSG = "DAOFactory : init DAO factory";
 
+    private static final UserDAO USER_DAO = new UserDAOdb();
+    private static final CarDAO CAR_DAO = new CarDAOdb();
+    private static final OrderDAO ORDER_DAO = new OrderDAOdb();
+
     private DAOFactory() {
         LOG.debug(INIT_DAO_FACTORY_MSG);
     }
@@ -21,14 +25,14 @@ public final class DAOFactory {
     }
 
     public UserDAO getUserDAO() {
-        return new UserDAOdb();
+        return USER_DAO;
     }
 
     public CarDAO getCarDAO() {
-        return new CarDAOdb();
+        return CAR_DAO;
     }
 
     public OrderDAO getOrderDAO() {
-        return new OrderDAOdb();
+        return ORDER_DAO;
     }
 }

@@ -30,9 +30,10 @@ public class AddCarCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(AddCarCommand.class.getName());
 
     private static final String EXECUTE_STARTS_MSG = "AddCarCommand : execute : starts";
+    private static final String EXECUTE_ENDS_MSG = "AddCarCommand : execute : ends";
     private static final String VALID_PARAMETERS_STARTS_MSG = "AddCarCommand : validParameters : starts";
+    private static final String VALID_PARAMETERS_ENDS_MSG = "AddCarCommand : validParameters : ends";
 
-    private static final String PAGE_NUMBER_PARAM = "pageNumber";
     private static final String CAR_MODEL_PARAM = "carModel";
     private static final String CAR_YEAR_PARAM = "carYear";
     private static final String TRANSMISSION_PARAM = "transmission";
@@ -48,6 +49,10 @@ public class AddCarCommand implements Command {
     private static final String INVALID_GOV_NUMBER_PARAM = "invalidGovNumber";
     private static final String INVALID_VIN_CODE_PARAM = "invalidVinCode";
     private static final String INVALID_NUMBER_VIN_PARAM = "invalidNumberVin";
+    private static final String PROCESS_REQUEST_PARAM = "processRequest";
+
+    private static final String FORWARD_VALUE = "forward";
+    private static final String REDIRECT_VALUE = "redirect";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
@@ -78,13 +83,14 @@ public class AddCarCommand implements Command {
                 service.insertCar(car);
 
                 request.getSession().setAttribute(CAR_SUCCESSFUL_ADDED_PARAM, true);
-                request.setAttribute("processRequest", "redirect");
+                request.setAttribute(PROCESS_REQUEST_PARAM, REDIRECT_VALUE);
+                LOG.debug(EXECUTE_ENDS_MSG);
                 return PageName.ADMIN_SUCCESS;
             } else {
-                request.setAttribute("processRequest", "forward");
+                request.setAttribute(PROCESS_REQUEST_PARAM, FORWARD_VALUE);
+                LOG.debug(EXECUTE_ENDS_MSG);
                 return PageName.ADD_CAR;
             }
-
         } catch (ServletException | IOException | ServiceException ex) {
             throw new CommandException(ex);
         }
@@ -131,15 +137,18 @@ public class AddCarCommand implements Command {
         }
 
         if (countFailedValidations > 0) {
+            LOG.debug(VALID_PARAMETERS_ENDS_MSG);
             return false;
         } else {
             ValidatorUniqueCar validatorUniqueCar = new ValidatorUniqueCar();
             try {
                 boolean unique = validatorUniqueCar.checkUnique(govNumber, vin);
                 if (unique) {
+                    LOG.debug(VALID_PARAMETERS_ENDS_MSG);
                     return true;
                 } else {
                     request.setAttribute(INVALID_NUMBER_VIN_PARAM, true);
+                    LOG.debug(VALID_PARAMETERS_ENDS_MSG);
                     return false;
                 }
             } catch (ServiceException ex) {

@@ -17,9 +17,15 @@ import javax.servlet.http.HttpServletRequest;
 public class ViewCarCommand implements Command{
 
     private static final Logger LOG = LogManager.getLogger(ViewCarCommand.class.getName());
-    private static final String EXECUTE_STARTS = "ViewCarCommand : execute";
+
+    private static final String EXECUTE_STARTS = "ViewCarCommand : execute : starts";
+    private static final String EXECUTE_ENDS = "ViewCarCommand : execute : ends";
+
     private static final String SELECTED_CAR_ID_PARAM = "selectedCarId";
     private static final String SELECTED_CAR_PARAM = "selectedCar";
+    private static final String PROCESS_REQUEST = "processRequest";
+
+    private static final String FORWARD_VALUE = "forward";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
@@ -31,7 +37,8 @@ public class ViewCarCommand implements Command{
             car = service.takeCarById(id);
             request.getSession().setAttribute(SELECTED_CAR_ID_PARAM, id);
             request.getSession().setAttribute(SELECTED_CAR_PARAM, car);
-            request.setAttribute("processRequest", "forward");
+            request.setAttribute(PROCESS_REQUEST, FORWARD_VALUE);
+            LOG.debug(EXECUTE_ENDS);
             return PageName.VIEW_CAR;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

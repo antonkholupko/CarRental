@@ -19,15 +19,18 @@ public class ViewOrdersAdminCommand implements Command {
 
     private static final Logger LOG = LogManager.getLogger(ViewOrdersAdminCommand.class.getName());
 
-    private static final String EXECUTE_STARTS_MSG = "ViewOrdersAdminCommand : execute";
+    private static final String EXECUTE_STARTS_MSG = "ViewOrdersAdminCommand : execute : starts";
+    private static final String EXECUTE_ENDS_MSG = "ViewOrdersAdminCommand : execute : ends";
 
     private static final String PAGE_NUMBER_PARAM = "pageNumber";
     private static final String AMOUNT_PAGES_PARAM = "amountPages";
     private static final String NO_ORDERS_PARAM = "noOrders";
     private static final String ORDERS_PARAM = "orders";
+    private static final String PROCESS_REQUEST_PARAM = "processRequest";
 
     private static final int AMOUNT_ORDERS_ON_PAGE = 4;
-
+    private static final int DEFAULT_PAGE_NUMBER = 1;
+    private static final String FORWARD_VALUE = "forward";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
@@ -48,7 +51,8 @@ public class ViewOrdersAdminCommand implements Command {
             request.setAttribute(AMOUNT_PAGES_PARAM, amountPages);
             request.setAttribute(PAGE_NUMBER_PARAM, pageNumber);
             request.getSession(true).setAttribute(ORDERS_PARAM, orders);
-            request.setAttribute("processRequest", "forward");
+            request.setAttribute(PROCESS_REQUEST_PARAM, FORWARD_VALUE);
+            LOG.debug(EXECUTE_ENDS_MSG);
             return PageName.ADMIN_ORDERS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

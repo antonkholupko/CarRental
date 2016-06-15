@@ -38,7 +38,6 @@ public class CommandHelper {
         commands.put(CommandName.TO_PRIV_OFFICE_ADMIN, new ToPrivateOfficeAdminCommand());
         commands.put(CommandName.TO_PRIV_OFFICE_USER, new ToPrivateOfficeUserCommand());
         commands.put(CommandName.TO_HOME_PAGE, new ToHomePageCommand());
-        commands.put(CommandName.VIEW_ALL_UNUSED_CARS, new ViewAllUnusedCarsCommand());
         commands.put(CommandName.CANCEL_ORDER, new CancelOrderCommand());
         commands.put(CommandName.TO_PAYMENT_PAGE, new ToPaymentCommand());
         commands.put(CommandName.PAY, new PayCommand());

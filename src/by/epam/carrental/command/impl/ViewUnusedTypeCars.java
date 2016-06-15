@@ -20,7 +20,8 @@ public class ViewUnusedTypeCars implements Command {
     private static final String EXECUTE_STARTS = "ViewUnusedTypeCars : execute : starts";
     private static final String EXECUTE_ENDS = "ViewUnusedTypeCars : execute : ends";
 
-    private static  final int AMOUNT_CARS_ON_PAGE = 9;
+    private static final int AMOUNT_CARS_ON_PAGE = 9;
+    private static final int DEFAULT_PAGE_NUMBER = 1;
 
     private static final String PAGE_NUMBER_PARAM = "pageNumber";
     private static final String CAR_TYPE_PARAM = "carType";
@@ -34,14 +35,17 @@ public class ViewUnusedTypeCars implements Command {
     private static final String AMOUNT_PAGES_PARAM = "amountPages";
     private static final String ALL_CARS_PARAM = "allCars";
     private static final String COMMAND_PARAM = "command";
+    private static final String PROCESS_REQUEST_PARAM = "processRequest";
 
     private static final String VIEW_TYPE_UNUSED_VALUE = "view-type-unused";
+    private static final String FORWARD_VALUE = "forward";
+    private static final String SPACE = " ";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug(EXECUTE_STARTS);
         int amountPages = 0;
-        int pageNumber = 1;
+        int pageNumber = DEFAULT_PAGE_NUMBER;
         if (request.getParameter(PAGE_NUMBER_PARAM) != null) {
             pageNumber = Integer.parseInt(request.getParameter(PAGE_NUMBER_PARAM));
         }
@@ -80,12 +84,13 @@ public class ViewUnusedTypeCars implements Command {
             supposedTimeTo = (String) request.getSession().getAttribute(SUPPOSED_TIME_TO_PARAM);
         }
 
-        String dateFrom = supposedDateFrom + " " + supposedTimeFrom;
-        String dateTo = supposedDateTo + " " + supposedTimeTo;
+        String dateFrom = supposedDateFrom + SPACE + supposedTimeFrom;
+        String dateTo = supposedDateTo + SPACE + supposedTimeTo;
 
         if (!validator.validateDate(dateFrom, dateTo)) {
             request.setAttribute(INVALID_DATE_PARAM, true);
-            request.setAttribute("processRequest", "forward");
+            request.setAttribute(PROCESS_REQUEST_PARAM, FORWARD_VALUE);
+            LOG.debug(EXECUTE_ENDS);
             return PageName.ALL_CARS;
         }
 
@@ -100,8 +105,8 @@ public class ViewUnusedTypeCars implements Command {
             request.setAttribute(COMMAND_PARAM, VIEW_TYPE_UNUSED_VALUE);
             request.setAttribute(CAR_TYPE_PARAM, carType);
             request.setAttribute(PAGE_NUMBER_PARAM, pageNumber);
+            request.setAttribute(PROCESS_REQUEST_PARAM, FORWARD_VALUE);
             LOG.debug(EXECUTE_ENDS);
-            request.setAttribute("processRequest", "forward");
             return PageName.ALL_CARS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

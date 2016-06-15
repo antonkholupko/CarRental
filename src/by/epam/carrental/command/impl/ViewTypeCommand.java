@@ -16,9 +16,13 @@ import java.util.List;
 public class ViewTypeCommand implements Command {
 
     private static final Logger LOG = LogManager.getLogger(ViewTypeCommand.class.getName());
-    private static  final int AMOUNT_CARS_ON_PAGE = 9;
+
+    private static final int AMOUNT_CARS_ON_PAGE = 9;
+    private static final int DEFAULT_PAGE_NUMBER = 1;
+
     private static final String EXECUTE_STARTS = "ViewTypeCommand : execute : starts";
     private static final String EXECUTE_ENDS = "ViewTypeCommand : execute : ends";
+
     private static final String PAGE_NUBMER_PARAM = "pageNumber";
     private static final String CAR_TYPE_PARAM = "carType";
     private static final String AMOUNT_PAGES_PARAM = "amountPages";
@@ -26,12 +30,15 @@ public class ViewTypeCommand implements Command {
     private static final String COMMAND_PARAM = "command";
     private static final String COMMAND_VALUE = "view-type";
     private static final String ALL_TYPES_PARAM = "allTypes";
+    private static final String PROCESS_REQUEST = "processRequest";
+
+    private static final String FORWARD_VALUE = "forward";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         LOG.debug(EXECUTE_STARTS);
         int amountPages = 0;
-        int pageNumber = 1;
+        int pageNumber = DEFAULT_PAGE_NUMBER;
         if (request.getParameter(PAGE_NUBMER_PARAM) != null) {
             pageNumber = Integer.parseInt(request.getParameter(PAGE_NUBMER_PARAM));
         }
@@ -49,8 +56,8 @@ public class ViewTypeCommand implements Command {
             request.setAttribute(COMMAND_PARAM, COMMAND_VALUE);
             request.setAttribute(CAR_TYPE_PARAM, type);
             request.setAttribute(PAGE_NUBMER_PARAM, pageNumber);
+            request.setAttribute(PROCESS_REQUEST, FORWARD_VALUE);
             LOG.debug(EXECUTE_ENDS);
-            request.setAttribute("processRequest", "forward");
             return PageName.ALL_CARS;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

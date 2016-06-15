@@ -17,9 +17,15 @@ import javax.servlet.http.HttpServletRequest;
 public class ViewUserCommand implements Command {
 
     private static final Logger LOG = LogManager.getLogger(ViewUserCommand.class.getName());
-    private static final String EXECUTE_STARTS = "ViewUserCommand : execute";
+
+    private static final String EXECUTE_STARTS = "ViewUserCommand : execute : starts";
+    private static final String EXECUTE_ENDS = "ViewUserCommand : execute : ends";
+
     private static final String SELECTED_USER_ID_PARAM = "selectedUserId";
     private static final String SELECTED_USER_PARAM = "selectedUser";
+    private static final String PROCESS_REQUEST = "processRequest";
+
+    private static final String FORWARD_VALUE = "forward";
 
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
@@ -29,7 +35,8 @@ public class ViewUserCommand implements Command {
         try {
             User user = service.findUserById(userId);
             request.setAttribute(SELECTED_USER_PARAM, user);
-            request.setAttribute("processRequest", "forward");
+            request.setAttribute(PROCESS_REQUEST, FORWARD_VALUE);
+            LOG.debug(EXECUTE_ENDS);
             return PageName.USER;
         } catch (ServiceException ex) {
             throw new CommandException(ex);

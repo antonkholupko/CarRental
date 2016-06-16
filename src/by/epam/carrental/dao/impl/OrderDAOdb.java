@@ -60,6 +60,7 @@ public class OrderDAOdb implements OrderDAO {
             "INNER JOIN users ON orders.userID = users.userID " +
             "INNER JOIN models ON models.model = cars.model " +
             "WHERE orders.orderID=?;";
+    private static final String FIND_ORDER_STATUS_BY_CAR_ID_QUERY = "SELECT status FROM orders WHERE carID=?;";
     private static final String COUNT_ALL_ORDERS = "SELECT COUNT(orderID) FROM orders;";
     private static final String COUNT_USER_ORDERS_QUERY = "SELECT COUNT(orderID) FROM orders WHERE userID=?";
 
@@ -95,6 +96,8 @@ public class OrderDAOdb implements OrderDAO {
     private static final String COUNT_USER_ORDERS_ENDS_MSG = "OrderDAOdb : countUserOrders : ends";
     private static final String COUNT_ALL_ORDERS_STARTS_MSG = "OrderDAOdb : countAllOrders : stats";
     private static final String COUNT_ALL_ORDERS_ENDS_MSG = "OrderDAOdb : countAllOrders : ends";
+    private static final String FIND_STATUS_BY_CAR_ID_STARTS_MSG = "OrderDAOdb : findStatusByCarId : starts";
+    private static final String FIND_STATUS_BY_CAR_ID_ENDS_MSG = "OrderDAOdb : findStatusByCarId : ends";
 
     private static final String ADD_ORDER_ERROR_MSG = "OrderDAOdb : addOrder : ERROR";
     private static final String ADD_ORDER_CLOSE_CON_ERROR_MSG = "OrderDAOdb : addOrder : close connection error";
@@ -120,6 +123,8 @@ public class OrderDAOdb implements OrderDAO {
     private static final String COUNT_USER_ORDERS_CLOSE_CON_ERROR_MSG = "OrderDAOdb : countUserOrders : close connection error";
     private static final String COUNT_ALL_ORDERS_ERROR_MSG = "OrderDAOdb : countAllOrders : ERROR";
     private static final String COUNT_ALL_ORDERS_CLOSE_CON_ERROR_MSG = "OrderDAOdb : countAllOrders : close connection error";
+    private static final String FIND_STATUS_BY_CAR_ID_ERROR_MSG = "OrderDAOdb : findStatusByCarId : ERROR";
+    private static final String FIND_STATUS_BY_CAR_ID_CLOSE_CON_ERROR = "orderDAOdb : findStatusByCarId : close connection error";
 
 
     @Override
@@ -593,6 +598,39 @@ public class OrderDAOdb implements OrderDAO {
                 LOG.debug(COUNT_ALL_ORDERS_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
                 throw new DAOException(COUNT_ALL_ORDERS_CLOSE_CON_ERROR_MSG, ex);
+            }
+        }
+    }
+
+    @Override
+    public List<String> findStatusByCarId(int carID) throws DAOException {
+        LOG.debug(FIND_STATUS_BY_CAR_ID_STARTS_MSG);
+        Connection connection = null;
+        ConnectionPooldb connectionPooldb = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            connectionPooldb = ConnectionPooldb.getInstance();
+            connection = connectionPooldb.takeConnection();
+            ps = connection.prepareStatement(FIND_ORDER_STATUS_BY_CAR_ID_QUERY);
+            ps.setInt(1, carID);
+            rs = ps.executeQuery();
+            List<String> orderStatuses = new ArrayList<>();
+            while (rs.next()) {
+                orderStatuses.add(rs.getString(1));
+            }
+            LOG.debug(FIND_STATUS_BY_CAR_ID_ENDS_MSG);
+            return orderStatuses;
+        } catch (SQLException | ConnectionPoolException ex) {
+            throw new DAOException(FIND_STATUS_BY_CAR_ID_ERROR_MSG, ex);
+        } finally {
+            try {
+                if (connectionPooldb != null) {
+                    connectionPooldb.closeConnection(connection, ps, rs);
+                }
+                LOG.debug(COUNT_ALL_ORDERS_ENDS_MSG);
+            } catch (ConnectionPoolException ex) {
+                throw new DAOException(FIND_STATUS_BY_CAR_ID_CLOSE_CON_ERROR, ex);
             }
         }
     }

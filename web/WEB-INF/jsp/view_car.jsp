@@ -48,6 +48,7 @@
 <fmt:message bundle="${locale}" key="local.automaticTransmission" var="automatic"/>
 <fmt:message bundle="${locale}" key="local.mechanicTransmission" var="mechanic"/>
 <fmt:message bundle="${locale}" key="local.deleteCar" var="deleteCar"/>
+<fmt:message bundle="${locale}" key="local.mThisCarIsUsedInOrders" var="mCarIsUsed"/>
 
 <body>
 <header>
@@ -149,6 +150,11 @@
 </header>
 <section>
     <h2><c:out value="${sessionScope.selectedCar.mark}"/> <c:out value="${sessionScope.selectedCar.model}"/></h2>
+    <c:if test="${requestScope.cannotDelete}">
+        <p class="invalidMessage">
+                ${mCarIsUsed}
+        </p>
+    </c:if>
     <article class="articleForTables">
         <span>
             <div class="divBigForCar">

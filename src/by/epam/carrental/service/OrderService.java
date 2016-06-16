@@ -35,7 +35,12 @@ public class OrderService {
     private static final String ORDER_TO_START_PAGE = "OrderService : orderToStartPage";
     private static final String COUNT_PAGE_AMOUNT_USER_ORDERS = "OrderService : countPageAmountUserOrders";
     private static final String COUNT_PAGE_AMOUNT_ALL_ORDERS_MSG = "OrderService : countPageAmountAllCars";
+    private static final String IS_MAY_DELETE_STARTS_MSG = "OrderService : isMayDelete : starts";
+    private static final String IS_MAY_DELETE_ENDS_MSG = "OrderService : isMayDelete : ends";
 
+    private static final String PAYED_VALUE = "payed";
+    private static final String NEW_VALUE = "new";
+    private static final String DELIVERED_VALUE = "delivered";
 
     private OrderService() {
 
@@ -286,6 +291,26 @@ public class OrderService {
                 pageAmount = (ordersAmount / amountOrdersOnPage);
             }
             return pageAmount;
+        } catch (DAOException ex) {
+            throw new ServiceException(ex);
+        }
+    }
+
+    public boolean isMayDelete(int carId) throws ServiceException {
+        LOG.debug(IS_MAY_DELETE_STARTS_MSG);
+        DAOFactory factory = DAOFactory.getInstance();
+        OrderDAO dao = factory.getOrderDAO();
+        List<String> orderStatuses = null;
+        try {
+            orderStatuses = dao.findStatusByCarId(carId);
+            for (String orderStatus : orderStatuses) {
+                if (orderStatus.equals(NEW_VALUE) || orderStatus.equals(PAYED_VALUE) || orderStatus.equals(DELIVERED_VALUE)) {
+                    LOG.debug(IS_MAY_DELETE_ENDS_MSG);
+                    return false;
+                }
+            }
+            LOG.debug(IS_MAY_DELETE_ENDS_MSG);
+            return true;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
         }

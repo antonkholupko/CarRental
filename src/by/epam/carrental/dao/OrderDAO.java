@@ -104,4 +104,6 @@ public interface OrderDAO {
     public int countUserOrders(int userId) throws DAOException;
 
     public int countAllOrders() throws DAOException;
+
+    public List<String> findStatusByCarId(int carId) throws DAOException;
 }

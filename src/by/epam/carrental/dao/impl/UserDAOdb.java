@@ -1,5 +1,6 @@
 package by.epam.carrental.dao.impl;
 
+import by.epam.carrental.dao.DAOStringConstants;
 import by.epam.carrental.dao.UserDAO;
 import by.epam.carrental.dao.connectionpoolhelper.exception.ConnectionPoolException;
 import by.epam.carrental.dao.exception.DAOException;
@@ -31,29 +32,10 @@ public class UserDAOdb implements UserDAO {
 
     private static final Logger LOG = LogManager.getLogger(UserDAOdb.class.getName());
 
-    private static final String FIND_USER_ERROR_MSG = "UserDAOdb : findUser : ERROR";
-    private static final String FIND_USER_CLOSE_CON_ERROR_MSG = "UserDAPdb : findUser : close connection error";
-    private static final String ADD_USER_ERROR_MSG = "UserDAOdb : addUser : ERROR";
-    private static final String ADD_USER_CLOSE_CON_ERROR_MSG = "UserDAOdb : addUser : close connection error";
-    private static final String TAKE_ALL_USERS_ERROR = "UserDAOdb : takeAllUsers : ERROR";
-    private static final String TAKE_ALL_USERS_CLOSE_CON_ERROR_MSG = "UserDAOdb : takeAllUsers : close connection error";
-    private static final String FIND_USER_BY_ID_ERROR = "UserDAOdb : findUserById : ERROR";
-    private static final String FIND_USER_BY_ID_CLOSE_CON_ERROR = "UserDAOdb : findUserById : close connection error";
-
-    private static final String FIND_USER_STARTS_MSG = "UserDAOdb : findUser : starts";
-    private static final String FIND_USER_ENDS_MSG = "UserDAOdb : findUser : ends";
-    private static final String ADD_USER_STARTS_MSG = "UserDAO : create user : starts";
-    private static final String ADD_USER_ENDS_MSG = "UserDAO : create user : ends";
-    private static final String TAKE_ALL_USERS_STARTS_MSG = "UserDAOdb : takeAllUsers : starts";
-    private static final String TAKE_ALL_USERS_ENDS_MSG = "UserDAOdb : takeAllUsers : ends";
-    private static final String FIND_USER_BY_ID_STARTS_MSG = "UserDAOdb : findUserById : starts";
-    private static final String FIND_USER_BY_ID_ENDS_MSG = "UserDAOdb : findUserById : ends";
-    private static final String COUNT_ALL_USERS_STARTS_MSG = "UserDAOdb : countAllUsers : starts";
-    private static final String COUNT_ALL_USERS_ENDS_MSG = "UserDAOdb : countAllUsers : ends";
 
     @Override
     public User findUser(String login, int hashPassword) throws DAOException{
-        LOG.debug(FIND_USER_STARTS_MSG);
+        LOG.debug(DAOStringConstants.FIND_USER_STARTS_MSG);
         User user = null;
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -82,22 +64,22 @@ public class UserDAOdb implements UserDAO {
             }
             return user;
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(FIND_USER_ERROR_MSG, ex);
+            throw new DAOException(DAOStringConstants.FIND_USER_ERROR_MSG, ex);
         } finally {
             try {
                 if (connectionPooldb != null) {
                     connectionPooldb.closeConnection(connection, ps, rs);
                 }
-                LOG.debug(FIND_USER_ENDS_MSG);
+                LOG.debug(DAOStringConstants.FIND_USER_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(FIND_USER_CLOSE_CON_ERROR_MSG, ex);
+                throw new DAOException(DAOStringConstants.FIND_USER_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     @Override
     public ValidatorUniqueUser findUser(String login, String email, String passport) throws DAOException{
-        LOG.debug(FIND_USER_STARTS_MSG);
+        LOG.debug(DAOStringConstants.FIND_USER_STARTS_MSG);
         ValidatorUniqueUser validatorUniqueUser = new ValidatorUniqueUser();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -131,15 +113,15 @@ public class UserDAOdb implements UserDAO {
                 validatorUniqueUser.setUniquePassport(true);
             }
         } catch (ConnectionPoolException | SQLException ex) {
-            throw new DAOException(FIND_USER_ERROR_MSG, ex);
+            throw new DAOException(DAOStringConstants.FIND_USER_ERROR_MSG, ex);
         } finally {
             try {
                 if (connectionPooldb != null) {
                     connectionPooldb.closeConnection(connection, ps, rs);
                 }
-                LOG.debug(FIND_USER_ENDS_MSG);
+                LOG.debug(DAOStringConstants.FIND_USER_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(FIND_USER_CLOSE_CON_ERROR_MSG, ex);
+                throw new DAOException(DAOStringConstants.FIND_USER_CLOSE_CON_ERROR_MSG, ex);
             }
         }
         return validatorUniqueUser;
@@ -147,7 +129,7 @@ public class UserDAOdb implements UserDAO {
 
     @Override
     public void addUser(User user) throws DAOException{
-        LOG.debug(ADD_USER_STARTS_MSG);
+        LOG.debug(DAOStringConstants.ADD_USER_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         PreparedStatement ps = null;
@@ -167,22 +149,22 @@ public class UserDAOdb implements UserDAO {
             ps.setString(10, user.getAddress());
             ps.executeUpdate();
         } catch(ConnectionPoolException | SQLException ex) {
-            throw new DAOException(ADD_USER_ERROR_MSG, ex);
+            throw new DAOException(DAOStringConstants.ADD_USER_ERROR_MSG, ex);
         } finally {
             try {
                 if (connectionPooldb != null) {
                     connectionPooldb.closeConnection(connection, ps);
                 }
-                LOG.debug(ADD_USER_ENDS_MSG);
+                LOG.debug(DAOStringConstants.ADD_USER_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(ADD_USER_CLOSE_CON_ERROR_MSG, ex);
+                throw new DAOException(DAOStringConstants.ADD_USER_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     @Override
     public List<User> takeAllUsers(int startPage, int amountUsersOnPage) throws DAOException {
-        LOG.debug(TAKE_ALL_USERS_STARTS_MSG);
+        LOG.debug(DAOStringConstants.TAKE_ALL_USERS_STARTS_MSG);
         List<User> users = new ArrayList<>();
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -208,22 +190,22 @@ public class UserDAOdb implements UserDAO {
             }
             return users;
         } catch (SQLException | ConnectionPoolException ex) {
-            throw new DAOException(TAKE_ALL_USERS_ERROR, ex);
+            throw new DAOException(DAOStringConstants.TAKE_ALL_USERS_ERROR, ex);
         } finally {
             try {
                 if (connectionPooldb != null) {
                     connectionPooldb.closeConnection(connection, ps, rs);
                 }
-                LOG.debug(TAKE_ALL_USERS_ENDS_MSG);
+                LOG.debug(DAOStringConstants.TAKE_ALL_USERS_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(TAKE_ALL_USERS_CLOSE_CON_ERROR_MSG, ex);
+                throw new DAOException(DAOStringConstants.TAKE_ALL_USERS_CLOSE_CON_ERROR_MSG, ex);
             }
         }
     }
 
     @Override
     public User findUserById(int userId) throws DAOException {
-        LOG.debug(FIND_USER_BY_ID_STARTS_MSG);
+        LOG.debug(DAOStringConstants.FIND_USER_BY_ID_STARTS_MSG);
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
         ResultSet rs = null;
@@ -250,21 +232,21 @@ public class UserDAOdb implements UserDAO {
             }
             return user;
         } catch (SQLException | ConnectionPoolException ex) {
-            throw new DAOException(FIND_USER_BY_ID_ERROR, ex);
+            throw new DAOException(DAOStringConstants.FIND_USER_BY_ID_ERROR, ex);
         } finally {
             try {
                 if (connectionPooldb != null) {
                     connectionPooldb.closeConnection(connection, ps, rs);
                 }
-                LOG.debug(FIND_USER_BY_ID_ENDS_MSG);
+                LOG.debug(DAOStringConstants.FIND_USER_BY_ID_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
-                throw new DAOException(FIND_USER_BY_ID_CLOSE_CON_ERROR, ex);
+                throw new DAOException(DAOStringConstants.FIND_USER_BY_ID_CLOSE_CON_ERROR, ex);
             }
         }
     }
 
     public int countAllUsers() throws DAOException {
-        LOG.debug(COUNT_ALL_USERS_STARTS_MSG);
+        LOG.debug(DAOStringConstants.COUNT_ALL_USERS_STARTS_MSG);
         int ordersAmount = 0;
         Connection connection = null;
         ConnectionPooldb connectionPooldb = null;
@@ -286,7 +268,7 @@ public class UserDAOdb implements UserDAO {
                 if (connectionPooldb != null) {
                     connectionPooldb.closeConnection(connection, st, rs);
                 }
-                LOG.debug(COUNT_ALL_USERS_ENDS_MSG);
+                LOG.debug(DAOStringConstants.COUNT_ALL_USERS_ENDS_MSG);
             } catch (ConnectionPoolException ex) {
                 throw new DAOException(ex);
             }

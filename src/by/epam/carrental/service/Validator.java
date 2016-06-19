@@ -4,13 +4,14 @@ import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** Валидатор данных.
- *
+/**
+ * Валидатор данных.
  * <p>
- *     Валидатор данных. Валидирует такие данные, введенные пользователем, как
- *     логин, пароль, имя, паспортные данные, адрес пользователя, номер телефона, e-mail,
- *     марка и модель автомобиля, его номер, год впуска автомобиля, информация о заказе, дату
- *     аренды автомобиля.
+ * <p>
+ * Валидатор данных. Валидирует такие данные, введенные пользователем, как
+ * логин, пароль, имя, паспортные данные, адрес пользователя, номер телефона, e-mail,
+ * марка и модель автомобиля, его номер, год впуска автомобиля, информация о заказе, дату
+ * аренды автомобиля.
  * </p>
  */
 
@@ -26,6 +27,7 @@ public class Validator {
     private static final int ADDRESS_LENGTH = 70;
     private static final int PLACE_LENGTH = 45;
     private static final int DATE_LENGTH = 16;
+    private static final int CAR_INFO_LENGTH = 140;
 
     private static final String PATTERN_LOGIN = "[A-Za-z0-9_]+";
     private static final String PATTERN_PASSWORD = "\\S+";
@@ -39,6 +41,8 @@ public class Validator {
     private static final String PATTERN_CAR_GOV_NUMBER = "[0-9]{4}[A-CEHIKMOPTX]{2}-[0-7]";
     private static final String PATTERN_CAR_VIN_CODE = "[0-9A-Z]{17}";
     private static final String PATTERN_DATE = "[2][0-9][0-9][0-9]\\-[0-1][0-9]\\-[0-3][0-9].+";
+    private static final String PATTERN_ADDRESS = "[^<>]*";
+    private static final String PATTERN_CAR_INFO = "[^<>]*";
 
     private Validator() {
 
@@ -50,6 +54,7 @@ public class Validator {
 
     /**
      * Валидация логина.
+     *
      * @param login логин пользователя
      * @return true - логин корректен, false - некорректен
      */
@@ -66,6 +71,7 @@ public class Validator {
 
     /**
      * Валидация пароля.
+     *
      * @param password пароль пользователя
      * @return true - пароль корректен, false - некорректен
      */
@@ -82,7 +88,8 @@ public class Validator {
 
     /**
      * Проверка подтверждения пароля.
-     * @param password пароль пользователя
+     *
+     * @param password        пароль пользователя
      * @param confirmPassword подтверждение пароля
      * @return true - пароль подтвержден, false - не подтвержден
      */
@@ -96,6 +103,7 @@ public class Validator {
 
     /**
      * Валидация e-mail пользователя.
+     *
      * @param email e-mail пользователя
      * @return true - e-mail корректен, не корректен
      */
@@ -112,6 +120,7 @@ public class Validator {
 
     /**
      * Валидация фамилии пользователя
+     *
      * @param lastName фамилия пользвателя
      * @return true - фамилия корректна, false - не корректна
      */
@@ -128,6 +137,7 @@ public class Validator {
 
     /**
      * Валидация имени пользователя
+     *
      * @param firstName имя пользователя
      * @return true - имя корректно, false - не корректно
      */
@@ -144,6 +154,7 @@ public class Validator {
 
     /**
      * Валидация отчества пользователя
+     *
      * @param middleName отчество пользователя
      * @return true - отчество корректно, false - не корректно
      */
@@ -160,6 +171,7 @@ public class Validator {
 
     /**
      * Валидация телефона пользователя.
+     *
      * @param phone телефон пользователя
      * @return true - телефон корректен, false - не корректен
      */
@@ -176,6 +188,7 @@ public class Validator {
 
     /**
      * Валидация серии и номера паспорта пользователя.
+     *
      * @param passport серия и номер паспорта пользователя
      * @return true - серия и номер корректны, false - не корректны
      */
@@ -192,26 +205,29 @@ public class Validator {
 
     /**
      * Валидация адреса пользователя.
+     *
      * @param address адрес пользователя
      * @return true - адрес корректен, false - не корректен
      */
     public boolean validateAddress(String address) {
-        if(address.isEmpty()) {
-            return true;
+        Pattern pattern = Pattern.compile(PATTERN_ADDRESS);
+        if (address != null) {
+            if (address.length() <= ADDRESS_LENGTH) {
+                Matcher matcher = pattern.matcher(address);
+                boolean match = matcher.matches();
+                return match;
+            }
         }
-        if (address.length() <= ADDRESS_LENGTH) {
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
 
     /**
      * Валидация даты и времени.
-     * @param firstDate первая дата
+     *
+     * @param firstDate  первая дата
      * @param secondDate вторая дата
      * @return true - первая дата предшествует второй, а текущая дата предшествует - первой,
-     *          false - наоборот
+     * false - наоборот
      */
     public boolean validateDate(String firstDate, String secondDate) {
         if (firstDate.equals("null null") || (secondDate.equals("null null"))) {
@@ -238,13 +254,14 @@ public class Validator {
         LocalDateTime dateNow = LocalDateTime.now();
         if (date1.isBefore(date2) && dateNow.isBefore(date1)) {
             return true;
-            } else {
-                return false;
-            }
+        } else {
+            return false;
+        }
     }
 
     /**
      * Валидация времени и даты, когда машина была пользователем в пользование.
+     *
      * @param date дата и время взятия пользоателем автомобиля
      * @return true - дата и время не предшествуют реальному времени, false - наоборот
      */
@@ -264,12 +281,13 @@ public class Validator {
 
     /**
      * Валидация места доставки или возврата автомобиля.
+     *
      * @param shippingPlace место доставки или возврата автомобиля
      * @return true - место доставки доставки или воврата корректно,
-     *          false - место доставки или возврата не корректно
+     * false - место доставки или возврата не корректно
      */
     public boolean validatePlace(String shippingPlace) {
-        if(shippingPlace.length() <= PLACE_LENGTH && !shippingPlace.isEmpty()) {
+        if (shippingPlace.length() <= PLACE_LENGTH && !shippingPlace.isEmpty()) {
             return true;
         } else {
             return false;
@@ -278,6 +296,7 @@ public class Validator {
 
     /**
      * Валидация цены
+     *
      * @param damagePrice цена
      * @return true - цена корректна, false - цена не корректна
      */
@@ -297,6 +316,7 @@ public class Validator {
 
     /**
      * Валидация причины смены статуса заказа
+     *
      * @param orderInfo причина смены статуса заказа
      * @return true - причина корректна, false - не корректна
      */
@@ -316,11 +336,12 @@ public class Validator {
 
     /**
      * Валидация года выпуска автомобиля
+     *
      * @param year год выпуска автомобиля
      * @return true - год выпуска корректен, false - не корректен
      */
     public boolean validateCarYear(String year) {
-        if (year.isEmpty() && !(year.length() ==4)) {
+        if (year.isEmpty() && !(year.length() == 4)) {
             return false;
         }
         Pattern pattern = Pattern.compile(PATTERN_CAR_YEAR);
@@ -335,6 +356,7 @@ public class Validator {
 
     /**
      * Валидация государственного ономера автомобиля
+     *
      * @param number государственный номер автомобиля
      * @return true - номер корректен, false - номер не корректен
      */
@@ -354,6 +376,7 @@ public class Validator {
 
     /**
      * Валидация vin-кода автомобиля.
+     *
      * @param vin vin-код автомобиля
      * @return true - vin-код корректен, false - код не корректен
      */
@@ -373,6 +396,7 @@ public class Validator {
 
     /**
      * Валидация марки автомобиля
+     *
      * @param mark марка автомобиля
      * @return true - марка корректна, false - не корректна
      */
@@ -386,6 +410,7 @@ public class Validator {
 
     /**
      * Валидация модели автомобиля
+     *
      * @param model модель автомобиля
      * @return true - модель корректна, false - не корректна
      */
@@ -398,4 +423,18 @@ public class Validator {
             return true;
         }
     }
+
+    public boolean validateCarInfo(String info) {
+        Pattern pattern = Pattern.compile(PATTERN_CAR_INFO);
+        if (info != null) {
+            if (info.length() <= ADDRESS_LENGTH) {
+                Matcher matcher = pattern.matcher(info);
+                boolean match = matcher.matches();
+                return match;
+            }
+        }
+        return true;
+    }
+
+
 }

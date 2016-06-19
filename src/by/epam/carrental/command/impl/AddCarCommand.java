@@ -49,6 +49,7 @@ public class AddCarCommand implements Command {
     private static final String INVALID_GOV_NUMBER_PARAM = "invalidGovNumber";
     private static final String INVALID_VIN_CODE_PARAM = "invalidVinCode";
     private static final String INVALID_NUMBER_VIN_PARAM = "invalidNumberVin";
+    private static final String INVALID_CAR_INFO_PARAM = "invalidCarInfo";
     private static final String PROCESS_REQUEST_PARAM = "processRequest";
 
     private static final String FORWARD_VALUE = "forward";
@@ -114,7 +115,7 @@ public class AddCarCommand implements Command {
         String year = request.getParameter(CAR_YEAR_PARAM);
         String govNumber = request.getParameter(GOV_NUMBER_PARAM);
         String vin = request.getParameter(VIN_PARAM);
-
+        String info = request.getParameter(CAR_INFO_PARAM);
 
         if (!validator.validateModel(model)) {
             request.setAttribute(INVALID_MODEL_PARAM, true);
@@ -133,6 +134,11 @@ public class AddCarCommand implements Command {
 
         if (!validator.validateVinCode(vin)) {
             request.setAttribute(INVALID_VIN_CODE_PARAM, true);
+            countFailedValidations++;
+        }
+
+        if (!validator.validateCarInfo(info)) {
+            request.setAttribute(INVALID_CAR_INFO_PARAM, true);
             countFailedValidations++;
         }
 

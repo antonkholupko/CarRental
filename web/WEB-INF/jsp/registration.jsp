@@ -137,6 +137,9 @@
         <c:if test="${requestScope.validPassport == false}">
             ${invalidPassport}
         </c:if>
+        <c:if test="${requestScope.validAddress == false}">
+            ${invalidAddress}
+        </c:if>
     </p>
 
     <p class="invalidMessage">

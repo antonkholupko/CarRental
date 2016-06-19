@@ -61,6 +61,7 @@
     <fmt:message bundle="${locale}" key="local.viewOrders" var="viewOrders"/>
     <fmt:message bundle="${locale}" key="local.viewUsers" var="viewUsers"/>
     <fmt:message bundle="${locale}" key="local.addCar" var="addCar"/>
+    <fmt:message bundle="${locale}" key="local.mInvalidCarInfo" var="mInvalidCarInfo"/>
 </head>
 <body>
 <header>
@@ -191,6 +192,9 @@
             </c:if>
             <c:if test="${requestScope.invalidNumberVin == true}">
                 ${mNotUniqueVinNumber}
+            </c:if>
+            <c:if test="${requestScope.invalidCarInfo == true}">
+                ${mInvalidCarInfo}
             </c:if>
         </p>
 

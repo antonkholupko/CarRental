@@ -115,14 +115,25 @@
     <c:if test="${sessionScope.user.type.equals('user')}">
         <h2>${mMakingOrder}</h2>
         <c:if test="${requestScope.addOrderFailed == true}">
-            <p>${carIsUsed}</p>
+            <p class="invalidMessage">${carIsUsed}</p>
 
-            <p>${unusedCarsMsg}</p>
+            <p class="helpMessage">${unusedCarsMsg}</p>
 
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="view-all-cars"/>
-                <input type="submit" value="${toCars}"/>
-            </form>
+            <div class="divSubMenu">
+                <form action="Controller" method="get">
+                    <input type="hidden" name="command" value="view-all-cars"/>
+                    <input type="submit" value="${toCars}" class="buttonSubMenu"/>
+                </form>
+            </div>
+        </c:if>
+        <hr/>
+        <c:if test="${sessionScope.selectedCar.id != null}">
+            <img class="imgSmall" src="data:image/jpg;base64,${sessionScope.selectedCar.image}"/>
+
+            <p><c:out value="${sessionScope.selectedCar.mark}"/> <c:out value="${sessionScope.selectedCar.model}"/></p>
+        </c:if>
+        <hr/>
+        <c:if test="${requestScope.addOrderFailed == true}">
             <div class="divSubMenu">
                 <form action="Controller" method="get">
                     <input type="hidden" name="command" value="view-orders-user">
@@ -135,12 +146,6 @@
                     <input type="submit" value="${mMakeOrder}" class="buttonSubMenu">
                 </form>
             </div>
-        </c:if>
-
-        <c:if test="${sessionScope.selectedCar.id != null}">
-            <img class="imgSmall" src="data:image/jpg;base64,${sessionScope.selectedCar.image}"/>
-
-            <p><c:out value="${sessionScope.selectedCar.mark}"/> <c:out value="${sessionScope.selectedCar.model}"/></p>
         </c:if>
 
         <form action="Controller" method="post">

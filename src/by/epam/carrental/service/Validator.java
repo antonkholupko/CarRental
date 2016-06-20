@@ -43,6 +43,7 @@ public class Validator {
     private static final String PATTERN_DATE = "[2][0-9][0-9][0-9]\\-[0-1][0-9]\\-[0-3][0-9].+";
     private static final String PATTERN_ADDRESS = "[^<>]*";
     private static final String PATTERN_CAR_INFO = "[^<>]*";
+    private static final String PATTERN_PLACES = "[^<>]*";
 
     private Validator() {
 
@@ -282,12 +283,18 @@ public class Validator {
     /**
      * Валидация места доставки или возврата автомобиля.
      *
-     * @param shippingPlace место доставки или возврата автомобиля
+     * @param place место доставки или возврата автомобиля
      * @return true - место доставки доставки или воврата корректно,
      * false - место доставки или возврата не корректно
      */
-    public boolean validatePlace(String shippingPlace) {
-        if (shippingPlace.length() <= PLACE_LENGTH && !shippingPlace.isEmpty()) {
+    public boolean validatePlace(String place) {
+        if (place == null) {
+            return false;
+        }
+        Pattern pattern = Pattern.compile(PATTERN_PLACES);
+        Matcher matcher = pattern.matcher(place);
+        boolean match = matcher.matches();
+        if (place.length() <= PLACE_LENGTH && !place.isEmpty() && match) {
             return true;
         } else {
             return false;
@@ -427,7 +434,7 @@ public class Validator {
     public boolean validateCarInfo(String info) {
         Pattern pattern = Pattern.compile(PATTERN_CAR_INFO);
         if (info != null) {
-            if (info.length() <= ADDRESS_LENGTH) {
+            if (info.length() <= CAR_INFO_LENGTH) {
                 Matcher matcher = pattern.matcher(info);
                 boolean match = matcher.matches();
                 return match;

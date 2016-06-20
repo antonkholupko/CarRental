@@ -20,11 +20,8 @@ public class UserService {
 
     private static final Logger LOG = LogManager.getLogger(UserService.class.getName());
     private static final UserService instance = new UserService();
-    private static final String LOGIN_START_MSG = "UserService : login";
-    private static final String REGISTER_START_MSG = "UserService : register";
-    private static final String TAKE_ALL_USERS_START_MSG = "UserService : takeAllUsers";
-    private static final String TAKE_USER_BY_ID_START_MSG = "UserService : takeUserById";
 
+    private static final UserDAO USER_DAO = DAOFactory.getInstance().getUserDAO();
 
     private UserService() {
 
@@ -42,12 +39,11 @@ public class UserService {
      * @throws ServiceException ошибка при авторизации пользователя
      */
     public User login(String login, String password) throws ServiceException{
-        LOG.debug(LOGIN_START_MSG);
+        LOG.debug(ServiceStringConstant.LOGIN_START_MSG);
         int hashPassword = password.hashCode();
         try {
-            DAOFactory factory = DAOFactory.getInstance();
-            UserDAO userDAO = factory.getUserDAO();
-            User user = userDAO.findUser(login, hashPassword);
+            User user = USER_DAO.findUser(login, hashPassword);
+            LOG.debug(ServiceStringConstant.LOGIN_END_MSG);
             return user;
         } catch(DAOException ex) {
             throw new ServiceException(ex);
@@ -71,16 +67,16 @@ public class UserService {
      */
     public ValidatorUniqueUser register(String login, int hashPassword, String lastName, String firstName, String middleName,
             String email, String phone, String passport, String address) throws ServiceException {
-        LOG.debug(REGISTER_START_MSG);
+        LOG.debug(ServiceStringConstant.REGISTER_START_MSG);
         User user = new User(login, hashPassword, lastName, firstName, middleName, email, phone, passport, address);
-        DAOFactory factory = DAOFactory.getInstance();
-        UserDAO userDAO = factory.getUserDAO();
         try {
-            ValidatorUniqueUser validatorUniqueUser = userDAO.findUser(login, email, passport);
+            ValidatorUniqueUser validatorUniqueUser = USER_DAO.findUser(login, email, passport);
             if (validatorUniqueUser.isUniqueLogin() && validatorUniqueUser.isUniqueEmail() && validatorUniqueUser.isUniquePassport()) {
-                userDAO.addUser(user);
+                USER_DAO.addUser(user);
+                LOG.debug(ServiceStringConstant.REGISTER_END_MSG);
                 return validatorUniqueUser;
             } else {
+                LOG.debug(ServiceStringConstant.REGISTER_END_MSG);
                 return validatorUniqueUser;
             }
         } catch (DAOException ex) {
@@ -94,12 +90,11 @@ public class UserService {
      * @throws ServiceException ошибка при получении всех пользователей
      */
     public List<User> takeAllUsers(int pageNumber, int amountUsersOnPage) throws ServiceException {
-        LOG.debug(TAKE_ALL_USERS_START_MSG);
-        DAOFactory factory = DAOFactory.getInstance();
-        UserDAO dao = factory.getUserDAO();
+        LOG.debug(ServiceStringConstant.TAKE_ALL_USERS_START_MSG);
         int startPage = userToStartPage(pageNumber, amountUsersOnPage);
         try {
-            List<User> users = dao.takeAllUsers(startPage, amountUsersOnPage);
+            List<User> users = USER_DAO.takeAllUsers(startPage, amountUsersOnPage);
+            LOG.debug(ServiceStringConstant.TAKE_ALL_USERS_END_MSG);
             return users;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -107,11 +102,10 @@ public class UserService {
     }
 
     public User findUserById(int userId) throws ServiceException {
-        LOG.debug(TAKE_USER_BY_ID_START_MSG);
-        DAOFactory factory = DAOFactory.getInstance();
-        UserDAO dao = factory.getUserDAO();
+        LOG.debug(ServiceStringConstant.TAKE_USER_BY_ID_START_MSG);
         try {
-            User user = dao.findUserById(userId);
+            User user = USER_DAO.findUserById(userId);
+            LOG.debug(ServiceStringConstant.TAKE_USER_BY_ID_END_MSG);
             return user;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -119,18 +113,17 @@ public class UserService {
     }
 
     public int countPageAmountAllUsers(int amountUsersOnPage) throws ServiceException {
-        LOG.debug("UserService : countPageAmountAllUsers : starts");
+        LOG.debug(ServiceStringConstant.COUNT_PAGE_AMOUNT_ALL_USERS_START_MSG);
         int pageAmount = 0;
         int usersAmount = 0;
-        DAOFactory factory = DAOFactory.getInstance();
-        UserDAO dao = factory.getUserDAO();
         try {
-            usersAmount = dao.countAllUsers();
+            usersAmount = USER_DAO.countAllUsers();
             if (usersAmount % amountUsersOnPage != 0) {
                 pageAmount = (usersAmount / amountUsersOnPage) + 1;
             } else {
                 pageAmount = (usersAmount / amountUsersOnPage);
             }
+            LOG.debug(ServiceStringConstant.COUNT_PAGE_AMOUNT_ALL_USERS_END_MSG);
             return pageAmount;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -138,7 +131,8 @@ public class UserService {
     }
 
     private int userToStartPage(int pageNumber, int usersOnPage) {
-        LOG.debug("");
+        LOG.debug(ServiceStringConstant.USER_TO_START_PAGE_STARTS_MSG);
+        LOG.debug(ServiceStringConstant.USER_TO_START_PAGE_ENDS_MSG);
         return ((pageNumber * usersOnPage) - usersOnPage);
     }
 }

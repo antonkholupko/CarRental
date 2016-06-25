@@ -40,7 +40,7 @@
 
 <body>
 
-<%@include file="WEB-INF/navigation.jspf" %>
+<%@include file="WEB-INF/jspf/navigation.jspf" %>
 
 <div class="container">
     <div class="row">
@@ -80,7 +80,7 @@
     </div>
 
     <hr/>
-    <%@include file="WEB-INF/footer.jspf" %>
+    <%@include file="WEB-INF/jspf/footer.jspf" %>
 </div>
 
 <script src="js/jquery.js"></script>

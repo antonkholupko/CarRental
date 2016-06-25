@@ -51,7 +51,7 @@
 </head>
 <body>
 
-<%@include file="../navigation.jspf" %>
+<%@include file="../jspf/navigation.jspf" %>
 
 <div class="container">
     <c:if test="${sessionScope.user.type.equals('user')}">
@@ -181,7 +181,7 @@
         </div>
     </c:if>
 
-    <%@include file="../footer.jspf" %>
+    <%@include file="../jspf/footer.jspf" %>
 </div>
 
 <script src="../../js/jquery.js"></script>

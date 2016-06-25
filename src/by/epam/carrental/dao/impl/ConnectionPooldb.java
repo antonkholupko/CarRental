@@ -172,8 +172,8 @@ public class ConnectionPooldb implements IConnectionPool {
                 connection.commit();
             }
             ((PooledConnection) connection).reallyClose();
-            LOG.debug(CLOSE_CONNECTION_QUERY_ENDS_MSG);
         }
+        LOG.debug(CLOSE_CONNECTION_QUERY_ENDS_MSG);
     }
 
     private class PooledConnection implements Connection {

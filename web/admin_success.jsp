@@ -34,7 +34,7 @@
 </head>
 <body>
 
-<%@include file="WEB-INF/navigation.jspf" %>
+<%@include file="WEB-INF/jspf/navigation.jspf" %>
 
 <div class="container">
 
@@ -109,7 +109,7 @@
 
     <hr/>
 
-    <%@include file="/WEB-INF/footer.jspf" %>
+    <%@include file="/WEB-INF/jspf/footer.jspf" %>
 
 </div>
 

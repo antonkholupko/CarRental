@@ -50,7 +50,7 @@
 
 <body>
 
-<%@include file="/WEB-INF/navigation.jspf" %>
+<%@include file="/WEB-INF/jspf/navigation.jspf" %>
 
 <header id="myCarousel" class="carousel slide">
     <ol class="carousel-indicators">
@@ -183,7 +183,7 @@
 
 
     <hr/>
-    <%@include file="/WEB-INF/footer.jspf" %>
+    <%@include file="/WEB-INF/jspf/footer.jspf" %>
 
 </div>
 

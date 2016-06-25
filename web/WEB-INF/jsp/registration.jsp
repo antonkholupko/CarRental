@@ -60,7 +60,7 @@
 </head>
 <body>
 
-<%@include file="../navigation.jspf" %>
+<%@include file="../jspf/navigation.jspf" %>
 
 <div class="container">
     <div class="col-lg-12">
@@ -207,7 +207,7 @@
     </div>
 
     <hr/>
-    <%@include file="../footer.jspf" %>
+    <%@include file="../jspf/footer.jspf" %>
 </div>
 
 <script src="../../js/jquery.js"></script>

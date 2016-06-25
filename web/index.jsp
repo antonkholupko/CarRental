@@ -1,14 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@taglib prefix="cr" uri="WEB-INF/custom.tld" %>
+<%@taglib prefix="cr" uri="/WEB-INF/custom.tld" %>
 
+<!DOCTYPE html>
 <html>
+
 <head>
-    <title>Car rental</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Car Rental</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/car-rental-style.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="locale"/>
     <fmt:message bundle="${locale}" key="local.carRental" var="carRental"/>
@@ -38,201 +42,164 @@
     <fmt:message bundle="${locale}" key="local.premium" var="premium"/>
     <fmt:message bundle="${locale}" key="local.vintage" var="vintage"/>
     <fmt:message bundle="${locale}" key="local.mSuccessfulRegister" var="mSuccessfulRegister"/>
+    <fmt:message bundle="${locale}" key="local.mBestDeals" var="mBestDeals"/>
+    <fmt:message bundle="${locale}" key="local.mLowPrices" var="mLowPrices"/>
+    <fmt:message bundle="${locale}" key="local.mCustomerSupport" var="mCustomersSupport"/>
+    <fmt:message bundle="${locale}" key="local.mTakingCare" var="mTakingCare"/>
 </head>
 
 <body>
 
-<header class="headerMain">
-    <div class="divHeader">
+<%@include file="/WEB-INF/navigation.jspf" %>
 
-        <div class="div3">
-            <div class="div1"><h1>${carRental}</h1></div>
+<header id="myCarousel" class="carousel slide">
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
 
-            <div class="div2">
-                <div>
-                    <form action="Controller" method="post">
-                        <input type="hidden" name="command" value="change-locale"/>
-                        <input type="hidden" name="language" value="en">
-                        <input type="submit" value="${en_button}" class="buttonLocalReg">
-                    </form>
-                </div>
-                <div>
-                    <form action="Controller" method="post">
-                        <input type="hidden" name="command" value="change-locale"/>
-                        <input type="hidden" name="language" value="ru">
-                        <input type="submit" value="${ru_button}" class="buttonLocalReg">
-                    </form>
-                </div>
-            </div>
-
-            <div class="div5">
-                <c:if test="${sessionScope.user != null}">
-                    <div class="div5">
-                        <form action="Controller" method="post">
-                            <input type="hidden" name="command" value="log-out-user">
-
-                            <div>
-                                <input type="submit" value="${logOut}" class="buttonLogOut">
-                            </div>
-                        </form>
-                    </div>
-                </c:if>
-                <c:if test="${sessionScope.user == null}">
-                    <form action="Controller" method="post">
-                        <div>
-                                ${login} <input type="text" name="login" value="" maxlength="25"/>
-                        </div>
-                        <div>
-                                ${password} <input type="password" name="password" value="" maxlength="35"/>
-                        </div>
-                        <div>
-                            <input type="hidden" name="command" value="login-user"/>
-                            <input type="hidden" name="page-name" value="index"/>
-                            <input type="submit" value="${signIn}" class="buttonSignIn"/>
-                        </div>
-                    </form>
-                </c:if>
-                <p>
-                    <c:if test="${requestScope.loginFailed == true}">
-                        ${invLogin}
-                        <c:set var="loginFailed" scope="session" value="false"/>
-                    </c:if>
-                </p>
-                <c:if test="${sessionScope.user == null}">
-                    <form action="Controller" method="post">
-                        <input type="hidden" name="command" value="to-registration"/>
-
-                        <div>
-                            <input type="submit" value="${registration}" class="buttonLocalReg"/>
-                        </div>
-                    </form>
-                </c:if>
-                <p>
-                    <c:if test="${sessionScope.user != null}">
-                        <c:out value="${sessionScope.user.lastName}"/> <c:out value="${sessionScope.user.firstName}"/>
-                    </c:if>
-                </p>
-            </div>
-
-        </div>
-
-        <div class="divMenu">
-            <div class="divMenu">
-                <form action="Controller" method="post">
-                    <input type="hidden" name="command" value="to-home-page">
-                    <input type="submit" value=${home} class="buttonMenu"/>
-                </form>
-            </div>
-            <div class="divMenu">
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="view-all-cars">
-                    <input type="submit" value="${cars}" class="buttonMenu"/>
-                </form>
-            </div>
-            <c:if test="${sessionScope.user.type.equals('user')}">
-                <div class="divMenu">
-                    <form action="Controller" method="get">
-                        <input type="hidden" name="command" value="to-priv-office-user">
-                        <input type="submit" value="${privateOffice}" class="buttonMenu"/>
-                    </form>
-                </div>
-            </c:if>
-            <c:if test="${sessionScope.user.type.equals('admin')}">
-                <div class="divMenu">
-                    <form action="Controller" method="get">
-                        <input type="hidden" name="command" value="to-priv-office-admin">
-                        <input type="submit" value="${privateOffice}" class="buttonMenu"/>
-                    </form>
-                </div>
-            </c:if>
-            <div class="divMenu">
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="to-about">
-                    <input type="submit" value="${info}" class="buttonMenu"/>
-                </form>
+    <div class="carousel-inner">
+        <div class="item active">
+            <div class="fill" style="background-image:url('img/main1Img.jpg');"></div>
+            <div class="carousel-caption">
+                <h2>${mBestDeals}</h2>
             </div>
         </div>
-
+        <div class="item">
+            <div class="fill" style="background-image:url('img/main2Img.jpg');"></div>
+            <div class="carousel-caption">
+                <h2>${mLowPrices}</h2>
+            </div>
+        </div>
+        <div class="item">
+            <div class="fill" style="background-image:url('img/main3Img.jpg');"></div>
+            <div class="carousel-caption">
+                <h2>${mCustomersSupport}</h2>
+            </div>
+        </div>
     </div>
 
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+        <span class="icon-prev"></span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+        <span class="icon-next"></span>
+    </a>
 </header>
 
-<section>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                ${messageWelcome}
+                <br/>
+                <small>${mTakingCare}</small>
+            </h1>
+        </div>
+    </div>
 
-    <c:if test="${sessionScope.successfulRegister == true}">
-        <p class="rightMessage">${mSuccessfulRegister}</p>
-        <c:set var="successfulRegister" value="false" scope="session"/>
-    </c:if>
-
-    <article class="divMsgWelcome">
-        <h3 class="message"> ${messageWelcome} </h3>
-    </article>
-
-    <article class="articleForTables">
-        <div class="div1">
-            <div class="div4">
+    <div class="well">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">${cars}</h2>
+            </div>
+            <div class="col-md-4 col-sm-6 img-portfolio">
                 <form action="Controller" method="get">
-                    <img src="img/fFocus.jpg"/>
+                    <button class="btn btn-default">
+                        <img class="img-responsive img-hover car-small-img" src="img/fFocus.jpg" alt="Small">
+
+                        <p class="my-info">${small}</p>
+                    </button>
                     <input type="hidden" name="command" value="view-type">
                     <input type="hidden" name="carType" value="Small"/>
-                    <input type="submit" value="${small}" class="ref2"/>
                 </form>
             </div>
-            <div class="div4">
+            <div class="col-md-4 col-sm-6 img-portfolio">
                 <form action="Controller" method="get">
-                    <img src="img/n370.jpg"/>
+                    <button class="btn btn-default">
+                        <img class="img-responsive img-hover car-small-img" src="img/n370.jpg" alt="Coupe">
+
+                        <p class="my-info">${coupe}</p>
+                    </button>
                     <input type="hidden" name="command" value="view-type">
                     <input type="hidden" name="carType" value="Coupe"/>
-                    <input type="submit" value="${coupe}" class="ref2"/>
                 </form>
             </div>
-            <div class="div4">
+            <div class="col-md-4 col-sm-6 img-portfolio">
                 <form action="Controller" method="get">
-                    <img src="img/mbS.jpg"/>
+                    <button class="btn btn-default">
+                        <img class="img-responsive img-hover car-small-img" src="img/mbS.jpg" alt="Premium">
+
+                        <p class="my-info">${premium}</p>
+                    </button>
                     <input type="hidden" name="command" value="view-type">
                     <input type="hidden" name="carType" value="Premium"/>
-                    <input type="submit" value="${premium}" class="ref2"/>
                 </form>
             </div>
-            <div class="div4">
+            <div class="col-md-4 col-sm-6 img-portfolio">
                 <form action="Controller" method="get">
-                    <img src="img/p308cc.jpg"/>
+                    <button class="btn btn-default">
+                        <img class="img-responsive img-hover car-small-img" src="img/p308cc.jpg" alt="Cabriolet">
+
+                        <p class="my-info"> ${cabriolet}</p>
+                    </button>
                     <input type="hidden" name="command" value="view-type">
                     <input type="hidden" name="carType" value="Cabriolet"/>
-                    <input type="submit" value="${cabriolet}" class="ref2"/>
                 </form>
             </div>
-            <div class="div4">
+            <div class="col-md-4 col-sm-6 img-portfolio">
                 <form action="Controller" method="get">
-                    <img src="img/mbSprinter.jpg"/>
+                    <button class="btn btn-default">
+                        <img class="img-responsive img-hover car-small-img" src="img/mbSprinter.jpg" alt="Cargo">
+
+                        <p class="my-info">${cargo}</p>
+                    </button>
                     <input type="hidden" name="command" value="view-type">
-                    <input type="hidden" name="carType" value="Cargo">
-                    <input type="submit" value="${cargo}" class="ref2"/>
+                    <input type="hidden" name="carType" value="Cargo"/>
                 </form>
             </div>
-            <div class="div4">
+            <div class="col-md-4 col-sm-6 img-portfolio">
                 <form action="Controller" method="get">
-                    <img src="img/g21.jpg"/>
+                    <button class="btn btn-default">
+                        <img class="img-responsive img-hover car-small-img" src="img/g21.jpg" alt="Vintage">
+
+                        <p class="my-info">${vintage}</p>
+                    </button>
                     <input type="hidden" name="command" value="view-type">
                     <input type="hidden" name="carType" value="Vintage"/>
-                    <input type="submit" value="${vintage}" class="ref2"/>
                 </form>
             </div>
-            <br/>
-
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="view-all-cars">
-                <input type="submit" value="${seeAllBtn}" class="buttonSubMenu"/>
-            </form>
         </div>
-        </div>
-    </article>
+    </div>
 
-</section>
+    <hr>
 
-<footer>
-    <p><cr:CopyRight/></p>
-</footer>
+
+    <form action="Controller" method="get" class="text-center">
+        <input type="hidden" name="command" value="view-all-cars">
+        <input type="submit" value="${seeAllBtn}" class="btn btn-lg btn-info"/>
+    </form>
+
+
+    <hr/>
+    <%@include file="/WEB-INF/footer.jspf" %>
+
+</div>
+
+
+<!-- jQuery -->
+<script src="js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
+
+<!-- Script to Activate the Carousel -->
+<script>
+    $('.carousel').carousel({
+        interval: 5000 //changes the speed
+    })
+</script>
 
 </body>
 </html>

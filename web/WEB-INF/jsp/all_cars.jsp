@@ -1,13 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@taglib prefix="cr" uri="/WEB-INF/custom.tld" %>
 
+<!DOCTYPE html>
 <html>
 <head>
     <title>All cars</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../../css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/car-rental-style.css" rel="stylesheet">
+    <link href="../../font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="locale"/>
     <fmt:message bundle="${locale}" key="local.carRental" var="carRental"/>
@@ -49,216 +53,131 @@
     <fmt:message bundle="${locale}" key="local.mForMakingOrderTakeCar" var="mForMakingOrder"/>
 </head>
 <body>
-<header>
-    <div>
-        <div class="div1"><h1>${carRental}</h1></div>
-        <div class="div2">
-            <div>
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="change-locale">
-                    <input type="hidden" name="language" value="en">
-                    <input type="submit" value="${en_button}" class="buttonLocalReg">
-                </form>
-            </div>
-            <div>
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="change-locale">
-                    <input type="hidden" name="language" value="ru">
-                    <input type="submit" value="${ru_button}" class="buttonLocalReg">
-                </form>
-            </div>
-        </div>
-        <c:if test="${sessionScope.user != null}">
-            <div class="div5">
-                <form action="Controller" method="post">
-                    <input type="hidden" name="command" value="log-out-user">
 
-                    <div><input type="submit" value="${logOut}" class="buttonLogOut"></div>
-                </form>
-            </div>
-        </c:if>
-        <c:if test="${sessionScope.user == null}">
-            <div class="div5">
-                <form action="Controller" method="post">
-                    <div>${login} <input type="text" name="login" value="" maxlength="25"/></div>
-                    <div>${password} <input type="password" name="password" value="" maxlength="35"/></div>
-                    <div>
-                        <input type="hidden" name="command" value="login-user"/>
-                        <input type="hidden" name="page-name" value="all-cars"/>
-                        <input type="submit" value="${signIn}" class="buttonSignIn"/>
-                    </div>
-                </form>
-                <p>
-                    <c:if test="${requestScope.loginFailed == true}">
-                        ${invLogin}
-                        <c:set var="loginFailed" scope="session" value="false"/>
-                    </c:if>
-                </p>
+<%@include file="../navigation.jspf" %>
 
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="to-registration">
-
-                    <div><input type="submit" value="${registration}" class="buttonLocalReg"/></div>
-                </form>
-            </div>
-        </c:if>
-        <p>
-            <c:if test="${sessionScope.user != null}">
-                <c:out value="${sessionScope.user.lastName}"/> <c:out value="${sessionScope.user.firstName}"/>
-            </c:if>
-        </p>
-    </div>
-    <div class="div3">
-        <div class="divMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="to-home-page">
-                <input type="submit" value="${home}" class="buttonMenu"/>
-            </form>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">${autos}</h1>
+            <ol class="breadcrumb">
+                <li>
+                    <form action="Controller" method="get" class="btn btn-link">
+                        <input type="hidden" name="command" value="to-home-page">
+                        <input type="submit" value="${home}" class="btn btn-link">
+                    </form>
+                </li>
+                <li class="active">${autos}</li>
+            </ol>
         </div>
-        <div class="divMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="view-all-cars">
-                <input type="submit" value="${cars}" class="buttonMenu"/>
-            </form>
-        </div>
-        <c:if test="${sessionScope.user.type.equals('user')}">
-            <div class="divMenu">
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="to-priv-office-user">
-                    <input type="submit" value="${privateOffice}" class="buttonMenu"/>
-                </form>
-            </div>
-        </c:if>
-        <c:if test="${sessionScope.user.type.equals('admin')}">
-            <div class="divMenu">
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="to-priv-office-admin">
-                    <input type="submit" value="${privateOffice}" class="buttonMenu"/>
-                </form>
-            </div>
-        </c:if>
-        <div class="divMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="to-about">
-                <input type="submit" value="${info}" class="buttonMenu"/>
-            </form>
-        </div>
-
     </div>
 
-</header>
-
-<section>
-    <h2>${autos}</h2>
-
-    <c:if test="${!user.type.equals('admin')}">
-        <p class="helpMessage">${mForMakingOrder}</p>
-    </c:if>
-
-    <div class="divDateTime">
-        <form action="Controller" method="get">
-
-            <c:forEach var="type" items="${allTypes}">
-                <div class="divSubMenu">
-                    <input type="radio" name="carType" value="${type.type}">
-                    <c:if test="${type.type.equals('Cabriolet')}">
-                        ${cabriolet}
-                    </c:if>
-                    <c:if test="${type.type.equals('Cargo')}">
-                        ${cargo}
-                    </c:if>
-                    <c:if test="${type.type.equals('Coupe')}">
-                        ${coupe}
-                    </c:if>
-                    <c:if test="${type.type.equals('Jeep')}">
-                        ${jeep}
-                    </c:if>
-                    <c:if test="${type.type.equals('Small')}">
-                        ${small}
-                    </c:if>
-                    <c:if test="${type.type.equals('Middle')}">
-                        ${middle}
-                    </c:if>
-                    <c:if test="${type.type.equals('Minibus')}">
-                        ${minibus}
-                    </c:if>
-                    <c:if test="${type.type.equals('Premium')}">
-                        ${premium}
-                    </c:if>
-                    <c:if test="${type.type.equals('Vintage')}">
-                        ${vintage}
-                    </c:if>
-                    <br/>
-                </div>
-            </c:forEach>
-            <hr/>
-            <c:if test="${requestScope.invalidType == true}">
-                <p class="invalidMessage">
-                    <c:out value="${selectType}"/>
-                </p>
-            </c:if>
+    <div class="row">
+        <div class="well">
             <c:if test="${!user.type.equals('admin')}">
-                <p class="helpMessage">${chooseTripDate}</p>
+                <p class="text-primary">${mForMakingOrder}</p>
             </c:if>
-            <c:if test="${requestScope.invalidDate == true}">
-                <p class="invalidMessage">${mInvalidDate}</p>
-            </c:if>
-            <p>${mSupFromDate}</p>
-            <input type="date" value="${sessionScope.supposedDateFrom}" name="supposedDateFrom" required/>
-            <input type="time" value="${sessionScope.supposedTimeFrom}" name="supposedTimeFrom" required/>
 
-            <p>${mSupToDate}</p>
-            <input type="date" value="${sessionScope.supposedDateTo}" name="supposedDateTo" required/>
-            <input type="time" value="${sessionScope.supposedTimeTo}" name="supposedTimeTo" required/>
+            <form action="Controller" method="get" role="form">
 
-            <br/>
-            <br/>
-            <input type="hidden" name="command" value="view-type-unused"/>
-            <input type="submit" value="${searchForFree}" class="buttonSubMenu">
+                <div class="btn-group" data-toggle="buttons">
+                    <c:forEach var="type" items="${allTypes}">
+                        <label class="btn btn-default">
+                            <input type="radio" name="carType" value="${type.type}" autocomplete="off">
+                            <c:if test="${type.type.equals('Cabriolet')}">
+                                ${cabriolet}
+                            </c:if>
+                            <c:if test="${type.type.equals('Cargo')}">
+                                ${cargo}
+                            </c:if>
+                            <c:if test="${type.type.equals('Coupe')}">
+                                ${coupe}
+                            </c:if>
+                            <c:if test="${type.type.equals('Jeep')}">
+                                ${jeep}
+                            </c:if>
+                            <c:if test="${type.type.equals('Small')}">
+                                ${small}
+                            </c:if>
+                            <c:if test="${type.type.equals('Middle')}">
+                                ${middle}
+                            </c:if>
+                            <c:if test="${type.type.equals('Minibus')}">
+                                ${minibus}
+                            </c:if>
+                            <c:if test="${type.type.equals('Premium')}">
+                                ${premium}
+                            </c:if>
+                            <c:if test="${type.type.equals('Vintage')}">
+                                ${vintage}
+                            </c:if>
+                        </label>
+                    </c:forEach>
+                </div>
+                <hr/>
+                <c:if test="${requestScope.invalidType == true}">
+                    <p class="text-danger">
+                        <c:out value="${selectType}"/>
+                    </p>
+                </c:if>
+                <c:if test="${!user.type.equals('admin')}">
+                    <p class="text-primary">${chooseTripDate}</p>
+                </c:if>
+                <c:if test="${requestScope.invalidDate == true}">
+                    <p class="text-danger">${mInvalidDate}</p>
+                </c:if>
+                <p>${mSupFromDate}</p>
+                <input type="date" value="${sessionScope.supposedDateFrom}" name="supposedDateFrom" required/>
+                <input type="time" value="${sessionScope.supposedTimeFrom}" name="supposedTimeFrom" required/>
 
+                <p>${mSupToDate}</p>
+                <input type="date" value="${sessionScope.supposedDateTo}" name="supposedDateTo" required/>
+                <input type="time" value="${sessionScope.supposedTimeTo}" name="supposedTimeTo" required/>
+                <hr/>
+                <input type="hidden" name="command" value="view-type-unused"/>
+                <input type="submit" value="${searchForFree}" class="btn btn-primary">
 
-        </form>
+            </form>
+        </div>
     </div>
 
-    <c:forEach var="type" items="${allTypes}">
-        <div class="divSubMenu">
-            <form action="Controller" method="get">
+    <div class="btn-group">
+        <c:forEach var="type" items="${allTypes}">
+            <form action="Controller" method="get" class="btn pag">
                 <input type="hidden" name="command" value="view-type"/>
                 <input type="hidden" name="carType" value="${type.type}"/>
                 <c:if test="${type.type.equals('Cabriolet')}">
-                    <input type="submit" value="${cabriolet}" class="buttonSubMenu"/>
+                    <input type="submit" value="${cabriolet}" class="btn btn-default"/>
                 </c:if>
                 <c:if test="${type.type.equals('Cargo')}">
-                    <input type="submit" value="${cargo}" class="buttonSubMenu"/>
+                    <input type="submit" value="${cargo}" class="btn btn-default"/>
                 </c:if>
                 <c:if test="${type.type.equals('Coupe')}">
-                    <input type="submit" value="${coupe}" class="buttonSubMenu"/>
+                    <input type="submit" value="${coupe}" class="btn btn-default"/>
                 </c:if>
                 <c:if test="${type.type.equals('Jeep')}">
-                    <input type="submit" value="${jeep}" class="buttonSubMenu"/>
+                    <input type="submit" value="${jeep}" class="btn btn-default"/>
                 </c:if>
                 <c:if test="${type.type.equals('Small')}">
-                    <input type="submit" value="${small}" class="buttonSubMenu"/>
+                    <input type="submit" value="${small}" class="btn btn-default"/>
                 </c:if>
                 <c:if test="${type.type.equals('Middle')}">
-                    <input type="submit" value="${middle}" class="buttonSubMenu"/>
+                    <input type="submit" value="${middle}" class="btn btn-default"/>
                 </c:if>
                 <c:if test="${type.type.equals('Minibus')}">
-                    <input type="submit" value="${minibus}" class="buttonSubMenu"/>
+                    <input type="submit" value="${minibus}" class="btn btn-default"/>
                 </c:if>
                 <c:if test="${type.type.equals('Premium')}">
-                    <input type="submit" value="${premium}" class="buttonSubMenu"/>
+                    <input type="submit" value="${premium}" class="btn btn-default"/>
                 </c:if>
                 <c:if test="${type.type.equals('Vintage')}">
-                    <input type="submit" value="${vintage}" class="buttonSubMenu"/>
+                    <input type="submit" value="${vintage}" class="btn btn-default"/>
                 </c:if>
             </form>
-        </div>
-    </c:forEach>
-    <div class="divSubMenu">
-        <form action="Controller" method="get">
+        </c:forEach>
+        <form action="Controller" method="get" class="btn pag">
             <input type="hidden" name="command" value="view-all-cars"/>
-            <input type="submit" value="${all}" class="buttonSubMenu"/>
+            <input type="submit" value="${all}" class="btn btn-default"/>
         </form>
     </div>
 
@@ -290,69 +209,75 @@
         <c:if test="${requestScope.carType.equals('Vintage')}">
             ${vintage}
         </c:if>
-
     </h2>
 
-    <article class="articleForTables">
+    <div class="row well">
         <c:if test="${requestScope.noCars == true}">
             <p>${mNoCars}</p>
         </c:if>
-        <div class="div1">
+        <c:if test="${requestScope.noCars !=true}">
             <c:forEach var="car" items="${allCars}">
-                <div class="div4">
+                <div class="col-md-4 img-portfolio">
                     <form action="Controller" method="get">
-                        <img class="imgSmall" src="data:image/jpg;base64,${car.image}"/>
                         <input type="hidden" name="command" value="view-car"/>
                         <input type="hidden" name="selectedCarId" value="${car.id}">
-                        <input type="submit" value="${car.mark} ${car.model}" class="ref2"/>
+                        <button type="submit" class="btn btn-default">
+                            <img class="img-responsive img-hover car-small-img"
+                                 src="data:image/jpg;base64,${car.image}"/>
+
+                            <p class="my-info">${car.mark} ${car.model}</p>
+                        </button>
                     </form>
                 </div>
             </c:forEach>
-        </div>
-    </article>
+        </c:if>
+    </div>
 
-
-    <c:if test="${requestScope.command == null}">
-        <p>
-            <c:out value="${mPage}: ${requestScope.pageNumber}"/>
-        </p>
-        <br/>
-        <c:forEach var="i" begin="1" end="${amountPages}">
-            <div class="divSubMenu">
-                <form action="Controller" method="get">
+    <div class="btn-group">
+        <c:if test="${requestScope.command == null && requestScope.noCars != false}">
+            <c:forEach var="i" begin="1" end="${amountPages}">
+                <form action="Controller" method="get" class="btn pag">
                     <input type="hidden" name="command" value="view-all-cars">
                     <input type="hidden" name="pageNumber" value="${i}"/>
-                    <input type="submit" value="${i}" class="button2"/>
+                    <c:if test="${requestScope.pageNumber==i}">
+                        <input type="submit" value="${i}" class="btn btn-default active"/>
+                    </c:if>
+                    <c:if test="${requestScope.pageNumber!=i}">
+                        <input type="submit" value="${i}" class="btn btn-default"/>
+                    </c:if>
                 </form>
-            </div>
-        </c:forEach>
+            </c:forEach>
+            <p><c:out value="${mPage}: ${requestScope.pageNumber}"/></p>
+        </c:if>
 
-    </c:if>
+        <c:if test="${requestScope.command != null && requestScope.noCars != false && requestScope.carType != null}">
+            <ul class="pagination">
+                <c:forEach var="i" begin="1" end="${amountPages}">
+                    <li>
+                        <form action="Controller" method="get" class="btn pag">
+                            <input type="hidden" name="carType" value="${requestScope.carType}">
+                            <input type="hidden" name="command" value="${requestScope.command}">
+                            <input type="hidden" name="pageNumber" value="${i}"/>
+                            <c:if test="${requestScope.pageNumber==i}">
+                                <input type="submit" value="${i}" class="btn btn-default active"/>
+                            </c:if>
+                            <c:if test="${requestScope.pageNumber!=i}">
+                                <input type="submit" value="${i}" class="btn btn-default"/>
+                            </c:if>
+                        </form>
+                    </li>
+                </c:forEach>
+                <p><c:out value="${mPage}: ${requestScope.pageNumber}"/></p>
+            </ul>
+        </c:if>
+    </div>
 
-    <c:if test="${requestScope.command != null}">
-        <p>
-            <c:out value="${mPage}: ${requestScope.pageNumber}"/>
-        </p>
-        <br/>
-        <c:forEach var="i" begin="1" end="${amountPages}">
-            <div class="divSubMenu">
-                <form action="Controller" method="get">
-                    <input type="hidden" name="carType" value="${requestScope.carType}">
-                    <input type="hidden" name="command" value="${requestScope.command}">
-                    <input type="hidden" name="pageNumber" value="${i}"/>
-                    <input type="submit" value="${i}" class="button2"/>
-                </form>
-            </div>
-        </c:forEach>
-    </c:if>
+    <hr/>
+    <%@include file="../footer.jspf" %>
+</div>
 
-
-</section>
-
-<footer>
-    <p>&copy; 2016 Car rental. All rights reserved.</p>
-</footer>
-
+<script src="../../js/jquery.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
 
 </body>
 </html>

@@ -21,7 +21,7 @@ public class UserService {
     private static final Logger LOG = LogManager.getLogger(UserService.class.getName());
     private static final UserService instance = new UserService();
 
-    private static final UserDAO USER_DAO = DAOFactory.getInstance().getUserDAO();
+    private final UserDAO USER_DAO = DAOFactory.getInstance().getUserDAO();
 
     private UserService() {
 
@@ -39,11 +39,11 @@ public class UserService {
      * @throws ServiceException ошибка при авторизации пользователя
      */
     public User login(String login, String password) throws ServiceException{
-        LOG.debug(ServiceStringConstant.LOGIN_START_MSG);
+        LOG.debug(ServiceConstant.LOGIN_START_MSG);
         int hashPassword = password.hashCode();
         try {
             User user = USER_DAO.findUser(login, hashPassword);
-            LOG.debug(ServiceStringConstant.LOGIN_END_MSG);
+            LOG.debug(ServiceConstant.LOGIN_END_MSG);
             return user;
         } catch(DAOException ex) {
             throw new ServiceException(ex);
@@ -67,16 +67,16 @@ public class UserService {
      */
     public ValidatorUniqueUser register(String login, int hashPassword, String lastName, String firstName, String middleName,
             String email, String phone, String passport, String address) throws ServiceException {
-        LOG.debug(ServiceStringConstant.REGISTER_START_MSG);
+        LOG.debug(ServiceConstant.REGISTER_START_MSG);
         User user = new User(login, hashPassword, lastName, firstName, middleName, email, phone, passport, address);
         try {
             ValidatorUniqueUser validatorUniqueUser = USER_DAO.findUser(login, email, passport);
             if (validatorUniqueUser.isUniqueLogin() && validatorUniqueUser.isUniqueEmail() && validatorUniqueUser.isUniquePassport()) {
                 USER_DAO.addUser(user);
-                LOG.debug(ServiceStringConstant.REGISTER_END_MSG);
+                LOG.debug(ServiceConstant.REGISTER_END_MSG);
                 return validatorUniqueUser;
             } else {
-                LOG.debug(ServiceStringConstant.REGISTER_END_MSG);
+                LOG.debug(ServiceConstant.REGISTER_END_MSG);
                 return validatorUniqueUser;
             }
         } catch (DAOException ex) {
@@ -90,11 +90,11 @@ public class UserService {
      * @throws ServiceException ошибка при получении всех пользователей
      */
     public List<User> takeAllUsers(int pageNumber, int amountUsersOnPage) throws ServiceException {
-        LOG.debug(ServiceStringConstant.TAKE_ALL_USERS_START_MSG);
+        LOG.debug(ServiceConstant.TAKE_ALL_USERS_START_MSG);
         int startPage = userToStartPage(pageNumber, amountUsersOnPage);
         try {
             List<User> users = USER_DAO.takeAllUsers(startPage, amountUsersOnPage);
-            LOG.debug(ServiceStringConstant.TAKE_ALL_USERS_END_MSG);
+            LOG.debug(ServiceConstant.TAKE_ALL_USERS_END_MSG);
             return users;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -102,10 +102,10 @@ public class UserService {
     }
 
     public User findUserById(int userId) throws ServiceException {
-        LOG.debug(ServiceStringConstant.TAKE_USER_BY_ID_START_MSG);
+        LOG.debug(ServiceConstant.TAKE_USER_BY_ID_START_MSG);
         try {
             User user = USER_DAO.findUserById(userId);
-            LOG.debug(ServiceStringConstant.TAKE_USER_BY_ID_END_MSG);
+            LOG.debug(ServiceConstant.TAKE_USER_BY_ID_END_MSG);
             return user;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -113,7 +113,7 @@ public class UserService {
     }
 
     public int countPageAmountAllUsers(int amountUsersOnPage) throws ServiceException {
-        LOG.debug(ServiceStringConstant.COUNT_PAGE_AMOUNT_ALL_USERS_START_MSG);
+        LOG.debug(ServiceConstant.COUNT_PAGE_AMOUNT_ALL_USERS_START_MSG);
         int pageAmount = 0;
         int usersAmount = 0;
         try {
@@ -123,7 +123,7 @@ public class UserService {
             } else {
                 pageAmount = (usersAmount / amountUsersOnPage);
             }
-            LOG.debug(ServiceStringConstant.COUNT_PAGE_AMOUNT_ALL_USERS_END_MSG);
+            LOG.debug(ServiceConstant.COUNT_PAGE_AMOUNT_ALL_USERS_END_MSG);
             return pageAmount;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -131,8 +131,8 @@ public class UserService {
     }
 
     private int userToStartPage(int pageNumber, int usersOnPage) {
-        LOG.debug(ServiceStringConstant.USER_TO_START_PAGE_STARTS_MSG);
-        LOG.debug(ServiceStringConstant.USER_TO_START_PAGE_ENDS_MSG);
+        LOG.debug(ServiceConstant.USER_TO_START_PAGE_STARTS_MSG);
+        LOG.debug(ServiceConstant.USER_TO_START_PAGE_ENDS_MSG);
         return ((pageNumber * usersOnPage) - usersOnPage);
     }
 }

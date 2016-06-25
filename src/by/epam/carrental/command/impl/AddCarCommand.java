@@ -3,10 +3,9 @@ package by.epam.carrental.command.impl;
 import by.epam.carrental.command.Command;
 import by.epam.carrental.command.PageName;
 import by.epam.carrental.command.exception.CommandException;
+import by.epam.carrental.command.util.ValidationHelper;
 import by.epam.carrental.entity.Car;
 import by.epam.carrental.service.CarService;
-import by.epam.carrental.service.Validator;
-import by.epam.carrental.service.ValidatorUniqueCar;
 import by.epam.carrental.service.exception.ServiceException;
 import com.sun.org.apache.xml.internal.security.utils.Base64;
 import org.apache.logging.log4j.LogManager;
@@ -31,8 +30,7 @@ public class AddCarCommand implements Command {
 
     private static final String EXECUTE_STARTS_MSG = "AddCarCommand : execute : starts";
     private static final String EXECUTE_ENDS_MSG = "AddCarCommand : execute : ends";
-    private static final String VALID_PARAMETERS_STARTS_MSG = "AddCarCommand : validParameters : starts";
-    private static final String VALID_PARAMETERS_ENDS_MSG = "AddCarCommand : validParameters : ends";
+
 
     private static final String CAR_MODEL_PARAM = "carModel";
     private static final String CAR_YEAR_PARAM = "carYear";
@@ -44,12 +42,7 @@ public class AddCarCommand implements Command {
     private static final String CAR_INFO_PARAM = "car-info";
     private static final String IMAGE_PARAM = "image";
     private static final String CAR_SUCCESSFUL_ADDED_PARAM = "carSuccessfulAdded";
-    private static final String INVALID_MODEL_PARAM = "invalidModel";
-    private static final String INVALID_YEAR_PARAM = "invalidYear";
-    private static final String INVALID_GOV_NUMBER_PARAM = "invalidGovNumber";
-    private static final String INVALID_VIN_CODE_PARAM = "invalidVinCode";
-    private static final String INVALID_NUMBER_VIN_PARAM = "invalidNumberVin";
-    private static final String INVALID_CAR_INFO_PARAM = "invalidCarInfo";
+
     private static final String PROCESS_REQUEST_PARAM = "processRequest";
 
     private static final String FORWARD_VALUE = "forward";
@@ -60,26 +53,18 @@ public class AddCarCommand implements Command {
         LOG.debug(EXECUTE_STARTS_MSG);
         CarService service = CarService.getInstance();
         try {
-            String model = request.getParameter(CAR_MODEL_PARAM);
-            String year = request.getParameter(CAR_YEAR_PARAM);
-            String transmission = request.getParameter(TRANSMISSION_PARAM);
-            String fuel = request.getParameter(CAR_FUEL_PARAM);
-            String type = request.getParameter(CAR_TYPE_PARAM);
-            String govNumber = request.getParameter(GOV_NUMBER_PARAM);
-            String vin = request.getParameter(VIN_PARAM);
-            String info = request.getParameter(CAR_INFO_PARAM);
             Part image = request.getPart(IMAGE_PARAM);
             InputStream inputStream = image.getInputStream();
-            if (validParameters(request)) {
+            if (ValidationHelper.validParameters(request)) {
                 Car car = new Car();
-                car.setModel(model);
-                car.setYear(year);
-                car.setTransmission(transmission);
-                car.setFuel(fuel);
-                car.setType(type);
-                car.setGovNumber(govNumber);
-                car.setVinCode(vin);
-                car.setInfo(info);
+                car.setModel(request.getParameter(CAR_MODEL_PARAM));
+                car.setYear(request.getParameter(CAR_YEAR_PARAM));
+                car.setTransmission(request.getParameter(TRANSMISSION_PARAM));
+                car.setFuel(request.getParameter(CAR_FUEL_PARAM));
+                car.setType(request.getParameter(CAR_TYPE_PARAM));
+                car.setGovNumber(request.getParameter(GOV_NUMBER_PARAM));
+                car.setVinCode(request.getParameter(VIN_PARAM));
+                car.setInfo(request.getParameter(CAR_INFO_PARAM));
                 car.setImage(Base64.encode(IOUtils.readFully(inputStream, -1, true)));
                 service.insertCar(car);
 
@@ -95,72 +80,5 @@ public class AddCarCommand implements Command {
         } catch (ServletException | IOException | ServiceException ex) {
             throw new CommandException(ex);
         }
-    }
-
-    /**
-     * Проверяет корректны ли параметры, описывающие автомобиль, если нет,
-     * то добавляет в http-запрос информацию о неправильно введенных данных
-     * @param request http-запрос
-     * @return true - если все параметры корректны, false - не корректны
-     * @throws CommandException
-     */
-    private boolean validParameters (HttpServletRequest request) throws CommandException{
-
-        LOG.debug(VALID_PARAMETERS_STARTS_MSG);
-
-        int countFailedValidations = 0;
-        Validator validator = Validator.getInstance();
-
-        String model = request.getParameter(CAR_MODEL_PARAM);
-        String year = request.getParameter(CAR_YEAR_PARAM);
-        String govNumber = request.getParameter(GOV_NUMBER_PARAM);
-        String vin = request.getParameter(VIN_PARAM);
-        String info = request.getParameter(CAR_INFO_PARAM);
-
-        if (!validator.validateModel(model)) {
-            request.setAttribute(INVALID_MODEL_PARAM, true);
-            countFailedValidations++;
-        }
-
-        if (!validator.validateCarYear(year)) {
-            request.setAttribute(INVALID_YEAR_PARAM, true);
-            countFailedValidations++;
-        }
-
-        if (!validator.validateGovNumber(govNumber)) {
-            request.setAttribute(INVALID_GOV_NUMBER_PARAM, true);
-            countFailedValidations++;
-        }
-
-        if (!validator.validateVinCode(vin)) {
-            request.setAttribute(INVALID_VIN_CODE_PARAM, true);
-            countFailedValidations++;
-        }
-
-        if (!validator.validateCarInfo(info)) {
-            request.setAttribute(INVALID_CAR_INFO_PARAM, true);
-            countFailedValidations++;
-        }
-
-        if (countFailedValidations > 0) {
-            LOG.debug(VALID_PARAMETERS_ENDS_MSG);
-            return false;
-        } else {
-            ValidatorUniqueCar validatorUniqueCar = new ValidatorUniqueCar();
-            try {
-                boolean unique = validatorUniqueCar.checkUnique(govNumber, vin);
-                if (unique) {
-                    LOG.debug(VALID_PARAMETERS_ENDS_MSG);
-                    return true;
-                } else {
-                    request.setAttribute(INVALID_NUMBER_VIN_PARAM, true);
-                    LOG.debug(VALID_PARAMETERS_ENDS_MSG);
-                    return false;
-                }
-            } catch (ServiceException ex) {
-                throw new CommandException(ex);
-            }
-        }
-
     }
 }

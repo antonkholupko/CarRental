@@ -34,7 +34,7 @@ public class PayForDamageCommand implements Command {
         OrderService service = OrderService.getInstance();
         try {
             service.updateStatusById(STATUS_VALUE, orderId);
-            request.setAttribute(SUCCESSFUL_PAYMENT_PARAM, true);
+            request.getSession().setAttribute(SUCCESSFUL_PAYMENT_PARAM, true);
             request.setAttribute(PROCESS_REQUEST_PARAM, REDIRECT_VALUE);
             LOG.debug(EXECUTE_ENDS_MSG);
             return PageName.USER_SUCCESS;

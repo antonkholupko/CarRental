@@ -20,6 +20,9 @@ public class Controller extends HttpServlet {
     private static final Logger LOG = LogManager.getLogger(Controller.class.getName());
     private static final long serialVersionUID = 1L;
     private static final String COMMAND_PARAMETER = "command";
+    private static final String PROCESS_REQUEST_PARAM = "processRequest";
+    private static final String FORWARD_PARAM = "forward";
+    private static final String REDIRECT_PARAM = "redirect";
     private static final String DO_GET_MSG = "Controller : doGet";
     private static final String DO_POST_MSG = "Controller : doPost";
     private static final String PROCESS_REQUEST_MSG = "Controller : processRequest";
@@ -53,9 +56,10 @@ public class Controller extends HttpServlet {
             }
 
             RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-            if (dispatcher != null & request.getAttribute("processRequest").equals("forward")) {
+            if (dispatcher != null && request.getAttribute(PROCESS_REQUEST_PARAM) != null &&
+                    request.getAttribute(PROCESS_REQUEST_PARAM).equals(FORWARD_PARAM)) {
                 dispatcher.forward(request, response);
-            } else if (request.getAttribute("processRequest").equals("redirect")) {
+            } else if (request.getAttribute(PROCESS_REQUEST_PARAM).equals(REDIRECT_PARAM)) {
                 response.sendRedirect(page);
             } else {
                 page = PageName.ERROR_PAGE;

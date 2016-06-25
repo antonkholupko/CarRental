@@ -26,7 +26,7 @@ public class OrderService {
     private static final String NEW_VALUE = "new";
     private static final String DELIVERED_VALUE = "delivered";
 
-    private static final OrderDAO ORDER_DAO = DAOFactory.getInstance().getOrderDAO();
+    private final OrderDAO ORDER_DAO = DAOFactory.getInstance().getOrderDAO();
 
     private OrderService() {
 
@@ -49,7 +49,7 @@ public class OrderService {
      */
     public boolean addOrder(int userId, int carId, String supposedDateFrom, String supposedDateTo,
                             String shippingPlace, String returnPlace) throws ServiceException {
-        LOG.debug(ServiceStringConstant.SERVICE_ADD_ORDER_STARTS_MSG);
+        LOG.debug(ServiceConstant.SERVICE_ADD_ORDER_STARTS_MSG);
         Order order = new Order();
         order.setUserId(userId);
         order.setCarId(carId);
@@ -68,10 +68,10 @@ public class OrderService {
             }
             if (!carUsed) {
                 ORDER_DAO.addOrder(order);
-                LOG.debug(ServiceStringConstant.SERVICE_ADD_ORDER_ENDS_MSG);
+                LOG.debug(ServiceConstant.SERVICE_ADD_ORDER_ENDS_MSG);
                 return true;
             } else {
-                LOG.debug(ServiceStringConstant.SERVICE_ADD_ORDER_ENDS_MSG);
+                LOG.debug(ServiceConstant.SERVICE_ADD_ORDER_ENDS_MSG);
                 return false;
             }
         } catch (DAOException ex) {
@@ -86,12 +86,12 @@ public class OrderService {
      * @throws ServiceException ошибка при поиске заказов
      */
     public List<Order> findOrdersByUserId(int userId, int pageNumber, int ordersOnPage) throws ServiceException {
-        LOG.debug(ServiceStringConstant.SERVICE_FIND_ORSERS_BY_USER_STARTS_MSG);
+        LOG.debug(ServiceConstant.SERVICE_FIND_ORSERS_BY_USER_STARTS_MSG);
         List<Order> orders = null;
         int startPage = orderToStartPage(pageNumber, ordersOnPage);
         try {
             orders = ORDER_DAO.findOrdersByUserId(userId, startPage, ordersOnPage);
-            LOG.debug(ServiceStringConstant.SERVICE_FIND_ORSERS_BY_USER_ENDS_MSG);
+            LOG.debug(ServiceConstant.SERVICE_FIND_ORSERS_BY_USER_ENDS_MSG);
             return orders;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -105,11 +105,11 @@ public class OrderService {
      * @throws ServiceException ошибка при поиске заказа
      */
     public Order findOrderByOrderId(int orderId) throws ServiceException {
-        LOG.debug(ServiceStringConstant.SERVICE_FIND_ORDER_BY_ID_STARTS_MSG);
+        LOG.debug(ServiceConstant.SERVICE_FIND_ORDER_BY_ID_STARTS_MSG);
         Order order = null;
         try {
             order = ORDER_DAO.findOrderByOrderId(orderId);
-            LOG.debug(ServiceStringConstant.SERVICE_FIND_ORDER_BY_ID_ENDS_MSG);
+            LOG.debug(ServiceConstant.SERVICE_FIND_ORDER_BY_ID_ENDS_MSG);
             return order;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -122,12 +122,12 @@ public class OrderService {
      * @throws ServiceException ошибка при получении списков всех заказов
      */
     public List<Order> takeAllOrders(int pageNumber, int ordersOnPage) throws ServiceException {
-        LOG.debug(ServiceStringConstant.SERVICE_TAKE_ALL_ORDERS_STARTS_MSG);
+        LOG.debug(ServiceConstant.SERVICE_TAKE_ALL_ORDERS_STARTS_MSG);
         List<Order> orders = null;
         int startPage = orderToStartPage(pageNumber, ordersOnPage);
         try {
             orders = ORDER_DAO.takeAllOrders(startPage, ordersOnPage);
-            LOG.debug(ServiceStringConstant.SERVICE_TAKE_ALL_ORDERS_ENDS_MSG);
+            LOG.debug(ServiceConstant.SERVICE_TAKE_ALL_ORDERS_ENDS_MSG);
             return orders;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -141,11 +141,11 @@ public class OrderService {
      * @throws ServiceException ошибка при получении заказа
      */
     public Order takeAdminOrderByOrderId(int orderId) throws ServiceException {
-        LOG.debug(ServiceStringConstant.SERVICE_TAKE_ADMIN_ORDER_BY_ID_STARTS_MSG);
+        LOG.debug(ServiceConstant.SERVICE_TAKE_ADMIN_ORDER_BY_ID_STARTS_MSG);
         Order order = null;
         try {
             order = ORDER_DAO.takeAdminOrderByOrderId(orderId);
-            LOG.debug(ServiceStringConstant.SERVICE_TAKE_ADMIN_ORDER_BY_ID_ENDS_MSG);
+            LOG.debug(ServiceConstant.SERVICE_TAKE_ADMIN_ORDER_BY_ID_ENDS_MSG);
             return order;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -159,10 +159,10 @@ public class OrderService {
      * @throws ServiceException ошибка при изменении статуса заказа
      */
     public void updateStatusById(String status, int orderId) throws ServiceException {
-        LOG.debug(ServiceStringConstant.SERVICE_UPDATE_STATUS_BY_ID_STARTS_MSG);
+        LOG.debug(ServiceConstant.SERVICE_UPDATE_STATUS_BY_ID_STARTS_MSG);
         try {
             ORDER_DAO.updateStatusById(status, orderId);
-            LOG.debug(ServiceStringConstant.SERVICE_UPDATE_STATUS_BY_ID_ENDS_MSG);
+            LOG.debug(ServiceConstant.SERVICE_UPDATE_STATUS_BY_ID_ENDS_MSG);
         } catch (DAOException ex) {
             throw new ServiceException(ex);
         }
@@ -176,10 +176,10 @@ public class OrderService {
      * @throws ServiceException ошибка при изменении статуса заказа
      */
     public void updateStatusById(String status, int orderId, String orderInfo) throws ServiceException {
-        LOG.debug(ServiceStringConstant.SERVICE_UPDATE_STATUS_BY_ID_STARTS_MSG);
+        LOG.debug(ServiceConstant.SERVICE_UPDATE_STATUS_BY_ID_STARTS_MSG);
         try {
             ORDER_DAO.updateStatusById(status, orderId, orderInfo);
-            LOG.debug(ServiceStringConstant.SERVICE_UPDATE_STATUS_BY_ID_ENDS_MSG);
+            LOG.debug(ServiceConstant.SERVICE_UPDATE_STATUS_BY_ID_ENDS_MSG);
         } catch (DAOException ex) {
             throw new ServiceException(ex);
         }
@@ -193,10 +193,10 @@ public class OrderService {
      * @throws ServiceException ошибка при изменении стоимости ущерба
      */
     public void updateDamagePriceByOrderId(int orderId, double damagePrice) throws ServiceException {
-        LOG.debug(ServiceStringConstant.SERVICE_UPDATE_DAMAGE_PRICE_BY_ID_STARTS_MSG);
+        LOG.debug(ServiceConstant.SERVICE_UPDATE_DAMAGE_PRICE_BY_ID_STARTS_MSG);
         try {
             ORDER_DAO.updateDamagePriceByOrderId(orderId, damagePrice);
-            LOG.debug(ServiceStringConstant.SERVICE_UPDATE_DAMAGE_PRICE_BY_ID_ENDS_MSG);
+            LOG.debug(ServiceConstant.SERVICE_UPDATE_DAMAGE_PRICE_BY_ID_ENDS_MSG);
         } catch (DAOException ex) {
             throw new ServiceException(ex);
         }
@@ -209,10 +209,10 @@ public class OrderService {
      * @throws ServiceException ошибка при установке даты и времени
      */
     public void updateRealTimeFrom(int orderId, String date) throws ServiceException {
-        LOG.debug(ServiceStringConstant.SERVICE_UPDATE_REAL_TIME_FROM_STARTS_MSG);
+        LOG.debug(ServiceConstant.SERVICE_UPDATE_REAL_TIME_FROM_STARTS_MSG);
         try {
             ORDER_DAO.updateRealTimeFrom(orderId, date);
-            LOG.debug(ServiceStringConstant.SERVICE_UPDATE_REAL_TIME_FROM_ENDS_MSG);
+            LOG.debug(ServiceConstant.SERVICE_UPDATE_REAL_TIME_FROM_ENDS_MSG);
         } catch (DAOException ex) {
             throw new ServiceException(ex);
         }
@@ -225,17 +225,17 @@ public class OrderService {
      * @throws ServiceException ошибка при установке даты и времени
      */
     public void updateRealTimeTo(int orderId, String date) throws ServiceException {
-        LOG.debug(ServiceStringConstant.SERVICE_UPDATE_REAL_TIME_TO_STARTS_MSG);
+        LOG.debug(ServiceConstant.SERVICE_UPDATE_REAL_TIME_TO_STARTS_MSG);
         try {
             ORDER_DAO.updateRealTimeTo(orderId, date);
-            LOG.debug(ServiceStringConstant.SERVICE_UPDATE_REAL_TIME_TO_ENDS_MSG);
+            LOG.debug(ServiceConstant.SERVICE_UPDATE_REAL_TIME_TO_ENDS_MSG);
         } catch (DAOException ex) {
             throw new ServiceException(ex);
         }
     }
 
     public int countPageAmountUserOrders(int userId, int amountOrdersOnPage) throws ServiceException {
-        LOG.debug(ServiceStringConstant.SERVICE_COUNT_PAGE_AMOUNT_USER_ORDERS_STARTS_MSG);
+        LOG.debug(ServiceConstant.SERVICE_COUNT_PAGE_AMOUNT_USER_ORDERS_STARTS_MSG);
         int pageAmount = 0;
         int ordersAmount = 0;
         try {
@@ -245,7 +245,7 @@ public class OrderService {
             } else {
                 pageAmount = (ordersAmount / amountOrdersOnPage);
             }
-            LOG.debug(ServiceStringConstant.SERVICE_COUNT_PAGE_AMOUNT_USER_ORDERS_ENDS_MSG);
+            LOG.debug(ServiceConstant.SERVICE_COUNT_PAGE_AMOUNT_USER_ORDERS_ENDS_MSG);
             return pageAmount;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -253,7 +253,7 @@ public class OrderService {
     }
 
     public int countPageAmountAllOrders(int amountOrdersOnPage) throws ServiceException {
-        LOG.debug(ServiceStringConstant.SERVICE_COUNT_PAGE_AMOUNT_ALL_ORDERS_STARTS_MSG);
+        LOG.debug(ServiceConstant.SERVICE_COUNT_PAGE_AMOUNT_ALL_ORDERS_STARTS_MSG);
         int pageAmount = 0;
         int ordersAmount = 0;
         try {
@@ -263,7 +263,7 @@ public class OrderService {
             } else {
                 pageAmount = (ordersAmount / amountOrdersOnPage);
             }
-            LOG.debug(ServiceStringConstant.SERVICE_COUNT_PAGE_AMOUNT_ALL_ORDERS_ENDS_MSG);
+            LOG.debug(ServiceConstant.SERVICE_COUNT_PAGE_AMOUNT_ALL_ORDERS_ENDS_MSG);
             return pageAmount;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -271,17 +271,17 @@ public class OrderService {
     }
 
     public boolean isMayDelete(int carId) throws ServiceException {
-        LOG.debug(ServiceStringConstant.SERVICE_IS_MAY_DELETE_STARTS_MSG);
+        LOG.debug(ServiceConstant.SERVICE_IS_MAY_DELETE_STARTS_MSG);
         List<String> orderStatuses = null;
         try {
             orderStatuses = ORDER_DAO.findStatusByCarId(carId);
             for (String orderStatus : orderStatuses) {
                 if (orderStatus.equals(NEW_VALUE) || orderStatus.equals(PAYED_VALUE) || orderStatus.equals(DELIVERED_VALUE)) {
-                    LOG.debug(ServiceStringConstant.SERVICE_IS_MAY_DELETE_ENDS_MSG);
+                    LOG.debug(ServiceConstant.SERVICE_IS_MAY_DELETE_ENDS_MSG);
                     return false;
                 }
             }
-            LOG.debug(ServiceStringConstant.SERVICE_IS_MAY_DELETE_ENDS_MSG);
+            LOG.debug(ServiceConstant.SERVICE_IS_MAY_DELETE_ENDS_MSG);
             return true;
         } catch (DAOException ex) {
             throw new ServiceException(ex);
@@ -289,8 +289,8 @@ public class OrderService {
     }
 
     private int orderToStartPage(int pageNumber, int ordersOnPage) {
-        LOG.debug(ServiceStringConstant.SERVICE_ORDER_TO_START_PAGE_STARTS_MSG);
-        LOG.debug(ServiceStringConstant.SERVICE_ORDER_TO_START_PAGE_ENDS_MSG);
+        LOG.debug(ServiceConstant.SERVICE_ORDER_TO_START_PAGE_STARTS_MSG);
+        LOG.debug(ServiceConstant.SERVICE_ORDER_TO_START_PAGE_ENDS_MSG);
         return ((pageNumber * ordersOnPage) - ordersOnPage);
     }
 }

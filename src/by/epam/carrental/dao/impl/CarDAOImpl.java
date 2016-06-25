@@ -19,10 +19,10 @@ import java.util.List;
 /**
  * Класс для получения сущностей класса Car из базы даных, или их вставки/обновления/удаления в бд
  */
-public class CarDAOdb implements CarDAO {
+public class CarDAOImpl implements CarDAO {
 
-    private static final Logger LOG = LogManager.getLogger(CarDAOdb.class.getName());
-    private static final String TAKE_MARKS_QUERY = "SELECT * FROM marks;";
+    private static final Logger LOG = LogManager.getLogger(CarDAOImpl.class.getName());
+    private static final String TAKE_MARKS_QUERY = "SELECT mark FROM marks;";
     private static final String TAKE_MODELS_QUERY = "SELECT model FROM models WHERE mark=?;";
     private static final String TAKE_CARS_BY_TYPE_QUERY = "SELECT cars.carID, models.mark, cars.model, cars.year, cars.transmission, " +
             "cars.type, cars.fuel, cars.info, cars.image, cartypes.price " +

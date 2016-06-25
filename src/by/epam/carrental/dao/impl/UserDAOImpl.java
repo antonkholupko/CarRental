@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Класс для получения/вставки сущностей класса User из/в базы(у) данных
  */
-public class UserDAOdb implements UserDAO {
+public class UserDAOImpl implements UserDAO {
 
     private static final String FIND_USER_QUERY = "SELECT userID, login, password, type, lastName, firstName," +
             " middleName, email, phone, passport, address FROM users WHERE login=? AND password=?;";
@@ -30,7 +30,7 @@ public class UserDAOdb implements UserDAO {
     private static final String FIND_USER_BY_ID_QUERY = "SELECT * FROM users WHERE userID=?;";
     private static final String COUNT_ALL_USERS_QUERY = "SELECT COUNT(userID) FROM users;";
 
-    private static final Logger LOG = LogManager.getLogger(UserDAOdb.class.getName());
+    private static final Logger LOG = LogManager.getLogger(UserDAOImpl.class.getName());
 
 
     @Override

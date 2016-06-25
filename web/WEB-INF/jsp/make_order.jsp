@@ -2,12 +2,17 @@
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@taglib prefix="cr" uri="/WEB-INF/custom.tld" %>
 
+<!DOCTYPE html>
 <html>
 <head>
     <title>Make order</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/car-rental-style.css" rel="stylesheet">
+    <link href="../../font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="locale"/>
     <fmt:message bundle="${locale}" key="local.locbutton.name.en" var="en_button"/>
@@ -34,159 +39,121 @@
     <fmt:message bundle="${locale}" key="local.mMakingOrder" var="mMakingOrder"/>
     <fmt:message bundle="${locale}" key="local.viewOrders" var="mViewAllOrders"/>
     <fmt:message bundle="${locale}" key="local.mMakeOrder" var="mMakeOrder"/>
+    <fmt:message bundle="${locale}" key="local.mAllCars" var="mAutomobiles"/>
+    <fmt:message bundle="${locale}" key="local.mFieldWithoutTags" var="mWithoutTags"/>
 </head>
 <body>
-<header>
-    <div class="divHeader">
 
-        <div class="div3">
-            <div class="div1"><h1>${carRental}</h1></div>
+<%@include file="../navigation.jspf" %>
 
-            <div class="div2">
-                <div>
-                    <form action="Controller" method="post">
-                        <input type="hidden" name="command" value="change-locale"/>
-                        <input type="hidden" name="language" value="en">
-                        <input type="submit" value="${en_button}" class="buttonLocalReg">
-                    </form>
-                </div>
-                <div>
-                    <form action="Controller" method="post">
-                        <input type="hidden" name="command" value="change-locale"/>
-                        <input type="hidden" name="language" value="ru">
-                        <input type="submit" value="${ru_button}" class="buttonLocalReg">
-                    </form>
-                </div>
-            </div>
+<div class="container">
 
-            <div class="div5">
-                <c:if test="${sessionScope.user.type.equals('user')}">
-                    <div class="div5">
-                        <form action="Controller" method="post">
-                            <input type="hidden" name="command" value="log-out-user">
-
-                            <div>
-                                <input type="submit" value="${logOut}" class="buttonLogOut">
-                            </div>
-                        </form>
-                    </div>
-                </c:if>
-                <p>
-                    <c:if test="${sessionScope.user.type.equals('user')}">
-                        <c:out value="${sessionScope.user.lastName}"/> <c:out value="${sessionScope.user.firstName}"/>
-                    </c:if>
-                </p>
-            </div>
-
-        </div>
-        <c:if test="${sessionScope.user.type.equals('user')}">
-            <div class="divMenu">
-                <div class="divMenu">
-                    <form action="Controller" method="post">
-                        <input type="hidden" name="command" value="to-home-page">
-                        <input type="submit" value=${home} class="buttonMenu"/>
-                    </form>
-                </div>
-                <div class="divMenu">
-                    <form action="Controller" method="get">
-                        <input type="hidden" name="command" value="view-all-cars">
-                        <input type="submit" value="${cars}" class="buttonMenu"/>
-                    </form>
-                </div>
-                <c:if test="${sessionScope.user.type.equals('user')}">
-                    <div class="divMenu">
-                        <form action="Controller" method="get">
-                            <input type="hidden" name="command" value="to-priv-office-user">
-                            <input type="submit" value="${privateOffice}" class="buttonMenu"/>
-                        </form>
-                    </div>
-                </c:if>
-                <div class="divMenu">
-                    <form action="Controller" method="get">
-                        <input type="hidden" name="command" value="to-about">
-                        <input type="submit" value="${info}" class="buttonMenu"/>
-                    </form>
-                </div>
-            </div>
-        </c:if>
-    </div>
-</header>
-<section>
     <c:if test="${sessionScope.user.type.equals('user')}">
-        <h2>${mMakingOrder}</h2>
-        <c:if test="${requestScope.addOrderFailed == true}">
-            <p class="invalidMessage">${carIsUsed}</p>
+        <div class="col-lg-12">
+            <h1 class="page-header">${mMakingOrder}</h1>
+            <ol class="breadcrumb">
+                <li>
+                    <form action="Controller" method="get" class="btn btn-link">
+                        <input type="hidden" name="command" value="to-home-page">
+                        <input type="submit" value="${home}" class="btn btn-link">
+                    </form>
+                </li>
+                <li>
+                    <form action="Controller" method="get" class="btn btn-link">
+                        <input type="hidden" name="command" value="view-all-cars"/>
+                        <input type="submit" value="${mAutomobiles}" class="btn btn-link"/>
+                    </form>
+                </li>
+                <li class="active">
+                        ${mMakingOrder}
+                </li>
+            </ol>
+        </div>
 
-            <p class="helpMessage">${unusedCarsMsg}</p>
+        <div class="well col-lg-12">
+            <div class="col-lg-8">
+                <c:if test="${requestScope.addOrderFailed == true}">
+                    <p class="text-danger">${carIsUsed}</p>
 
-            <div class="divSubMenu">
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="view-all-cars"/>
-                    <input type="submit" value="${toCars}" class="buttonSubMenu"/>
+                    <p class="text-info">${unusedCarsMsg}</p>
+
+                    <form action="Controller" method="get">
+                        <input type="hidden" name="command" value="view-all-cars"/>
+                        <input type="submit" value="${toCars}" class="btn btn-default"/>
+                    </form>
+                </c:if>
+                <c:if test="${sessionScope.selectedCar.id != null}">
+                    <img class="img-responsive car-middle-img"
+                         src="data:image/jpg;base64,${sessionScope.selectedCar.image}"/>
+
+                    <p class="my-info"><c:out value="${sessionScope.selectedCar.mark}"/> <c:out
+                            value="${sessionScope.selectedCar.model}"/></p>
+                </c:if>
+            </div>
+
+            <div class="col-lg-4">
+                <c:if test="${requestScope.addOrderFailed == true}">
+                    <div class="btn-group">
+                        <form action="Controller" method="get" class="btn">
+                            <input type="hidden" name="command" value="view-orders-user">
+                            <input type="submit" value="${mViewAllOrders}" class="btn btn-info">
+                        </form>
+
+                        <form action="Controller" method="get" class="btn">
+                            <input type="hidden" name="command" value="view-all-cars">
+                            <input type="submit" value="${mMakeOrder}" class="btn btn-info">
+                        </form>
+                    </div>
+                </c:if>
+
+                <form action="Controller" method="post">
+
+                    <c:if test="${requestScope.invalidDate == true}">
+                        <p class="text-danger"> ${mInvalidDate} </p>
+                    </c:if>
+
+                    <p>${fromDate}</p>
+                    <input type="date" name="supposedDateFrom" value="${sessionScope.supposedDateFrom}" required/>
+                    <input type="time" name="supposedTimeFrom" value="${sessionScope.supposedTimeFrom}" required/>
+
+                    <p>${toDate}</p>
+                    <input type="date" name="supposedDateTo" value="${sessionScope.supposedDateTo}" required/>
+                    <input type="time" name="supposedTimeTo" value="${sessionScope.supposedTimeTo}" required/>
+
+                    <c:if test="${requestScope.invalidPlaces == true}">
+                        <p class="text-danger"> ${mInvalidPlaces} </p>
+                    </c:if>
+
+                    <p>
+                        <abbr title="${mWithoutTags}">${mShippingPlace}</abbr>
+                    </p>
+                    <input type="text" name="shippingPlace" value="" maxlength="44" class="form-control"
+                           required pattern="[^<>]*" title="${mWithoutTags}"/>
+
+                    <p>
+                        <abbr title="${mWithoutTags}">${mReturnPlace}</abbr>
+                    </p>
+                    <input type="text" name="returnPlace" value="" maxlength="44" class="form-control"
+                           required pattern="[^<>]*" title="${mWithoutTags}"/>
+                    <hr/>
+                    <input type="hidden" name="command" value="make-order">
+                    <input type="hidden" name="processRequest" value="redirect">
+                    <input type="submit" value="${makeOrder}" class="btn btn-primary"/>
                 </form>
             </div>
-        </c:if>
-        <hr/>
-        <c:if test="${sessionScope.selectedCar.id != null}">
-            <img class="imgSmall" src="data:image/jpg;base64,${sessionScope.selectedCar.image}"/>
-
-            <p><c:out value="${sessionScope.selectedCar.mark}"/> <c:out value="${sessionScope.selectedCar.model}"/></p>
-        </c:if>
-        <hr/>
-        <c:if test="${requestScope.addOrderFailed == true}">
-            <div class="divSubMenu">
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="view-orders-user">
-                    <input type="submit" value="${mViewAllOrders}" class="buttonSubMenu">
-                </form>
-            </div>
-            <div class="divSubMenu">
-                <form action="Controller" method="get">
-                    <input type="hidden" name="command" value="view-all-cars">
-                    <input type="submit" value="${mMakeOrder}" class="buttonSubMenu">
-                </form>
-            </div>
-        </c:if>
-
-        <form action="Controller" method="post">
-
-            <c:if test="${requestScope.invalidDate == true}">
-                <p class="invalidMessage"> ${mInvalidDate} </p>
-            </c:if>
-
-            <p>${fromDate}</p>
-            <input type="date" name="supposedDateFrom" value="${sessionScope.supposedDateFrom}" required/>
-            <input type="time" name="supposedTimeFrom" value="${sessionScope.supposedTimeFrom}" required/>
-
-            <p>${toDate}</p>
-            <input type="date" name="supposedDateTo" value="${sessionScope.supposedDateTo}" required/>
-            <input type="time" name="supposedTimeTo" value="${sessionScope.supposedTimeTo}" required/>
-
-            <c:if test="${requestScope.invalidPlaces == true}">
-                <p class="invalidMessage"> ${mInvalidPlaces} </p>
-            </c:if>
-
-            <p>${mShippingPlace}</p>
-            <input type="text" name="shippingPlace" value="" maxlength="44"/>
-
-            <p>${mReturnPlace}</p>
-            <input type="text" name="returnPlace" value="" maxlength="44"/>
-            <input type="hidden" name="command" value="make-order">
-            <input type="hidden" name="processRequest" value="redirect">
-            <input type="submit" value="${makeOrder}" class="buttonPurchase"/>
-        </form>
+        </div>
     </c:if>
     <c:if test="${!sessionScope.user.type.equals('user')}">
-        <div class="divSubMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="to-home-page">
-                <input type="submit" value="${home}" class="buttonSubMenu">
-            </form>
-        </div>
+        <h1 class="page-header"></h1>
+
+        <form action="Controller" method="get">
+            <input type="hidden" name="command" value="to-home-page">
+            <input type="submit" value="${home}" class="btn btn-info">
+        </form>
     </c:if>
-</section>
-<footer>
-    <p>&copy; 2016 Car rental. All rights reserved.</p>
-</footer>
+
+    <hr/>
+    <%@include file="../footer.jspf" %>
+</div>
 </body>
 </html>

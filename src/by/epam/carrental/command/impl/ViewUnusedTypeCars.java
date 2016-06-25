@@ -90,6 +90,7 @@ public class ViewUnusedTypeCars implements Command {
         if (!validator.validateDate(dateFrom, dateTo)) {
             request.setAttribute(INVALID_DATE_PARAM, true);
             request.setAttribute(PROCESS_REQUEST_PARAM, FORWARD_VALUE);
+            request.setAttribute(NO_CARS_PARAM, true);
             LOG.debug(EXECUTE_ENDS);
             return PageName.ALL_CARS;
         }

@@ -60,7 +60,7 @@ public class MakeOrderCommand implements Command {
                 return PageName.MAKE_ORDER;
             }
 
-            if (!validator.validatePlace(shippingPlace) && !validator.validatePlace(returnPlace)) {
+            if (!validator.validatePlace(shippingPlace) || !validator.validatePlace(returnPlace)) {
                 request.setAttribute(INV_PLACES_PARAM, true);
                 request.setAttribute(PROCESS_REQUEST_PARAM, FORWARD_VALUE);
                 LOG.debug(EXECUTE_ENDS_MSG);

@@ -1,13 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@taglib prefix="cr" uri="/WEB-INF/custom.tld" %>
 
+<!DOCTYPE html>
 <html>
 <head>
     <title>Date</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="css/style.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/car-rental-style.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="locale"/>
     <fmt:message bundle="${locale}" key="local.locbutton.name.en" var="en_button"/>
@@ -24,163 +27,101 @@
     <fmt:message bundle="${locale}" key="local.viewOrders" var="viewOrders"/>
     <fmt:message bundle="${locale}" key="local.viewUsers" var="viewUsers"/>
     <fmt:message bundle="${locale}" key="local.addCar" var="addCar"/>
+    <fmt:message bundle="${locale}" key="local.realDateFrom" var="dateFrom"/>
+    <fmt:message bundle="${locale}" key="local.realDateTo" var="dateTo"/>
+    <fmt:message bundle="${locale}" key="local.mSuccess" var="mSuccess"/>
 </head>
 <body>
 
-<header>
+<%@include file="WEB-INF/navigation.jspf" %>
 
-    <div class="divHeader">
-
-        <div class="div3">
-            <div class="div1"><h1>${carRental}</h1></div>
-
-            <div class="div2">
-                <div>
-                    <form action="Controller" method="post">
-                        <input type="hidden" name="command" value="change-locale"/>
-                        <input type="hidden" name="language" value="en">
-                        <input type="submit" value="${en_button}" class="buttonLocalReg">
-                    </form>
-                </div>
-                <div>
-                    <form action="Controller" method="post">
-                        <input type="hidden" name="command" value="change-locale"/>
-                        <input type="hidden" name="language" value="ru">
-                        <input type="submit" value="${ru_button}" class="buttonLocalReg">
-                    </form>
-                </div>
-            </div>
-
-            <div class="div5">
-                <c:if test="${sessionScope.user.type.equals('admin')}">
-                    <div class="div5">
-                        <form action="Controller" method="post">
-                            <input type="hidden" name="command" value="log-out-user">
-
-                            <div>
-                                <input type="submit" value="${logOut}" class="buttonLogOut">
-                            </div>
-                        </form>
-                    </div>
-                </c:if>
-                <p>
-                    <c:if test="${sessionScope.user.type.equals('admin')}">
-                        <c:out value="${sessionScope.user.lastName}"/> <c:out value="${sessionScope.user.firstName}"/>
-                    </c:if>
-                </p>
-            </div>
-
-        </div>
-        <c:if test="${sessionScope.user.type.equals('admin')}">
-            <div class="divMenu">
-                <div class="divMenu">
-                    <form action="Controller" method="post">
-                        <input type="hidden" name="command" value="to-home-page">
-                        <input type="submit" value=${home} class="buttonMenu"/>
-                    </form>
-                </div>
-                <div class="divMenu">
-                    <form action="Controller" method="get">
-                        <input type="hidden" name="command" value="view-all-cars">
-                        <input type="submit" value="${cars}" class="buttonMenu"/>
-                    </form>
-                </div>
-                <c:if test="${sessionScope.user.type.equals('admin')}">
-                    <div class="divMenu">
-                        <form action="Controller" method="get">
-                            <input type="hidden" name="command" value="to-priv-office-admin">
-                            <input type="submit" value="${privateOffice}" class="buttonMenu"/>
-                        </form>
-                    </div>
-                </c:if>
-                <div class="divMenu">
-                    <form action="Controller" method="get">
-                        <input type="hidden" name="command" value="to-about">
-                        <input type="submit" value="${info}" class="buttonMenu"/>
-                    </form>
-                </div>
-            </div>
-        </c:if>
-    </div>
-
-</header>
-<section>
+<div class="container">
 
     <c:if test="${sessionScope.user.type.equals('admin')}">
-        <hr/>
 
-        <div class="divSubMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="view-orders-admin">
-                <input type="submit" value="${viewOrders}" class="buttonSubMenu">
-            </form>
-        </div>
-        <div class="divSubMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="view-all-users">
-                <input type="submit" value="${viewUsers}" class="buttonSubMenu">
-            </form>
-        </div>
-        <div class="divSubMenu">
-            <form action="Controller" method="get">
-                <input type="hidden" name="command" value="to-add-car">
-                <input type="submit" value="${addCar}" class="buttonSubMenu">
-            </form>
+        <div class="col-lg-12">
+            <h1 class="page-header"></h1>
+
+            <ol class="breadcrumb">
+                <li>
+                    <form action="Controller" method="get" class="btn btn-link">
+                        <input type="hidden" name="command" value="to-home-page">
+                        <input type="submit" value="${home}" class="btn btn-link">
+                    </form>
+                </li>
+                <li>
+                    <form action="Controller" method="get" class="btn btn-link">
+                        <input type="hidden" name="command" value="to-priv-office-admin">
+                        <input type="submit" value="${privateOffice}" class="btn btn-link">
+                    </form>
+                </li>
+                <li>
+                    <form action="Controller" method="get" class="btn">
+                        <input type="hidden" name="command" value="view-orders-admin">
+                        <input type="submit" value="${viewOrders}" class="btn btn-link">
+                    </form>
+                </li>
+                <li class="active">${mSuccess}</li>
+            </ol>
         </div>
 
-        <hr/>
-    </c:if>
-
-    <h2>
-        <c:if test="${sessionScope.successfulUpdatedStatus == true}">
-            <p class="rightMessage">${mStatusUpdated}</p>
-            <c:set scope="session" var="successfulUpdatedStatus" value="false"></c:set>
+        <h2>
+            <c:if test="${sessionScope.successfulUpdatedStatus == true}">
+                <p class="text-primary">${mStatusUpdated}</p>
+                <c:set scope="session" var="successfulUpdatedStatus" value="false"></c:set>
+            </c:if>
+        </h2>
+        <c:if test="${requestScope.invalidDateFrom == true}">
+            <p class="text-danger">${mInvalidDate}</p>
         </c:if>
-    </h2>
-    <c:if test="${requestScope.invalidDateFrom == true}">
-        <p class="invalidMessage">${mInvalidDate}</p>
+
+        <c:if test="${requestScope.invalidDateTo == true}">
+            <p class="text-danger">${mInvalidDate}</p>
+        </c:if>
+
+        <c:if test="${sessionScope.fromDate == true}">
+            <p>From date:</p>
+
+            <form action="Controller" method="post">
+                <input type="date" name="real-date-from" required>
+                <input type="time" name="real-time-from" required>
+                <input type="hidden" name="selectedOrderId" value="${requestScope.selectedOrder.id}">
+                <input type="hidden" name="command" value="update-real-date-from">
+                <hr/>
+                <input type="submit" name="${mSetDate}" class="btn bg-info">
+            </form>
+        </c:if>
+
+        <c:if test="${sessionScope.toDate == true}">
+            <p>To date:</p>
+
+            <form action="Controller" method="post">
+                <input type="date" name="real-date-to" required>
+                <input type="time" name="real-time-to" required>
+                <input type="hidden" name="selectedOrderId" value="${requestScope.selectedOrder.id}">
+                <input type="hidden" name="command" value="update-real-date-to">
+                <hr/>
+                <input type="submit" name="${mSetDate}" class="btn btn-info">
+            </form>
+        </c:if>
     </c:if>
-
-    <c:if test="${requestScope.invalidDateTo == true}">
-        <p class="invalidMessage">${mInvalidDate}</p>
-    </c:if>
-
-    <c:if test="${sessionScope.fromDate == true}">
-        <p>From date:</p>
-
-        <form action="Controller" method="post">
-            <input type="date" name="real-date-from" required>
-            <input type="time" name="real-time-from" required>
-            <input type="hidden" name="selectedOrderId" value="${requestScope.selectedOrder.id}">
-            <input type="hidden" name="command" value="update-real-date-from">
-            <input type="submit" name="${mSetDate}">
-        </form>
-    </c:if>
-
-    <c:if test="${sessionScope.toDate == true}">
-        <p>To date:</p>
-
-        <form action="Controller" method="post">
-            <input type="date" name="real-date-to" required>
-            <input type="time" name="real-time-to" required>
-            <input type="hidden" name="selectedOrderId" value="${requestScope.selectedOrder.id}">
-            <input type="hidden" name="command" value="update-real-date-to">
-            <input type="submit" name="${mSetDate}">
-        </form>
-    </c:if>
-
     <c:if test="${!sessionScope.user.type.equals('admin')}">
         <div class="divSubMenu">
             <form action="Controller" method="get">
                 <input type="hidden" name="command" value="to-home-page">
-                <input type="submit" value="${home}" class="buttonSubMenu">
+                <input type="submit" value="${home}" class="btn btn-info">
             </form>
         </div>
     </c:if>
 
-</section>
-<footer>
-    <p>&copy; 2016 Car rental. All rights reserved.</p>
-</footer>
+    <hr/>
+
+    <%@include file="/WEB-INF/footer.jspf" %>
+
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 </body>
 </html>

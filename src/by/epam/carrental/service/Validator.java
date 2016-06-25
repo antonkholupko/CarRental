@@ -36,7 +36,7 @@ public class Validator {
     private static final String PATTERN_PHONE = "[0-9-+\\s()]+";
     private static final String PATTERN_PASSPORT = "[A-Z0-9]+";
     private static final String PATTERN_DAMAGE_PRICE = "(^[0-9]+\\.([0-9][0-9]|[0-9])$)|(^[0-9]+$)";
-    private static final String PATTERN_ORDER_INFO = "^\\S.*";
+    private static final String PATTERN_ORDER_INFO = "^\\S[^<>]*";
     private static final String PATTERN_CAR_YEAR = "[1-3][0-9]{3}";
     private static final String PATTERN_CAR_GOV_NUMBER = "[0-9]{4}[A-CEHIKMOPTX]{2}-[0-7]";
     private static final String PATTERN_CAR_VIN_CODE = "[0-9A-Z]{17}";

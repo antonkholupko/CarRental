@@ -18,9 +18,9 @@ import java.util.List;
 /**
  * Класс для вставки/обновления/получения сущностей класса Order в/из базу(ы) данных
  */
-public class OrderDAOdb implements OrderDAO {
+public class OrderDAOImpl implements OrderDAO {
 
-    private static final Logger LOG = LogManager.getLogger(OrderDAOdb.class.getName());
+    private static final Logger LOG = LogManager.getLogger(OrderDAOImpl.class.getName());
     private static final String ADD_ORDER_QUERY = "INSERT INTO orders (userID, carID, supposedFromDate, supposedToDate, " +
             "shippingPlace, returnPlace, status) VALUES (?,?,?,?,?,?,?);";
     private static final String CHECK_INSERT_QUERY = "SELECT carID FROM orders WHERE " +

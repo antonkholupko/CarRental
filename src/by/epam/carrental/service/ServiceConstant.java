@@ -1,6 +1,6 @@
 package by.epam.carrental.service;
 
-public final class ServiceStringConstant {
+public final class ServiceConstant {
 
     /**
      * Строковые константы для CarService
